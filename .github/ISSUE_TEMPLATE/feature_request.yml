@@ -76,7 +76,7 @@ body:
       placeholder: |
         It might violate gracious professionalism
 
-    - type: textarea
+  - type: textarea
     attributes:
       label: Implimentation
       description: >-
