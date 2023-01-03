@@ -70,12 +70,19 @@ body:
 
   - type: textarea
     attributes:
-      label: f
+      label: Possible implications
       description: >-
-        Please justify why this should be implimented.
+        Can you think of any possible negative issues that need to be considered with this feature? Does it conflict with anything?
       placeholder: |
-        Who doesn't like rockets! :)
+        It might violate gracious professionalism
 
+    - type: textarea
+    attributes:
+      label: Implimentation
+      description: >-
+        Do you have any ideas on how this would be implimented? This can be as technical or as simple as you want!
+      placeholder: |
+        You could use the WPILib rocket clasee.
 
   - type: markdown
     attributes:
