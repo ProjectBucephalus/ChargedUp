@@ -1,11 +1,11 @@
 name: Report a bug
-description: Create a bug report to help improve Marlin Firmware
+description: Create a bug report to help improve our robot code
 title: "[BUG] (bug summary)"
 body:
   - type: markdown
     attributes:
       value: >
-        Do you want to ask a question? Are you looking for support? Please use one of the [support links](https://github.com/MarlinFirmware/Marlin/issues/new/choose).
+        Do you want to ask a question? Are you looking for support? Please use please see our [documentation](docs.robotguide.click).
 
   - type: markdown
     attributes:
