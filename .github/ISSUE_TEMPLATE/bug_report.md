@@ -1,6 +1,9 @@
-name: 🪲 Report a bug
-description: Create a bug report to help improve Marlin Firmware
-title: "[BUG] (bug summary)"
+---
+name: Bug report
+about: Create a report to help us improve
+title: ''
+labels: ''
+assignees: ''
 body:
   - type: markdown
     attributes:
