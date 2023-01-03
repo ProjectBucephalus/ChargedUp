@@ -82,7 +82,18 @@ body:
       description: >-
         Do you have any ideas on how this would be implimented? This can be as technical or as simple as you want!
       placeholder: |
-        You could use the WPILib rocket clasee.
+        You could use the WPILib rocket class.
+
+  - type: dropdown
+    attributes:
+      label: Importance
+      description: How important is this feature to impliment?
+      options:
+        - Low (eg. LEDs don't work)
+        - Medium (eg. drivers need a button swapped)
+        - High (eg. part of the robot is not quite working properly)
+        - Critical (eg. part of the robot is completly non-functional and comp is tomorrow.)
+
 
   - type: markdown
     attributes:

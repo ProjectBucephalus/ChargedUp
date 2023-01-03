@@ -90,6 +90,16 @@ body:
         - Other (explain below)
         - I don't know
 
+  - type: dropdown
+    attributes:
+      label: Importance
+      description: How important is this bug to fix?
+      options:
+        - Low (eg. LEDs don't work)
+        - Medium (eg. drivers need a button swapped)
+        - High (eg. part of the robot is not quite working properly)
+        - Critical (eg. part of the robot is completly non-functional and comp is tomorrow.)
+
   - type: markdown
     attributes:
       value: |
