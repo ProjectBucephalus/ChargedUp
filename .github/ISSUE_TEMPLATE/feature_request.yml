@@ -1,0 +1,89 @@
+name: Request a feature
+description: Create a feature request to help improve our robot code
+title: "[FR] (feature summary)"
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Do you want to ask a question? Are you looking for support? Please use please see our [documentation](https://docs.robotguide.click).
+
+  - type: input
+    attributes:
+      label: Name
+      description: Please enter your name
+
+  - type: markdown
+    attributes:
+      value: |
+        **Thank you for reporting a bug!**
+
+        ## Before Requesting a feature
+
+        - Remeber to be respectful! We are humans too :). Your help in providing detailed information will help us provide the best possible robot code!
+
+        - Test with the latest version of the code ([How do I find this?](https://docs.robotguide.click)).
+
+        ## Instructions
+
+        Please follow the instructions below. Failure to do so may result in your issue being closed.
+
+        1. Provide a good title starting with [FR].
+        2. Fill out all sections of this feature request form.
+        3. Always attach additional files so we can better understand your vision.
+
+  - type: markdown
+    attributes:
+      value: |
+        # Feature Details
+
+  - type: textarea
+    attributes:
+      label: Feature Description
+      description: >-
+        Describe the feature in this section. Tell us what your ideal feature would do, and how it would work.
+      placeholder: |
+        I would really like a feature where I can launch a SAM if it looks like the robot is loosing.
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Feature Timeline
+      description: Has this existed previously? If so, in what capacity?
+      placeholder: |
+        2019 antlia had the great camera cutter feature.
+
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: >-
+        What do you expect to happen? Include as many details as you can, such as how it would be controlled, ect.
+      placeholder: You push the trigger button and the SAM launches.
+      
+  - type: textarea
+    attributes:
+      label: Justification
+      description: >-
+        Please justify why this should be implimented.
+      placeholder: |
+        Who doesn't like rockets! :)
+
+  - type: textarea
+    attributes:
+      label: Justification
+      description: >-
+        Please justify why this should be implimented.
+      placeholder: |
+        Who doesn't like rockets! :)
+
+
+  - type: markdown
+    attributes:
+      value: |
+        # Attachments
+
+  - type: textarea
+    attributes:
+      label: Additional information & file uploads
+      description: >-
+        Please upload any additional relevant files
