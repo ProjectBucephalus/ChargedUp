@@ -10,13 +10,13 @@ body:
   - type: markdown
     attributes:
       value: |
-        **Thank you for reporting a bug in Marlin Firmware!**
+        **Thank you for reporting a bug!**
 
         ## Before Reporting a Bug
 
-        - Read and understand Marlin's [Code of Conduct](https://github.com/MarlinFirmware/Marlin/blob/bugfix-2.1.x/.github/code_of_conduct.md). You are expected to comply with it, including treating everyone with respect.
+        - Remeber to be respectful! We are humans too :). Your help in providing detailed information will help us provide the best possible robot code!
 
-        - Test with the [`bugfix-2.1.x` branch](https://github.com/MarlinFirmware/Marlin/archive/bugfix-2.1.x.zip) to see whether the issue still exists.
+        - Test with the latest version of the code ([How do I find this?](https://docs.robotguide.click)).
 
         ## Instructions
 
