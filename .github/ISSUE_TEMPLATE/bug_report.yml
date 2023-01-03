@@ -7,6 +7,12 @@ body:
       value: >
         Do you want to ask a question? Are you looking for support? Please use please see our [documentation](https://docs.robotguide.click).
 
+  - type: input
+    attributes:
+      label: Name
+      description: Please enter your name
+      placeholder: |
+
   - type: markdown
     attributes:
       value: |
