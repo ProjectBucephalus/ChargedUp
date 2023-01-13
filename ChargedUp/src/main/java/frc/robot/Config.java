@@ -24,6 +24,33 @@ public class Config {
     public static final double wheelCircumferenceMetres = wheelDiameterMetres * Math.PI;
     public static final double kRatioMotorToWheel = (1/11.1/wheelCircumferenceMetres);
 
+    public static final double kHorizontalExtensionKS = 0;
+    public static final double kHorizontalExtensionKV = 0;
+    public static final double kHorizontalExtensionKG = 0;
+    public static final double kHorizontalExtensionKA = 0;
+    public static final double kHorizontalExtensionKP = 0;
+    public static final double kHorizontalExtensionMaxVelocity = 0;
+    public static final double kHorizontalExtensionMaxAcceleration = 0;
+    public static final double kHorizontalExtensionEncoderPPR = 4096; //CANCoder, falcon is 2048 EPR
+    public static final double kHorizontalExtensionNeutralPosition = 0;
+    public static final double kHorizontalExtensionEncoderOffset = 0;
+
+    public static final double kVerticalExtensionKS = 0;
+    public static final double kVerticalExtensionKV = 0;
+    public static final double kVerticalExtensionKG = 0;
+    public static final double kVerticalExtensionKA = 0;
+    public static final double kVerticalExtensionKP = 0;
+    public static final double kVerticalExtensionMaxVelocity = 0;
+    public static final double kVerticalExtensionMaxAcceleration = 0;
+    public static final double kVerticalExtensionEncoderPPR = 4096; //CANCoder, falcon is 2048 EPR
+    public static final double kVerticalExtensionNeutralPosition = 0;
+    public static final double kVerticalExtensionEncoderOffset = 0;
+
+
+
+
+
+
 
 
 }
