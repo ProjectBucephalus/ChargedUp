@@ -2,9 +2,11 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package com.projectb;
+package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Commands.CommandController;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -13,6 +15,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
  */
 public class Robot extends TimedRobot {
 
+  private final CommandController m_robot = new CommandController();
+
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -20,7 +25,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-
+    m_robot.configureBindings();
   }
 
   /**
@@ -31,7 +36,10 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
+
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
