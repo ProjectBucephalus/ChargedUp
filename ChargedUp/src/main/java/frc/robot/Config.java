@@ -46,6 +46,16 @@ public class Config {
     public static final double kVerticalExtensionNeutralPosition = 0;
     public static final double kVerticalExtensionEncoderOffset = 0;
 
+    /**
+     * Elevator constants
+     * ALL UNITS ARE METRES (M)
+     */
+    public static final double kElevatorBaseWidth = 30*0.0254; //30 inches to m
+    public static final double kVerticalExtensionPerpendicularHeight = 40*0.0254;
+    public static final double kElevatorOffestFromFront = 0;
+    public static final double kElevatorVerticalExtensionLegnth = Math.sqrt(Math.pow(kVerticalExtensionPerpendicularHeight, 2) + Math.pow(kVerticalExtensionPerpendicularHeight, 2));
+   
+
 
 
 

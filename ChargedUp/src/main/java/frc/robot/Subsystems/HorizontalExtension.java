@@ -7,7 +7,6 @@ package frc.robot.Subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 
-import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -51,5 +50,9 @@ public class HorizontalExtension extends ProfiledPIDSubsystem {
         public double getMeasurement() {
         return horizontalExtensionEncoder.getPosition() / Config.kHorizontalExtensionEncoderPPR + Config.kHorizontalExtensionEncoderOffset;
     }
+
+    public double calculateHorizontalExtensionGoal(double x, double y) {
+        return Config.kVerticalExtensionPerpendicularHeight * Math.cos(Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight));
+      }
 
 }
