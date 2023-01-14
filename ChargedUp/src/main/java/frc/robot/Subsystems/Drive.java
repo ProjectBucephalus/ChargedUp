@@ -13,12 +13,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drive extends SubsystemBase{
 
-    private WPI_TalonFX leftDriveA = new WPI_TalonFX(Constants.kLeftDriveACanId);
-    private WPI_TalonFX leftDriveB = new WPI_TalonFX(Constants.kLeftDriveBCanId);
-    private WPI_TalonFX leftDriveC = new WPI_TalonFX(Constants.kLeftDriveCCanId);
-    private WPI_TalonFX rightDriveA = new WPI_TalonFX(Constants.kRightDriveACanId);
-    private WPI_TalonFX rightDriveB = new WPI_TalonFX(Constants.kRightDriveBCanId);
-    private WPI_TalonFX rightDriveC = new WPI_TalonFX(Constants.kRightDriveCCanId); 
+    private static WPI_TalonFX leftDriveA = new WPI_TalonFX(Constants.kLeftDriveACanId);
+    private static WPI_TalonFX leftDriveB = new WPI_TalonFX(Constants.kLeftDriveBCanId);
+    private static WPI_TalonFX leftDriveC = new WPI_TalonFX(Constants.kLeftDriveCCanId);
+    private static WPI_TalonFX rightDriveA = new WPI_TalonFX(Constants.kRightDriveACanId);
+    private static WPI_TalonFX rightDriveB = new WPI_TalonFX(Constants.kRightDriveBCanId);
+    private static WPI_TalonFX rightDriveC = new WPI_TalonFX(Constants.kRightDriveCCanId); 
     
     private final MotorControllerGroup leftDrive = new MotorControllerGroup(leftDriveA, leftDriveB, leftDriveC);
     private final MotorControllerGroup rightDrive = new MotorControllerGroup(rightDriveA, rightDriveB, rightDriveC);
@@ -113,7 +113,32 @@ public class Drive extends SubsystemBase{
         .finallyDo(interrupted -> driveMotors.stopMotor());
   }
 
-
-  
+  /**
+   * Tests if any motors are disconnected from CANBus. Will print and return if so!
+   * @return true if any of the drive assosciated devices are disconnected from CAN
+   */
+  public static boolean checkCanDevices() {
+    boolean canOk = true;
+    if(leftDriveA.getFirmwareVersion() == -1) {
+      System.out.println("WARNING leftDriveA missing from CANBus!");
+      canOk = false;
+    } else if(leftDriveB.getFirmwareVersion() == -1) {
+      System.out.println("WARNING leftDriveB missing from CANBus!");
+      canOk = false;
+    } else if(leftDriveC.getFirmwareVersion() == -1) {
+      System.out.println("WARNING leftDriveC missing from CANBus!");
+      canOk = false;
+    } else if(rightDriveA.getFirmwareVersion() == -1) {
+      System.out.println("WARNING rightDriveA missing from CANBus!");
+      canOk = false;
+    } else if(rightDriveB.getFirmwareVersion() == -1) {
+      System.out.println("WARNING rightDriveB missing from CANBus!");
+      canOk = false;
+    } else if(rightDriveC.getFirmwareVersion() == -1) {
+      System.out.println("WARNING rightDriveC missing from CANBus!");
+      canOk = false;
+    }
+      return canOk;
+  }
 
 }
