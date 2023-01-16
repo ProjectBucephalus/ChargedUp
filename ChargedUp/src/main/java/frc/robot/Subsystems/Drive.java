@@ -2,6 +2,7 @@ package frc.robot.Subsystems;
 
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -25,6 +26,8 @@ public class Drive extends SubsystemBase{
 
     private final DifferentialDrive driveMotors = new DifferentialDrive(leftDrive, rightDrive);
 
+    private static boolean brakeState = false;
+
 
     public void initSystem() {
         leftDriveA.configFactoryDefault();
@@ -42,6 +45,7 @@ public class Drive extends SubsystemBase{
 
     public Drive() {
         initSystem();
+        setBrakes(false);
     }
 
     /**
@@ -139,6 +143,38 @@ public class Drive extends SubsystemBase{
       canOk = false;
     }
       return canOk;
+  }
+
+  /**
+   * 
+   * @param brakes true for brakes enabled
+   */
+  public static void setBrakes(boolean brakes) {
+    if(brakes) {
+      leftDriveA.setNeutralMode(NeutralMode.Brake);
+      leftDriveB.setNeutralMode(NeutralMode.Brake);
+      leftDriveC.setNeutralMode(NeutralMode.Brake);
+      rightDriveA.setNeutralMode(NeutralMode.Brake);
+      rightDriveB.setNeutralMode(NeutralMode.Brake);
+      rightDriveC.setNeutralMode(NeutralMode.Brake);
+      brakeState = true;
+    } else {
+      leftDriveA.setNeutralMode(NeutralMode.Coast);
+      leftDriveB.setNeutralMode(NeutralMode.Coast);
+      leftDriveC.setNeutralMode(NeutralMode.Coast);
+      rightDriveA.setNeutralMode(NeutralMode.Coast);
+      rightDriveB.setNeutralMode(NeutralMode.Coast);
+      rightDriveC.setNeutralMode(NeutralMode.Coast);
+      brakeState = false;
+    }
+  }
+
+  /**
+   * 
+   * @return true if brakes are enabled
+   */
+  public boolean getBrakes() {
+    return brakeState;
   }
 
 }

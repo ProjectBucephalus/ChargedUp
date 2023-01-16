@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.CommandController;
+import frc.robot.Subsystems.Drive;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -26,6 +27,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_robot.configureBindings();
+    Drive.setBrakes(false);
+
   }
 
   /**
@@ -52,6 +55,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    Drive.setBrakes(true);
 
   }
 
@@ -63,7 +67,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    Drive.setBrakes(true);
+
+  }
 
   /** This function is called periodically during operator control. */
   @Override
@@ -71,7 +78,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    Drive.setBrakes(false);
+
+  }
 
   /** This function is called periodically when disabled. */
   @Override
