@@ -46,6 +46,18 @@ public class Config {
     public static final double kVerticalExtensionNeutralPosition = 0;
     public static final double kVerticalExtensionEncoderOffset = 0;
 
+    public static final double kWristKS = 0;
+    public static final double kWristKV = 0;
+    public static final double kWristKG = 0;
+    public static final double kWristKA = 0;
+    public static final double kWristKP = 0;
+    public static final double kWristMaxVelocity = 0;
+    public static final double kWristMaxAcceleration = 0;
+    public static final double kWristEncoderPPR = 4096; //CANCoder, falcon is 2048 EPR
+    public static final double kWristNeutralPosition = 0;
+    public static final double kWristEncoderOffset = 0;
+
+
     /**
      * Elevator constants
      * ALL UNITS ARE METRES (M)
