@@ -54,7 +54,7 @@ public class VerticalExtension extends TrapezoidProfileSubsystem {
     return Commands.runOnce(() -> setGoal(kArmOffsetRads), this);
   }
 
-    public double calculateVerticalExtensionGoal(double x, double y) {
+    public static double calculateVerticalExtensionGoal(double x, double y) {
         return x * Math.cos(180 - Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight)) - y * Math.sin(180 - Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight));
       }
 
