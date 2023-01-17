@@ -11,7 +11,7 @@ import frc.robot.Subsystems.Drive;
 public class CommandController {
 
     private final Drive m_drive = new Drive();
-    CommandJoystick m_driverJoystick = new CommandJoystick(0);
+    CommandJoystick m_driverJoystick = new CommandJoystick(0); //Setup driver joystick in port 0 on DS
 
     /**
    * Use this method to define bindings between conditions and commands. These are useful for

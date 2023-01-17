@@ -14,6 +14,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drive extends SubsystemBase{
 
+  /*
+   * Setup drive motors
+   * 
+   *     Front
+   *  ====|  |==== 
+   * ||LA      RA||
+   * ||LB      RB||
+   * ||LC      RC||
+   * ||          ||
+   * ||          ||
+   *  ============
+   */
+
     private static WPI_TalonFX leftDriveA = new WPI_TalonFX(Constants.kLeftDriveACanId);
     private static WPI_TalonFX leftDriveB = new WPI_TalonFX(Constants.kLeftDriveBCanId);
     private static WPI_TalonFX leftDriveC = new WPI_TalonFX(Constants.kLeftDriveCCanId);
@@ -21,31 +34,37 @@ public class Drive extends SubsystemBase{
     private static WPI_TalonFX rightDriveB = new WPI_TalonFX(Constants.kRightDriveBCanId);
     private static WPI_TalonFX rightDriveC = new WPI_TalonFX(Constants.kRightDriveCCanId); 
     
+    //Setup objects for use with the DifferentialDrive
     private final MotorControllerGroup leftDrive = new MotorControllerGroup(leftDriveA, leftDriveB, leftDriveC);
     private final MotorControllerGroup rightDrive = new MotorControllerGroup(rightDriveA, rightDriveB, rightDriveC);
 
     private final DifferentialDrive driveMotors = new DifferentialDrive(leftDrive, rightDrive);
 
-    private static boolean brakeState = false;
+    private static boolean brakeState = false; //Define default state for the brakes
 
 
+    /**
+     * Configure all motor controllers, sensors, etc. of this subsystem
+     * This means that in theory, on a controller fail, all that is needed to reconfigure
+     * the new ones is to change the CAN ID and it will pick up its config.
+     */
     public void initSystem() {
-        leftDriveA.configFactoryDefault();
+        leftDriveA.configFactoryDefault(); //Reset all settings on the drive motors
         leftDriveB.configFactoryDefault();
         leftDriveC.configFactoryDefault();
         rightDriveA.configFactoryDefault();
         rightDriveB.configFactoryDefault();
         rightDriveC.configFactoryDefault();
 
-        rightDriveA.setInverted(TalonFXInvertType.CounterClockwise);
-        rightDriveB.setInverted(TalonFXInvertType.CounterClockwise);
+        rightDriveA.setInverted(TalonFXInvertType.CounterClockwise); //Invert the right side meaning that a foward command 
+        rightDriveB.setInverted(TalonFXInvertType.CounterClockwise); //will result in all motors flashing green
         rightDriveC.setInverted(TalonFXInvertType.CounterClockwise);
 
     }
 
     public Drive() {
-        initSystem();
-        setBrakes(false);
+        initSystem(); //run the above method to initalise the controllers
+        setBrakes(false); //Set the falcons to coast mode on robot init
     }
 
     /**
@@ -57,7 +76,7 @@ public class Drive extends SubsystemBase{
   public CommandBase arcadeDriveCommand(DoubleSupplier fwd, DoubleSupplier rot) {
     // A split-stick arcade command, with forward/backward controlled by the left
     // hand, and turning controlled by the right.
-    return run(() -> driveMotors.arcadeDrive(fwd.getAsDouble(), rot.getAsDouble()))
+    return run(() -> driveMotors.arcadeDrive(fwd.getAsDouble(), rot.getAsDouble())) //run the WPILIB arcadeDrive method with supplied values
         .withName("arcadeDrive");
   }
 
@@ -82,7 +101,7 @@ public class Drive extends SubsystemBase{
   public double getLeftDriveEncodersDistanceMetres() {
     return ((leftDriveA.getSelectedSensorPosition() +
             leftDriveB.getSelectedSensorPosition())/2 );// + 
-            //leftDriveC.getSelectedSensorPosition()) / 3);
+            //leftDriveC.getSelectedSensorPosition()) / 3); //comment for pegasus config.
   }
 
   /**
@@ -92,7 +111,7 @@ public class Drive extends SubsystemBase{
   public double getRightDriveEncodersDistanceMetres() {
     return ((rightDriveA.getSelectedSensorPosition() +
             rightDriveB.getSelectedSensorPosition()) /2 ); //+ 
-           // rightDriveC.getSelectedSensorPosition()) / 3);
+           // rightDriveC.getSelectedSensorPosition()) / 3); //comment for pegasus config
   }
 
   /**
@@ -104,14 +123,14 @@ public class Drive extends SubsystemBase{
   public CommandBase driveDistanceCommand(double distanceMeters, double speed) {
     return runOnce(
             () -> {
-              resetDriveEncoders();
+              resetDriveEncoders(); //check encoders are zeroed
             })
         // Drive forward at specified speed
         .andThen(run(() -> driveMotors.arcadeDrive(speed, 0)))
         // End command when we've traveled the specified distance
         .until(
             () ->
-                Math.max(getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres())
+                Math.max(getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres()) //check have traveled far enough
                     >= distanceMeters)
         // Stop the drive when the command ends
         .finallyDo(interrupted -> driveMotors.stopMotor());
@@ -120,6 +139,8 @@ public class Drive extends SubsystemBase{
   /**
    * Tests if any motors are disconnected from CANBus. Will print and return if so!
    * @return true if any of the drive assosciated devices are disconnected from CAN
+   * This works by requesting the falcon's firmware verison, which will return -1 if
+   * the device is not on the bus
    */
   public static boolean checkCanDevices() {
     boolean canOk = true;
@@ -174,7 +195,7 @@ public class Drive extends SubsystemBase{
    * @return true if brakes are enabled
    */
   public boolean getBrakes() {
-    return brakeState;
+    return brakeState; //locally updated variable to track brake state
   }
 
 }

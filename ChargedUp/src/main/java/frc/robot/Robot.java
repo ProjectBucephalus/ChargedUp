@@ -26,8 +26,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_robot.configureBindings();
-    Drive.setBrakes(false);
+    m_robot.configureBindings(); //setup bindings for drive, mechanisms etc.
+    Drive.setBrakes(false); //disable brakes so robot can be pushed
 
   }
 
@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    Drive.setBrakes(true);
+    Drive.setBrakes(true); //run brakes
 
   }
 
@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    Drive.setBrakes(true);
+    Drive.setBrakes(true); //run brakes
 
   }
 
@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    Drive.setBrakes(false);
+    Drive.setBrakes(false); //disable brakes so robot is pushable
 
   }
 
