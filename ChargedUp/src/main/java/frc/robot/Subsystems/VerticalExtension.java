@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -20,15 +21,19 @@ import frc.robot.Constants;
 /** Add your docs here. */
 public class VerticalExtension extends TrapezoidProfileSubsystem {
 
-    private final WPI_TalonFX verticalExtensionMotor = new WPI_TalonFX(Constants.kHorizontalElevatorCanId);
-    private final CANCoder verticalExtensionEncoder = new CANCoder(Constants.kHorizontalElevatorEncoderCanId);
+    private final WPI_TalonFX verticalExtensionMotor = new WPI_TalonFX(Constants.kVerticalElevatorCanId);
+    private final CANCoder verticalExtensionEncoder = new CANCoder(Constants.kVerticalElevatorEncoderCanId);
+
+    //this subsystem uses a combination of a feedfoward and feedback control.
+    //this gives us the advantage of better profiling from feedfoward and better precision from feedback.
     private final ElevatorFeedforward m_feedforward = new ElevatorFeedforward(
-        Config.kVerticalExtensionKS, Config.kVerticalExtensionKG,
-        Config.kVerticalExtensionKV, Config.kVerticalExtensionKA
+        Config.kVerticalExtensionKS, Config.kVerticalExtensionKG, //kS is the static friction constant, kG is the gravity constant
+        Config.kVerticalExtensionKV, Config.kVerticalExtensionKA //kV is the velocity constant, kA is the acceleration constant
       );
 
   /** Create a new ArmSubsystem. */
   public VerticalExtension() {
+    //define a new trapezoid profile using wpi libraries. Configure the motor.
     super(
         new TrapezoidProfile.Constraints(
             Config.kMaxSpeedMetersPerSecond, Config.kMaxAccelerationMetersPerSecondSquared),
@@ -37,6 +42,19 @@ public class VerticalExtension extends TrapezoidProfileSubsystem {
     verticalExtensionMotor.configRemoteFeedbackFilter(verticalExtensionEncoder, 0);
     verticalExtensionMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
 
+  }
+
+  /**
+   * Reset and configure sensors, motors, and encoders.
+   */
+  public void initSystem() {
+    verticalExtensionMotor.configFactoryDefault(); //reset and configure the motor so we know it is correctly configured
+    verticalExtensionMotor.config_kP(0, Config.kVerticalExtensionKP);
+    verticalExtensionMotor.configRemoteFeedbackFilter(verticalExtensionEncoder, 0);
+    verticalExtensionMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
+
+    verticalExtensionEncoder.configFactoryDefault(); //reset and configure the encoder
+    verticalExtensionEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
   }
 
   @Override
@@ -50,12 +68,23 @@ public class VerticalExtension extends TrapezoidProfileSubsystem {
     
   }
 
+  /**
+   * Run arm to position
+   * @param kArmOffsetRads
+   * @return when arm is at desired position
+   */
   public Command setArmGoalCommand(double kArmOffsetRads) {
     return Commands.runOnce(() -> setGoal(kArmOffsetRads), this);
   }
 
-    public static double calculateVerticalExtensionGoal(double x, double y) {
-        return x * Math.cos(180 - Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight)) - y * Math.sin(180 - Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight));
-      }
+   /**
+   * Method to calculate the desired porition of the motor based off a target x and y position.
+   * @param x desired x position
+   * @param y desired y position
+   * @return the desired setpoint for the extension
+   */
+  public static double calculateVerticalExtensionGoal(double x, double y) {
+    return x * Math.cos(180 - Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight)) - y * Math.sin(180 - Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight));
+  }
 
 }
