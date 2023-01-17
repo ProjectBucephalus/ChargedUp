@@ -16,8 +16,8 @@ public class CommandController {
     private final Drive m_drive = new Drive();
     private final HorizontalExtension m_horizontalEtension = new HorizontalExtension();
     private final VerticalExtension m_verticalExtension = new VerticalExtension();
-    CommandJoystick m_driverJoystick = new CommandJoystick(0);
-    CommandXboxController m_driverHID = new CommandXboxController(1);
+    CommandJoystick m_driverJoystick = new CommandJoystick(0); //declare joystick on ds port 0 
+    CommandXboxController m_driverHID = new CommandXboxController(1); //declare xbox on ds port 1
 
 
     /**
