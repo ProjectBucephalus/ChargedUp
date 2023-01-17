@@ -2,9 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package com.projectb;
+package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Commands.CommandController;
+import frc.robot.Subsystems.Drive;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -13,6 +16,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
  */
 public class Robot extends TimedRobot {
 
+  private final CommandController m_robot = new CommandController();
+
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -20,6 +26,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    m_robot.configureBindings(); //setup bindings for drive, mechanisms etc.
+    Drive.setBrakes(false); //disable brakes so robot can be pushed
 
   }
 
@@ -31,7 +39,9 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -45,6 +55,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    Drive.setBrakes(true); //run brakes
 
   }
 
@@ -56,7 +67,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    Drive.setBrakes(true); //run brakes
+
+  }
 
   /** This function is called periodically during operator control. */
   @Override
@@ -64,7 +78,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    Drive.setBrakes(false); //disable brakes so robot is pushable
+
+  }
 
   /** This function is called periodically when disabled. */
   @Override
