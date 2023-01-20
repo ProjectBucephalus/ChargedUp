@@ -46,17 +46,8 @@ public class Config {
     public static final double kVerticalExtensionNeutralPosition = 0;
     public static final double kVerticalExtensionEncoderOffset = 0;
 
-    public static final double kWristKS = 0;
-    public static final double kWristKV = 0;
-    public static final double kWristKG = 0;
-    public static final double kWristKA = 0;
-    public static final double kWristKP = 0;
-    public static final double kWristMaxVelocity = 0;
-    public static final double kWristMaxAcceleration = 0;
-    public static final double kWristEncoderPPR = 4096; //CANCoder, falcon is 2048 EPR
-    public static final double kWristNeutralPosition = 0;
-    public static final double kWristEncoderOffset = 0;
-
+    public static final int kWristFowardPortId = 0;
+    public static final int kWristReversePortId = 1;
 
     /**
      * Elevator constants
@@ -67,7 +58,14 @@ public class Config {
     public static final double kElevatorOffestFromFront = 0;
     public static final double kElevatorVerticalExtensionLegnth = Math.sqrt(Math.pow(kVerticalExtensionPerpendicularHeight, 2) + Math.pow(kVerticalExtensionPerpendicularHeight, 2));
    
+    /**
+     * Pneumatics constants
+     */
 
+    public static final double kPneumaticsMinPressure = 110; //The pressure the pneumatics will start charging at
+    public static final double kPneumaticsMaxPressure = 120; //The pressure the pneumatics will stop charging at
+    public static final double kCompressorRunCurrent = 10;//Ampres. Used for error checking //TODO
+    public static final byte kCompressorCheckIterations = 50;//50 cycles of code. Checks that the compressor still does not run after x cycles
 
 
 

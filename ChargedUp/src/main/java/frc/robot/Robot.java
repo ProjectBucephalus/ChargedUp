@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.CommandController;
 import frc.robot.Subsystems.Drive;
+import frc.robot.Utilities.Pneumatics;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -15,6 +16,8 @@ import frc.robot.Subsystems.Drive;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  private Pneumatics m_pneumatics = Pneumatics.getInstance();
 
   private final CommandController m_robot = new CommandController();
 
@@ -56,6 +59,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Drive.setBrakes(true); //run brakes
+    m_pneumatics.setPneumatics(true);
 
   }
 
@@ -69,6 +73,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     Drive.setBrakes(true); //run brakes
+    m_pneumatics.setPneumatics(true);
 
   }
 
@@ -80,6 +85,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     Drive.setBrakes(false); //disable brakes so robot is pushable
+    m_pneumatics.setPneumatics(false);
 
   }
   /** This function is called periodically when disabled. */
