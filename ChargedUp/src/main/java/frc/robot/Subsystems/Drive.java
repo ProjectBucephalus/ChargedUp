@@ -234,7 +234,7 @@ public class Drive extends SubsystemBase{
   /**
    * @return DifferentialDriveWheelSpeeds wheel speed object
    */
-  public <Supplier>DifferentialDriveWheelSpeeds getWheelSpeeds() {
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(getLeftDriveEncodersVelocityMetresPerSecond(), getRightDriveEncodersVelocityMetresPerSecond());
   }
 
