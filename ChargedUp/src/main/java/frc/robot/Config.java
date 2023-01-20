@@ -95,6 +95,7 @@ public class Config {
      * Pneumatics constants
      */
 
+    public static final int kPneumaticsModuleCanId = 51;
     public static final double kPneumaticsMinPressure = 110; //The pressure the pneumatics will start charging at
     public static final double kPneumaticsMaxPressure = 120; //The pressure the pneumatics will stop charging at
     public static final double kCompressorRunCurrent = 10;//Ampres. Used for error checking //TODO
