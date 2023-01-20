@@ -22,9 +22,9 @@ public class Wrist extends TrapezoidProfileSubsystem {
 
     private final WPI_TalonFX wristMotor = new WPI_TalonFX(Constants.kWristMotorCanId);
     private final CANCoder wristEncoder = new CANCoder(Constants.kWristEncoderCanId);
-    private final ArmFeedforward m_feedforward = new ArmFeedforward(
-        Config.kWristKS, Config.kWristKG,
-        Config.kWristKV, Config.kWristKA
+    private final ArmFeedforward m_feedforward = new ArmFeedforward( //we can program the wrist as an arm
+        Config.kWristKS, Config.kWristKG, //kS is the static friction constant, kG is the gravity constant
+        Config.kWristKV, Config.kWristKA //kV is the velocity constant, kA is the acceleration constant
       );
 
   /** Create a new ArmSubsystem. */

@@ -24,6 +24,8 @@ public class Config {
     public static final double wheelCircumferenceMetres = wheelDiameterMetres * Math.PI;
     public static final double kRatioMotorToWheel = (1/11.1/wheelCircumferenceMetres); //gearbox is 11.1:1
 
+    public static final double kAutoMaxVolts = 10;
+
     public static final double kHorizontalExtensionKS = 0;
     public static final double kHorizontalExtensionKV = 0;
     public static final double kHorizontalExtensionKG = 0;

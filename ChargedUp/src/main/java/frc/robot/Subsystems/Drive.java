@@ -5,12 +5,18 @@ import java.util.function.DoubleSupplier;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
-import frc.robot.Constants;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Config;
+import frc.robot.Constants;
 
 public class Drive extends SubsystemBase{
 
@@ -33,12 +39,15 @@ public class Drive extends SubsystemBase{
     private static WPI_TalonFX rightDriveA = new WPI_TalonFX(Constants.kRightDriveACanId);
     private static WPI_TalonFX rightDriveB = new WPI_TalonFX(Constants.kRightDriveBCanId);
     private static WPI_TalonFX rightDriveC = new WPI_TalonFX(Constants.kRightDriveCCanId); 
+
+    private static WPI_Pigeon2 imu = new WPI_Pigeon2(Constants.kPigeonCanId);
     
     //Setup objects for use with the DifferentialDrive
     private final MotorControllerGroup leftDrive = new MotorControllerGroup(leftDriveA, leftDriveB, leftDriveC);
     private final MotorControllerGroup rightDrive = new MotorControllerGroup(rightDriveA, rightDriveB, rightDriveC);
 
     private final DifferentialDrive driveMotors = new DifferentialDrive(leftDrive, rightDrive);
+    private final DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(imu.getRotation2d(), getRightDriveEncodersDistanceMetres(), getLeftDriveEncodersDistanceMetres());
 
     private static boolean brakeState = false; //Define default state for the brakes
 
@@ -100,8 +109,8 @@ public class Drive extends SubsystemBase{
    */
   public double getLeftDriveEncodersDistanceMetres() {
     return ((leftDriveA.getSelectedSensorPosition() +
-            leftDriveB.getSelectedSensorPosition())/2 );// + 
-            //leftDriveC.getSelectedSensorPosition()) / 3); //comment for pegasus config.
+            leftDriveB.getSelectedSensorPosition())/2 * Config.kRatioMotorToWheel);// + 
+            //leftDriveC.getSelectedSensorPosition()) / 3 * Config.kRatioMotorToWheel); //comment for pegasus config.
   }
 
   /**
@@ -110,8 +119,28 @@ public class Drive extends SubsystemBase{
    */
   public double getRightDriveEncodersDistanceMetres() {
     return ((rightDriveA.getSelectedSensorPosition() +
-            rightDriveB.getSelectedSensorPosition()) /2 ); //+ 
-           // rightDriveC.getSelectedSensorPosition()) / 3); //comment for pegasus config
+            rightDriveB.getSelectedSensorPosition()) /2 * Config.kRatioMotorToWheel); //+ 
+           // rightDriveC.getSelectedSensorPosition()) / 3 * Config.kRatioMotorToWheel); //comment for pegasus config
+  }
+
+  /**
+   * 
+   * @return right encoder velocity in metres per second (m/s), averaged from all three falcons
+   */
+  public double getRightDriveEncodersVelocityMetresPerSecond() {
+    return ((rightDriveA.getSelectedSensorVelocity() +
+            rightDriveB.getSelectedSensorVelocity()) /2 * Config.kRatioMotorToWheel / 10 ); //+ 
+           // rightDriveC.getSelectedSensorVelocity()) / 3 * Config.kRatioMotorToWheel); //comment for pegasus config
+  }
+
+  /**
+   * 
+   * @return left encoder velocity in metres per second (m/s), averaged from all three falcons
+   */
+  public double getLeftDriveEncodersVelocityMetresPerSecond() {
+    return ((leftDriveA.getSelectedSensorVelocity() +
+            leftDriveB.getSelectedSensorVelocity()) /2 * Config.kRatioMotorToWheel / 10 ); //+ 
+           // leftDriveC.getSelectedSensorVelocity()) / 3 * Config.kRatioMotorToWheel); //comment for pegasus config
   }
 
   /**
@@ -196,6 +225,31 @@ public class Drive extends SubsystemBase{
    */
   public boolean getBrakes() {
     return brakeState; //locally updated variable to track brake state
+  }
+
+  public void updateOdometry() {
+    driveOdometry.update(imu.getRotation2d(), getRightDriveEncodersDistanceMetres(), getLeftDriveEncodersDistanceMetres());
+  }
+ 
+  /**
+   * @return DifferentialDriveWheelSpeeds wheel speed object
+   */
+  public <Supplier>DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(getLeftDriveEncodersVelocityMetresPerSecond(), getRightDriveEncodersVelocityMetresPerSecond());
+  }
+
+  public static DifferentialDriveKinematics getDriveKinematics() {
+    return new DifferentialDriveKinematics(Config.kTrackwidthMeters);
+  }
+
+  public Pose2d getPose() {
+    return driveOdometry.getPoseMeters();
+  }
+
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    leftDrive.setVoltage(leftVolts);
+    rightDrive.setVoltage(rightVolts);
+    driveMotors.feed();
   }
 
 }
