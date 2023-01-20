@@ -23,6 +23,7 @@ public class VerticalExtension extends TrapezoidProfileSubsystem {
 
     private final WPI_TalonFX verticalExtensionMotor = new WPI_TalonFX(Constants.kVerticalElevatorCanId);
     private final CANCoder verticalExtensionEncoder = new CANCoder(Constants.kVerticalElevatorEncoderCanId);
+    private double armGoal = 0;
 
     //this subsystem uses a combination of a feedfoward and feedback control.
     //this gives us the advantage of better profiling from feedfoward and better precision from feedback.
@@ -74,6 +75,7 @@ public class VerticalExtension extends TrapezoidProfileSubsystem {
    * @return when arm is at desired position
    */
   public Command setArmGoalCommand(double kArmOffsetRads) {
+    armGoal = kArmOffsetRads;
     return Commands.runOnce(() -> setGoal(kArmOffsetRads), this);
   }
 
@@ -81,10 +83,25 @@ public class VerticalExtension extends TrapezoidProfileSubsystem {
    * Method to calculate the desired porition of the motor based off a target x and y position.
    * @param x desired x position
    * @param y desired y position
-   * @return the desired setpoint for the extension
+   * @return the desired setpoint for the extension in encoder units
    */
   public static double calculateVerticalExtensionGoal(double x, double y) {
-    return x * Math.cos(180 - Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight)) - y * Math.sin(180 - Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight));
+    return x * Math.cos(180 - Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight)) - y * Math.sin(180 - Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight)) * Config.kVerticalExtensionMetresPerRotation;
+  }
+
+  /**
+   * 
+   * @return true if arm is within defined position tollerence.
+   */
+  public boolean getArmAtPosition() {
+    if(getArmPosition() <= armGoal + Config.kVerticalExtensionPositionTollerenceMetres && getArmPosition() >= armGoal - Config.kVerticalExtensionPositionTollerenceMetres) {
+      return true;
+    }
+    return false;
+  }
+
+  public double getArmPosition() {
+    return verticalExtensionEncoder.getPosition() / Config.kVerticalExtensionEncoderPPR * Config.kVerticalExtensionMetresPerRotation;
   }
 
 }

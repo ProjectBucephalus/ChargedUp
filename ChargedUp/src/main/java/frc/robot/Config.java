@@ -1,5 +1,7 @@
 package frc.robot;
 
+import frc.robot.Subsystems.Wrist.WristPosition;
+
 public class Config {
 
     /**
@@ -32,6 +34,8 @@ public class Config {
     public static final double kHorizontalExtensionMaxVelocity = 0;
     public static final double kHorizontalExtensionMaxAcceleration = 0;
     public static final double kHorizontalExtensionEncoderPPR = 4096; //CANCoder, falcon is 2048 EPR
+    public static final double kHorizontalExtensionMetresPerRotation = 0.2;
+    public static final double kHorizontalExtensionPositionTollerenceMetres = 0.1;
     public static final double kHorizontalExtensionNeutralPosition = 0;
     public static final double kHorizontalExtensionEncoderOffset = 0;
 
@@ -43,11 +47,40 @@ public class Config {
     public static final double kVerticalExtensionMaxVelocity = 0;
     public static final double kVerticalExtensionMaxAcceleration = 0;
     public static final double kVerticalExtensionEncoderPPR = 4096; //CANCoder, falcon is 2048 EPR
+    public static final double kVerticalExtensionMetresPerRotation = 0.2;
+    public static final double kVerticalExtensionPositionTollerenceMetres = 0.1;
+
     public static final double kVerticalExtensionNeutralPosition = 0;
     public static final double kVerticalExtensionEncoderOffset = 0;
 
     public static final int kWristFowardPortId = 0;
     public static final int kWristReversePortId = 1;
+
+    /**
+     * Constants for arm positions for different elements of gameplay
+     * ALL MEASUREMENTS IN METRES!!!
+     */
+
+     public static final double kArmHomePosX = 0;
+     public static final double kArmHomePosY = 0;
+     public static final WristPosition kArmHomePosWrist = WristPosition.LOWERED;
+     
+     public static final double kArmLowPosX = 0.1;
+     public static final double kArmLowPosY = 0.5;
+     public static final WristPosition kArmLowPosWrist = WristPosition.LOWERED;
+
+    
+     public static final double kArmMedPosX = 0.5;
+     public static final double kArmMedPosY = 0.7;
+     public static final WristPosition kArmMedPosWrist = WristPosition.RAISED;
+     
+     public static final double kArmHighPosX = 1;
+     public static final double kArmHighPosY = 1.2;
+     public static final WristPosition kArmHighPosWrist = WristPosition.RAISED;
+     
+     public static final double kArmShelfPosX = 1;
+     public static final double kArmShelfPosY = 1.5;
+     public static final WristPosition kArmShelfPosWrist = WristPosition.RAISED;
 
     /**
      * Elevator constants
