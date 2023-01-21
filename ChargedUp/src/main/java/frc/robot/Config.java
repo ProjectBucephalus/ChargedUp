@@ -90,6 +90,27 @@ public class Config {
     public static final double kVerticalExtensionPerpendicularHeight = 40*0.0254;
     public static final double kElevatorOffestFromFront = 0;
     public static final double kElevatorVerticalExtensionLegnth = Math.sqrt(Math.pow(kVerticalExtensionPerpendicularHeight, 2) + Math.pow(kVerticalExtensionPerpendicularHeight, 2));
+
+    /**
+     * Endgame wing mech constants
+     */
+    public static final double kWingKS = 0;
+    public static final double kWingKV = 0;
+    public static final double kWingKG = 0;
+    public static final double kWingKA = 0;
+    public static final double kWingKP = 0;
+    public static final double kWingMaxVelocity = 0;
+    public static final double kWingMaxAcceleration = 0;
+    public static final double kWingEncoderPPR = 2048; //falcon is 2048 EPR
+    public static final double kWingDegreesPerRotation = 0.2;
+    public static final double kWingPositionTollerenceDegrees = 0.1;
+
+    public static final double kWingNeutralPosition = 0;
+    public static final double kWingEncoderOffset = 0;
+
+    public static final double kWingDeployedPosition = 0; //Measurments for positions in degrees
+    public static final double kWingRetractedPosition = 90;
+    public static final double kWingLiftedPositon = 20;
    
     /**
      * Pneumatics constants
