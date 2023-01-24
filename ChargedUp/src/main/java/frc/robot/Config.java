@@ -39,15 +39,16 @@ public class Config {
     public static final double kHorizontalExtensionNeutralPosition = 0;
     public static final double kHorizontalExtensionEncoderOffset = 0;
 
-    public static final double kVerticalExtensionKS = 0;
-    public static final double kVerticalExtensionKV = 0;
-    public static final double kVerticalExtensionKG = 0;
-    public static final double kVerticalExtensionKA = 0;
-    public static final double kVerticalExtensionKP = 0;
-    public static final double kVerticalExtensionMaxVelocity = 0;
-    public static final double kVerticalExtensionMaxAcceleration = 0;
-    public static final double kVerticalExtensionEncoderPPR = 4096; //CANCoder, falcon is 2048 EPR
-    public static final double kVerticalExtensionMetresPerRotation = 0.2;
+    public static final double kVerticalExtensionKS = -0.0029118;
+    public static final double kVerticalExtensionKV = 25.116;
+    public static final double kVerticalExtensionKG = 0.0013625;
+    public static final double kVerticalExtensionKA = 0.60171;
+    public static final double kVerticalExtensionKP = 0.3;
+    public static final double kVerticalExtensionKD = 0;
+    public static final double kVerticalExtensionMaxVelocity = 2;
+    public static final double kVerticalExtensionMaxAcceleration = 1;
+    public static final double kVerticalExtensionEncoderPPR = 2048; //CANCoder, falcon is 2048 EPR
+    public static final double kVerticalExtensionMetresPerRotation = 0.1196;
     public static final double kVerticalExtensionPositionTollerenceMetres = 0.1;
 
     public static final double kVerticalExtensionNeutralPosition = 0;

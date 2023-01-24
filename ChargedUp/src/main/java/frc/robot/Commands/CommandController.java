@@ -4,16 +4,29 @@
 
 package frc.robot.Commands;
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Robot;
+import frc.robot.Commands.Arm.ArmHighPosCommand;
+import frc.robot.Commands.Arm.ArmHomePosCommand;
+import frc.robot.Commands.Arm.ArmLowPosCommand;
 import frc.robot.Subsystems.Drive;
+import frc.robot.Subsystems.HorizontalExtension;
+import frc.robot.Subsystems.VerticalExtension;
+import frc.robot.Subsystems.Wrist;
 
 /** Add your docs here. */
 public class CommandController {
 
     private final Drive m_drive = new Drive();
+    private final Wrist m_wrist = new Wrist();
+    private final HorizontalExtension m_horizontal = new HorizontalExtension();
+    private final VerticalExtension m_vertical = new VerticalExtension();
     CommandJoystick m_driverJoystick = new CommandJoystick(0); //declare joystick on ds port 0 
     CommandXboxController m_driverHID = new CommandXboxController(1); //declare xbox on ds port 1
+
 
 
     /**
@@ -30,6 +43,16 @@ public class CommandController {
     m_drive.setDefaultCommand(
         m_drive.arcadeDriveCommand(
             () -> m_driverJoystick.getX(), () -> m_driverJoystick.getY()));
+    
+    m_driverHID.y()
+      .onTrue(
+        new ArmHighPosCommand(m_wrist, m_vertical, m_horizontal)
+      );
+    m_driverHID.a()
+      .onTrue(
+        new ArmHomePosCommand(m_wrist, m_vertical, m_horizontal)
+      );
+
 
   }
 

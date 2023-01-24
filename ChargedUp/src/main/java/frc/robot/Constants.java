@@ -23,7 +23,7 @@ public class Constants {
     public static final int kRightDriveBCanId = 6; //4
     public static final int kRightDriveCCanId = 41; //6
 
-    public static final int kVerticalElevatorCanId = 10;
+    public static final int kVerticalElevatorCanId = 58;//10;
     public static final int kHorizontalElevatorCanId = 9; 
     public static final int kWristMotorCanId = 11;
     public static final int kVerticalElevatorEncoderCanId = 21;

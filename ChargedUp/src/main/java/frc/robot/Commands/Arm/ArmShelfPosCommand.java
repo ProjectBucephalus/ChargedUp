@@ -31,7 +31,7 @@ public class ArmShelfPosCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_verticalExtension.setArmGoalCommand(VerticalExtension.calculateVerticalExtensionGoal(Config.kArmShelfPosX, Config.kArmShelfPosY));
+    //m_verticalExtension.setArmGoalCommand(VerticalExtension.calculateVerticalExtensionGoal(Config.kArmShelfPosX, Config.kArmShelfPosY));
     m_horizontalExtension.setArmGoalCommand(HorizontalExtension.calculateHorizontalExtensionGoal(Config.kArmShelfPosX, Config.kArmShelfPosY));
 
   }

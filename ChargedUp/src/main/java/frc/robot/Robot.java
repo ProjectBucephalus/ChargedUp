@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.CommandController;
 import frc.robot.Subsystems.Drive;
+import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Utilities.Pneumatics;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -18,6 +19,7 @@ import frc.robot.Utilities.Pneumatics;
 public class Robot extends TimedRobot {
 
   private Pneumatics m_pneumatics = Pneumatics.getInstance();
+  private static VerticalExtension m_verticalExtension = new VerticalExtension();
 
   private final CommandController m_robot = new CommandController();
 
@@ -74,12 +76,17 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     Drive.setBrakes(true); //run brakes
     m_pneumatics.setPneumatics(true);
+    m_verticalExtension.initSystem();
+    m_verticalExtension.getMeasurement();
 
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    System.out.println(m_verticalExtension.getMeasurement());
+
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override

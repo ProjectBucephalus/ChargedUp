@@ -31,7 +31,9 @@ public class ArmHomePosCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_verticalExtension.setArmGoalCommand(VerticalExtension.calculateVerticalExtensionGoal(Config.kArmHomePosX, Config.kArmHomePosY));
+    //m_verticalExtension.setArmGoalCommand(VerticalExtension.calculateVerticalExtensionGoal(Config.kArmHomePosX, Config.kArmHomePosY));
+    m_verticalExtension.setPosition(0);
+
     m_horizontalExtension.setArmGoalCommand(HorizontalExtension.calculateHorizontalExtensionGoal(Config.kArmHomePosX, Config.kArmHomePosY));
 
   }
@@ -43,6 +45,6 @@ public class ArmHomePosCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

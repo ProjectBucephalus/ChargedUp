@@ -31,7 +31,8 @@ public class ArmLowPosCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_verticalExtension.setArmGoalCommand(VerticalExtension.calculateVerticalExtensionGoal(Config.kArmLowPosX, Config.kArmLowPosY));
+    //m_verticalExtension.setGoal(1);
+    //m_verticalExtension.enable();
     m_horizontalExtension.setArmGoalCommand(HorizontalExtension.calculateHorizontalExtensionGoal(Config.kArmLowPosX, Config.kArmLowPosY));
 
   }

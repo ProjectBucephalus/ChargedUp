@@ -21,6 +21,8 @@ import frc.robot.Constants;
 /** Add your docs here. */
 public class HorizontalExtension extends TrapezoidProfileSubsystem {
 
+
+    private double armGoal = 0;
     private final WPI_TalonFX horizontalExtensionMotor = new WPI_TalonFX(Constants.kHorizontalElevatorCanId);
     private final CANCoder horizontalExtensionEncoder = new CANCoder(Constants.kHorizontalElevatorEncoderCanId); //we want an absolute encoder for reliabality
     private final ElevatorFeedforward m_feedforward = new ElevatorFeedforward( //define feedFoward control for the elevator
@@ -71,6 +73,7 @@ public class HorizontalExtension extends TrapezoidProfileSubsystem {
    * @return when arm is at desired position
    */
   public Command setArmGoalCommand(double kArmOffsetRads) {
+    armGoal = kArmOffsetRads;
     return Commands.runOnce(() -> setGoal(kArmOffsetRads), this);
   }
 
@@ -82,6 +85,21 @@ public class HorizontalExtension extends TrapezoidProfileSubsystem {
    */
   public static double calculateHorizontalExtensionGoal(double x, double y) {
     return Config.kVerticalExtensionPerpendicularHeight * Math.cos(Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight));
+  }
+
+  /**
+   * 
+   * @return true if arm is within defined position tollerence.
+   */
+  public boolean getArmAtPosition() {
+    if(getArmPosition() <= armGoal + Config.kHorizontalExtensionPositionTollerenceMetres && getArmPosition() >= armGoal - Config.kHorizontalExtensionPositionTollerenceMetres) {
+      return true;
+    }
+    return false;
+  }
+
+  public double getArmPosition() {
+    return horizontalExtensionEncoder.getPosition() / Config.kHorizontalExtensionEncoderPPR * Config.kHorizontalExtensionMetresPerRotation;
   }
 
 }
