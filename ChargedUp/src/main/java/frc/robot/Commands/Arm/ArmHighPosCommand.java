@@ -32,12 +32,8 @@ public class ArmHighPosCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_verticalExtension.setPosition(2);
-    //m_verticalExtension.useOutput(0, null);
-    //m_verticalExtension.setGoal(200);
-    //m_verticalExtension.enable();
-    System.out.println(m_verticalExtension.getArmAtPosition());
-
+    m_verticalExtension.setPosition(Config.kArmHighPosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmHighPosX, Config.kArmHighPosY));
+    m_horizontalExtension.setPosition(Config.kArmHighPosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmHighPosX, Config.kArmHighPosY));
 
   }
 
@@ -48,7 +44,6 @@ public class ArmHighPosCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    System.out.println(m_verticalExtension.getArmAtPosition());
-    return true;//(m_verticalExtension.getArmAtPosition());
+    return m_verticalExtension.getArmAtPosition() && m_horizontalExtension.getArmAtPosition();
   }
 }

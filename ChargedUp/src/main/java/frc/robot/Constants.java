@@ -30,6 +30,9 @@ public class Constants {
     public static final int kHorizontalElevatorEncoderCanId = 22; 
     public static final int kWristEncoderCanId = 23;
 
+    public static final int kPneumaticsModuleCanId = 50;
+
+
 
 
     

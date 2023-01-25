@@ -31,10 +31,8 @@ public class ArmLowPosCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //m_verticalExtension.setGoal(1);
-    //m_verticalExtension.enable();
-    m_horizontalExtension.setArmGoalCommand(HorizontalExtension.calculateHorizontalExtensionGoal(Config.kArmLowPosX, Config.kArmLowPosY));
-
+    m_verticalExtension.setPosition(Config.kArmLowPosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmLowPosX, Config.kArmLowPosY));
+    m_horizontalExtension.setPosition(Config.kArmHighPosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmLowPosX, Config.kArmLowPosY));
   }
 
   // Called once the command ends or is interrupted.
@@ -44,6 +42,6 @@ public class ArmLowPosCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_verticalExtension.getArmAtPosition() && m_horizontalExtension.getArmAtPosition();
   }
 }

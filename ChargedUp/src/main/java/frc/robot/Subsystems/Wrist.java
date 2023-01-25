@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Config;
+import frc.robot.Constants;
 
 /** Add your docs here. */
 public class Wrist extends SubsystemBase {
@@ -18,7 +19,7 @@ public class Wrist extends SubsystemBase {
     LOWERED,
   }
 
-  private DoubleSolenoid wristSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, Config.kWristFowardPortId, Config.kWristReversePortId);
+  private DoubleSolenoid wristSolenoid = new DoubleSolenoid(Constants.kPneumaticsModuleCanId, PneumaticsModuleType.REVPH, Config.kWristFowardPortId, Config.kWristReversePortId);
   /** Create a new ArmSubsystem. */
   public Wrist() {
     

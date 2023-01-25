@@ -31,6 +31,7 @@ public class Config {
     public static final double kHorizontalExtensionKG = 0;
     public static final double kHorizontalExtensionKA = 0;
     public static final double kHorizontalExtensionKP = 0;
+    public static final double kHorizontalExtensionKD = 0;
     public static final double kHorizontalExtensionMaxVelocity = 0;
     public static final double kHorizontalExtensionMaxAcceleration = 0;
     public static final double kHorizontalExtensionEncoderPPR = 4096; //CANCoder, falcon is 2048 EPR
@@ -72,11 +73,11 @@ public class Config {
 
     
      public static final double kArmMedPosX = 0.5;
-     public static final double kArmMedPosY = 0.7;
+     public static final double kArmMedPosY = 1;
      public static final WristPosition kArmMedPosWrist = WristPosition.RAISED;
      
-     public static final double kArmHighPosX = 1;
-     public static final double kArmHighPosY = 1.2;
+     public static final double kArmHighPosX = 1.2;
+     public static final double kArmHighPosY = 2;
      public static final WristPosition kArmHighPosWrist = WristPosition.RAISED;
      
      public static final double kArmShelfPosX = 1;
@@ -96,7 +97,6 @@ public class Config {
      * Pneumatics constants
      */
 
-    public static final int kPneumaticsModuleCanId = 51;
     public static final double kPneumaticsMinPressure = 110; //The pressure the pneumatics will start charging at
     public static final double kPneumaticsMaxPressure = 120; //The pressure the pneumatics will stop charging at
     public static final double kCompressorRunCurrent = 10;//Ampres. Used for error checking //TODO

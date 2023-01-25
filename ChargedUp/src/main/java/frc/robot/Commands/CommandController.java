@@ -4,7 +4,6 @@
 
 package frc.robot.Commands;
 
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -12,6 +11,7 @@ import frc.robot.Robot;
 import frc.robot.Commands.Arm.ArmHighPosCommand;
 import frc.robot.Commands.Arm.ArmHomePosCommand;
 import frc.robot.Commands.Arm.ArmLowPosCommand;
+import frc.robot.Commands.Arm.ArmMediumPosCommand;
 import frc.robot.Subsystems.Drive;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
@@ -51,6 +51,16 @@ public class CommandController {
     m_driverHID.a()
       .onTrue(
         new ArmHomePosCommand(m_wrist, m_vertical, m_horizontal)
+      );
+    
+      m_driverHID.x()
+      .onTrue(
+        new ArmLowPosCommand(m_wrist, m_vertical, m_horizontal)
+      );
+
+      m_driverHID.b()
+      .onTrue(
+        new ArmMediumPosCommand(m_wrist, m_vertical, m_horizontal)
       );
 
 
