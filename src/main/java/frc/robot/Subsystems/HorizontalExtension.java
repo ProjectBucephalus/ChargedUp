@@ -11,33 +11,27 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Config;
 import frc.robot.Constants;
 
 /** Add your docs here. */
-public class HorizontalExtension extends TrapezoidProfileSubsystem {
+public class HorizontalExtension extends SubsystemBase {
 
-    private final WPI_TalonFX horizontalExtensionMotor = new WPI_TalonFX(Constants.kHorizontalElevatorCanId);
-    private final CANCoder horizontalExtensionEncoder = new CANCoder(Constants.kHorizontalElevatorEncoderCanId); //we want an absolute encoder for reliabality
-    private final ElevatorFeedforward m_feedforward = new ElevatorFeedforward( //define feedFoward control for the elevator
+    private final static WPI_TalonFX horizontalExtensionMotor = new WPI_TalonFX(Constants.kHorizontalElevatorCanId);
+    private final CANCoder horizontalExtensionEncoder = new CANCoder(Constants.kHorizontalElevatorEncoderCanId);
+    private double armGoal = 0;
+
+    //this subsystem uses a combination of a feedfoward and feedback control.
+    //this gives us the advantage of better profiling from feedfoward and better precision from feedback.
+    private final ElevatorFeedforward m_feedforward = new ElevatorFeedforward(
         Config.kHorizontalExtensionKS, Config.kHorizontalExtensionKG, //kS is the static friction constant, kG is the gravity constant
         Config.kHorizontalExtensionKV, Config.kHorizontalExtensionKA //kV is the velocity constant, kA is the acceleration constant
       );
 
-      //this subsystem uses a combination of a feedfoward and feedback control.
-      //this gives us the advantage of better profiling from feedfoward and better precision from feedback.
-
   /** Create a new ArmSubsystem. */
   public HorizontalExtension() {
-    //define a new trapezoid profile using wpi libraries. Configure the motor.
-    super(
-        new TrapezoidProfile.Constraints(
-            Config.kMaxSpeedMetersPerSecond, Config.kMaxAccelerationMetersPerSecondSquared),
-        Config.kHorizontalExtensionEncoderOffset);
+
     initSystem();
   }
 
@@ -47,41 +41,67 @@ public class HorizontalExtension extends TrapezoidProfileSubsystem {
   public void initSystem() {
     horizontalExtensionMotor.configFactoryDefault(); //reset and configure the motor so we know it is correctly configured
     horizontalExtensionMotor.config_kP(0, Config.kHorizontalExtensionKP);
-    horizontalExtensionMotor.configRemoteFeedbackFilter(horizontalExtensionEncoder, 0);
-    horizontalExtensionMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
+    horizontalExtensionMotor.config_kD(0, Config.kHorizontalExtensionKD);
+    horizontalExtensionMotor.config_kF(0, m_feedforward.calculate(Config.kHorizontalExtensionMaxVelocity) / Config.kHorizontalExtensionEncoderPPR);
+    horizontalExtensionMotor.config_kP(1, Config.kHorizontalExtensionKP);
+    horizontalExtensionMotor.config_kD(1, Config.kHorizontalExtensionKD);
+    horizontalExtensionMotor.config_kF(1, m_feedforward.calculate(Config.kHorizontalExtensionMaxVelocity) / Config.kHorizontalExtensionEncoderPPR);
+    horizontalExtensionMotor.configMotionAcceleration(Config.kHorizontalExtensionMaxAcceleration / (Config.kHorizontalExtensionMetresPerRotation / Config.kHorizontalExtensionEncoderPPR));
+    horizontalExtensionMotor.configMotionCruiseVelocity(Config.kHorizontalExtensionMaxVelocity / (Config.kHorizontalExtensionMetresPerRotation / Config.kHorizontalExtensionEncoderPPR));
+
+    horizontalExtensionMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 0);
+    //horizontalExtensionMotor.configRemoteFeedbackFilter(horizontalExtensionEncoder, 0);
+    //horizontalExtensionMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
 
     horizontalExtensionEncoder.configFactoryDefault(); //reset and configure the encoder
     horizontalExtensionEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
+    resetSensors();
   }
 
-
-  @Override
-  public void useState(TrapezoidProfile.State setpoint) {
-    // Calculate the feedforward from the sepoint
-    double feedforward = m_feedforward.calculate(setpoint.position, setpoint.velocity);
-
-    // Add the feedforward to the PID output to get the motor output
-    horizontalExtensionMotor.config_kF(0, feedforward);
-    horizontalExtensionMotor.set(ControlMode.Position, setpoint.position);  
-  }
-
-  /**
-   * Run arm to position
-   * @param kArmOffsetRads
-   * @return when arm is at desired position
-   */
-  public Command setArmGoalCommand(double kArmOffsetRads) {
-    return Commands.runOnce(() -> setGoal(kArmOffsetRads), this);
-  }
-
-  /**
+   /**
    * Method to calculate the desired porition of the motor based off a target x and y position.
    * @param x desired x position
    * @param y desired y position
-   * @return the desired setpoint for the extension
+   * @return the desired setpoint for the extension in encoder units
    */
-  public static double calculateHorizontalExtensionGoal(double x, double y) {
-    return Config.kVerticalExtensionPerpendicularHeight * Math.cos(Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight));
+  public double calculateHorizontalExtensionGoal(double x, double y) {
+    return x * Math.cos(180 - Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight)) - y * Math.sin(180 - Math.atan(Config.kElevatorBaseWidth / Config.kVerticalExtensionPerpendicularHeight)) * Config.kHorizontalExtensionMetresPerRotation;
+  }
+
+  /**
+   * 
+   * @return true if arm is within defined position tollerence.
+   */
+  public boolean getArmAtPosition() {
+    if(getMeasurement() <= armGoal + Config.kHorizontalExtensionPositionTollerenceMetres && getMeasurement() >= armGoal - Config.kHorizontalExtensionPositionTollerenceMetres) {
+      return true;
+    }
+    return false;
+  }
+
+
+  /**
+   * Get position of arm
+   * @return horizontal extension position in metres
+   */
+  public double getMeasurement() {
+    return horizontalExtensionMotor.getSelectedSensorPosition() * (Config.kHorizontalExtensionMetresPerRotation / Config.kHorizontalExtensionEncoderPPR);
+  }
+
+  /**
+   * Reset all sensors
+   */
+  public static void resetSensors() {
+    horizontalExtensionMotor.setSelectedSensorPosition(0);
+  }
+
+  /**
+   * Move arm to desired position using motionMagic
+   * @param position in metres
+   */
+  public void setPosition(double position) {
+    armGoal = position;
+    horizontalExtensionMotor.set(ControlMode.MotionMagic, position / (Config.kHorizontalExtensionMetresPerRotation / Config.kHorizontalExtensionEncoderPPR));
   }
 
 }

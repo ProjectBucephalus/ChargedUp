@@ -10,12 +10,12 @@ import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
 
-public class ArmHomePosCommand extends CommandBase {
+public class ArmMediumPosCommand extends CommandBase {
   private final Wrist m_wrist;
   private final HorizontalExtension m_horizontalExtension;
   private final VerticalExtension m_verticalExtension;
-  /** Creates a new ArmHomePosCommand. */
-  public ArmHomePosCommand(Wrist wristSubsystem, VerticalExtension verticalExtensionSubsystem, HorizontalExtension horizontalExtensionSubsystem) {
+  /** Creates a new ArmsumPosCommand. */
+  public ArmMediumPosCommand(Wrist wristSubsystem, VerticalExtension verticalExtensionSubsystem, HorizontalExtension horizontalExtensionSubsystem) {
     m_wrist = wristSubsystem;
     m_verticalExtension = verticalExtensionSubsystem;
     m_horizontalExtension = horizontalExtensionSubsystem;
@@ -25,14 +25,15 @@ public class ArmHomePosCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_wrist.setWristPosition(Config.kArmHomePosWrist);
+    m_wrist.setWristPosition(Config.kArmMedPosWrist);
+    System.out.println("hellow");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_verticalExtension.setPosition(Config.kArmHomePosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmHomePosX, Config.kArmHomePosY));
-    m_horizontalExtension.setPosition(Config.kArmHomePosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmHomePosX, Config.kArmHomePosY));
+    m_verticalExtension.setPosition(Config.kArmMedPosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmMedPosX, Config.kArmMedPosY));
+    m_horizontalExtension.setPosition(Config.kArmMedPosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmMedPosX, Config.kArmMedPosY));
 
   }
 

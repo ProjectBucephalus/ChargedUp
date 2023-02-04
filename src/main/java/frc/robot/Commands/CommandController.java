@@ -11,21 +11,28 @@ import frc.robot.Commands.Claw.OpenClaw;
 import frc.robot.Commands.Intake.RunIntake;
 import frc.robot.Commands.Intake.StopIntake;
 import frc.robot.Subsystems.Claw;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Robot;
+import frc.robot.Commands.Arm.ArmHighPosCommand;
+import frc.robot.Commands.Arm.ArmHomePosCommand;
+import frc.robot.Commands.Arm.ArmLowPosCommand;
+import frc.robot.Commands.Arm.ArmMediumPosCommand;
 import frc.robot.Subsystems.Drive;
-import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.Intake;
+import frc.robot.Subsystems.VerticalExtension;
+import frc.robot.Subsystems.Wrist;
 
 /** Add your docs here. */
 public class CommandController {
 
     private final Drive m_drive = new Drive();
-    private final Claw m_claw = new Claw();
-    private final Intake m_intake = new Intake();
-    private final HorizontalExtension m_horizontalEtension = new HorizontalExtension();
-    private final VerticalExtension m_verticalExtension = new VerticalExtension();
+    private final Wrist m_wrist = new Wrist();
+    private final HorizontalExtension m_horizontal = new HorizontalExtension();
+    private final VerticalExtension m_vertical = new VerticalExtension();
     CommandJoystick m_driverJoystick = new CommandJoystick(0); //declare joystick on ds port 0 
     CommandXboxController m_driverHID = new CommandXboxController(1); //declare xbox on ds port 1
+
 
 
     /**
@@ -43,12 +50,26 @@ public class CommandController {
         m_drive.arcadeDriveCommand(
             () -> m_driverJoystick.getX(), () -> m_driverJoystick.getY()));
     
-    m_driverHID.a().onTrue(m_horizontalEtension.setArmGoalCommand(HorizontalExtension.calculateHorizontalExtensionGoal(1, 1)));
-    m_driverHID.a().onTrue(m_verticalExtension.setArmGoalCommand(VerticalExtension.calculateVerticalExtensionGoal(1, 1)));
-    m_driverJoystick.trigger().onTrue(new OpenClaw(m_claw));
-    m_driverJoystick.trigger().onFalse(new CloseClaw(m_claw));
-    m_driverJoystick.button(2).onTrue(new RunIntake(m_intake));
-    m_driverJoystick.button(2).onFalse(new StopIntake(m_intake));
+    m_driverHID.y()
+      .onTrue(
+        new ArmHighPosCommand(m_wrist, m_vertical, m_horizontal)
+      );
+    m_driverHID.a()
+      .onTrue(
+        new ArmHomePosCommand(m_wrist, m_vertical, m_horizontal)
+      );
+    
+      m_driverHID.x()
+      .onTrue(
+        new ArmLowPosCommand(m_wrist, m_vertical, m_horizontal)
+      );
+
+      m_driverHID.b()
+      .onTrue(
+        new ArmMediumPosCommand(m_wrist, m_vertical, m_horizontal)
+      );
+
+
   }
 
   

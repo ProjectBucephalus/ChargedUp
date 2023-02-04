@@ -8,10 +8,11 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Config;
+import frc.robot.Constants;
 
 public class Pneumatics extends SubsystemBase {
 
-  private Compressor comp = new Compressor(PneumaticsModuleType.REVPH);
+  private Compressor comp = new Compressor(Constants.kPneumaticsModuleCanId, PneumaticsModuleType.REVPH);
   private boolean compEnabled = false; //we can change this when we enable and disable the compressor. This means we can keep track of faults!
   private byte compCheckIteration = 0; //iterated once per cycle of suspected compressor fault. 
   private static Pneumatics m_instance;

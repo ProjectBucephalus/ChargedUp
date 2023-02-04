@@ -31,6 +31,7 @@ public class Config {
     public static final double kHorizontalExtensionKG = 0;
     public static final double kHorizontalExtensionKA = 0;
     public static final double kHorizontalExtensionKP = 0;
+    public static final double kHorizontalExtensionKD = 0;
     public static final double kHorizontalExtensionMaxVelocity = 0;
     public static final double kHorizontalExtensionMaxAcceleration = 0;
     public static final double kHorizontalExtensionEncoderPPR = 4096; //CANCoder, falcon is 2048 EPR
@@ -39,15 +40,16 @@ public class Config {
     public static final double kHorizontalExtensionNeutralPosition = 0;
     public static final double kHorizontalExtensionEncoderOffset = 0;
 
-    public static final double kVerticalExtensionKS = 0;
-    public static final double kVerticalExtensionKV = 0;
-    public static final double kVerticalExtensionKG = 0;
-    public static final double kVerticalExtensionKA = 0;
-    public static final double kVerticalExtensionKP = 0;
-    public static final double kVerticalExtensionMaxVelocity = 0;
-    public static final double kVerticalExtensionMaxAcceleration = 0;
-    public static final double kVerticalExtensionEncoderPPR = 4096; //CANCoder, falcon is 2048 EPR
-    public static final double kVerticalExtensionMetresPerRotation = 0.2;
+    public static final double kVerticalExtensionKS = -0.0029118;
+    public static final double kVerticalExtensionKV = 25.116;
+    public static final double kVerticalExtensionKG = 0.0013625;
+    public static final double kVerticalExtensionKA = 0.60171;
+    public static final double kVerticalExtensionKP = 0.3;
+    public static final double kVerticalExtensionKD = 0;
+    public static final double kVerticalExtensionMaxVelocity = 2;
+    public static final double kVerticalExtensionMaxAcceleration = 1;
+    public static final double kVerticalExtensionEncoderPPR = 2048; //CANCoder, falcon is 2048 EPR
+    public static final double kVerticalExtensionMetresPerRotation = 0.1196;
     public static final double kVerticalExtensionPositionTollerenceMetres = 0.1;
 
     public static final double kVerticalExtensionNeutralPosition = 0;
@@ -71,11 +73,11 @@ public class Config {
 
     
      public static final double kArmMedPosX = 0.5;
-     public static final double kArmMedPosY = 0.7;
+     public static final double kArmMedPosY = 1;
      public static final WristPosition kArmMedPosWrist = WristPosition.RAISED;
      
-     public static final double kArmHighPosX = 1;
-     public static final double kArmHighPosY = 1.2;
+     public static final double kArmHighPosX = 1.2;
+     public static final double kArmHighPosY = 2;
      public static final WristPosition kArmHighPosWrist = WristPosition.RAISED;
      
      public static final double kArmShelfPosX = 1;
