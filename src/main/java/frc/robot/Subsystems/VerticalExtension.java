@@ -6,6 +6,9 @@ package frc.robot.Subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
@@ -32,7 +35,6 @@ public class VerticalExtension extends SubsystemBase {
   /** Create a new ArmSubsystem. */
   public VerticalExtension() {
 
-    initSystem();
   }
 
   /**
@@ -48,7 +50,10 @@ public class VerticalExtension extends SubsystemBase {
     verticalExtensionMotor.config_kF(1, m_feedforward.calculate(Config.kVerticalExtensionMaxVelocity) / Config.kVerticalExtensionEncoderPPR);
     verticalExtensionMotor.configMotionAcceleration(Config.kVerticalExtensionMaxAcceleration / (Config.kVerticalExtensionMetresPerRotation / Config.kVerticalExtensionEncoderPPR));
     verticalExtensionMotor.configMotionCruiseVelocity(Config.kVerticalExtensionMaxVelocity / (Config.kVerticalExtensionMetresPerRotation / Config.kVerticalExtensionEncoderPPR));
-
+    verticalExtensionMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+    verticalExtensionMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+    verticalExtensionMotor.setNeutralMode(NeutralMode.Brake);
+    
     verticalExtensionMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 0);
     //verticalExtensionMotor.configRemoteFeedbackFilter(verticalExtensionEncoder, 0);
     //verticalExtensionMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
@@ -84,9 +89,9 @@ public class VerticalExtension extends SubsystemBase {
    * Get position of arm
    * @return vertical extension position in metres
    */
-  public double getMeasurement() {
-    return verticalExtensionMotor.getSelectedSensorPosition() * (Config.kVerticalExtensionMetresPerRotation / Config.kVerticalExtensionEncoderPPR);
-  }
+  public static double getMeasurement() {
+    return verticalExtensionMotor.getSelectedSensorPosition() / Config.kVerticalExtensionPulsesPerMetre;
+  } 
 
   /**
    * Reset all sensors
@@ -100,8 +105,14 @@ public class VerticalExtension extends SubsystemBase {
    * @param position in metres
    */
   public void setPosition(double position) {
+    // if(position > Config.kVerticalExtensionMaxHeight) { //Check if command is possible or not
+    //   position = Config.kVerticalExtensionMaxHeight;
+    // } else if(position <= 0) {
+    //   position = 0;
+    // }
+    System.out.println("SP " + position * Config.kVerticalExtensionPulsesPerMetre);
     armGoal = position;
-    verticalExtensionMotor.set(ControlMode.MotionMagic, position / (Config.kVerticalExtensionMetresPerRotation / Config.kVerticalExtensionEncoderPPR));
+    verticalExtensionMotor.set(ControlMode.MotionMagic, position * Config.kVerticalExtensionPulsesPerMetre);
   }
 
 }

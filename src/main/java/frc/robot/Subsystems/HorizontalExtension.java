@@ -32,7 +32,6 @@ public class HorizontalExtension extends SubsystemBase {
   /** Create a new ArmSubsystem. */
   public HorizontalExtension() {
 
-    initSystem();
   }
 
   /**
@@ -49,6 +48,7 @@ public class HorizontalExtension extends SubsystemBase {
     horizontalExtensionMotor.configMotionAcceleration(Config.kHorizontalExtensionMaxAcceleration / (Config.kHorizontalExtensionMetresPerRotation / Config.kHorizontalExtensionEncoderPPR));
     horizontalExtensionMotor.configMotionCruiseVelocity(Config.kHorizontalExtensionMaxVelocity / (Config.kHorizontalExtensionMetresPerRotation / Config.kHorizontalExtensionEncoderPPR));
 
+
     horizontalExtensionMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 0);
     //horizontalExtensionMotor.configRemoteFeedbackFilter(horizontalExtensionEncoder, 0);
     //horizontalExtensionMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
@@ -56,6 +56,7 @@ public class HorizontalExtension extends SubsystemBase {
     horizontalExtensionEncoder.configFactoryDefault(); //reset and configure the encoder
     horizontalExtensionEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
     resetSensors();
+
   }
 
    /**
@@ -84,7 +85,7 @@ public class HorizontalExtension extends SubsystemBase {
    * Get position of arm
    * @return horizontal extension position in metres
    */
-  public double getMeasurement() {
+  public static double getMeasurement() {
     return horizontalExtensionMotor.getSelectedSensorPosition() * (Config.kHorizontalExtensionMetresPerRotation / Config.kHorizontalExtensionEncoderPPR);
   }
 

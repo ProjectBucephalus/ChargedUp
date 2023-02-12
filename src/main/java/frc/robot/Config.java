@@ -7,11 +7,11 @@ public class Config {
     /**
      * Drive characterisation values //TODO
      */
-    public static final double ksVolts = 0.21511; //constant of voltage needed to overcome static friction etc.
-    public static final double kvVoltSecondsPerMeter = 1.1369; //velocity constant
-    public static final double kaVoltSecondsSquaredPerMeter = 0.3275;
+    public static final double ksVolts = 0.22149; //constant of voltage needed to overcome static friction etc.
+    public static final double kvVoltSecondsPerMeter = 1.7353; //velocity constant
+    public static final double kaVoltSecondsSquaredPerMeter = 0.23191;
 
-    public static final double kPDriveVel = 0.54175; //preportional
+    public static final double kPDriveVel = 0.35324; //preportional
 
     public static final double kTrackwidthMeters = 0.762; //distance in metres between the centre of the each set of wheels on the sides
 
@@ -39,18 +39,22 @@ public class Config {
     public static final double kHorizontalExtensionPositionTollerenceMetres = 0.1;
     public static final double kHorizontalExtensionNeutralPosition = 0;
     public static final double kHorizontalExtensionEncoderOffset = 0;
+    public static final double kHorizontalExtensionMaxLength = 1;
 
-    public static final double kVerticalExtensionKS = -0.0029118;
-    public static final double kVerticalExtensionKV = 25.116;
-    public static final double kVerticalExtensionKG = 0.0013625;
-    public static final double kVerticalExtensionKA = 0.60171;
-    public static final double kVerticalExtensionKP = 0.3;
+    public static final double kVerticalExtensionKS = 0.09598;
+    public static final double kVerticalExtensionKV = 24.511;
+    public static final double kVerticalExtensionKG = 0.078549;
+    public static final double kVerticalExtensionKA = 0.91854;
+    public static final double kVerticalExtensionKP = 0.39027;
     public static final double kVerticalExtensionKD = 0;
-    public static final double kVerticalExtensionMaxVelocity = 2;
+    public static final double kVerticalExtensionMaxVelocity = 1.5;
     public static final double kVerticalExtensionMaxAcceleration = 1;
     public static final double kVerticalExtensionEncoderPPR = 2048; //CANCoder, falcon is 2048 EPR
-    public static final double kVerticalExtensionMetresPerRotation = 0.1196;
+    public static final double kVertialExtensionGearRatio = 27/1;
+    public static final double kVerticalExtensionMetresPerRotation = 1.5 * 0.0254 * Math.PI; //0.00118872;
+    public static final double kVerticalExtensionPulsesPerMetre = 836935.385;//(kVertialExtensionGearRatio * kVerticalExtensionEncoderPPR * kVerticalExtensionMetresPerRotation);
     public static final double kVerticalExtensionPositionTollerenceMetres = 0.1;
+    public static final double kVerticalExtensionMaxHeight = 0.65;
 
     public static final double kVerticalExtensionNeutralPosition = 0;
     public static final double kVerticalExtensionEncoderOffset = 0;
@@ -64,7 +68,7 @@ public class Config {
      */
 
      public static final double kArmHomePosX = 0;
-     public static final double kArmHomePosY = 0;
+     public static final double kArmHomePosY = 0.05;
      public static final WristPosition kArmHomePosWrist = WristPosition.LOWERED;
      
      public static final double kArmLowPosX = 0.1;
@@ -72,16 +76,16 @@ public class Config {
      public static final WristPosition kArmLowPosWrist = WristPosition.LOWERED;
 
     
-     public static final double kArmMedPosX = 0.5;
-     public static final double kArmMedPosY = 1;
+     public static final double kArmMedPosX = 0.3;
+     public static final double kArmMedPosY = 0.25;
      public static final WristPosition kArmMedPosWrist = WristPosition.RAISED;
      
-     public static final double kArmHighPosX = 1.2;
-     public static final double kArmHighPosY = 2;
+     public static final double kArmHighPosX = 0.5;
+     public static final double kArmHighPosY = 0.6;
      public static final WristPosition kArmHighPosWrist = WristPosition.RAISED;
      
-     public static final double kArmShelfPosX = 1;
-     public static final double kArmShelfPosY = 1.5;
+     public static final double kArmShelfPosX = 4;
+     public static final double kArmShelfPosY = 0.6;
      public static final WristPosition kArmShelfPosWrist = WristPosition.RAISED;
 
     /**
@@ -104,7 +108,23 @@ public class Config {
      public static final double kFeedMotorPower = 1;
      public static final double kIntakeMotorPower = 1;
      public static final int kIntakeSolenoidPort = 3; //PCM port of the claw solenoid
-    
+
+    /**
+     * Anti-tip constants
+     */
+    public static final double kAntiTipVerticalExtensionCompensationWeight = 1;
+    public static final double kAntiTipHorizontalExtensionCompensationWeight = 1;
+    public static final double kAntiTipExtensionCompensationForwardModifier = 1;
+    public static final double kAntiTipExtensionCompansationReverseModifier = 1;
+
+    public static final double kAntiTipPositivePitchThreshold = 20;
+    public static final double kAntiTipNegativePitchThreshold = -20;
+    public static final double kAntiTipPositiveRollThreshold = 20;
+    public static final double kAntiTipNegativeRollThreshold = -20;
+
+    public static final double kAntiTipPositivePitchMax = 30;
+    public static final double kAntiTipNegativePitchMax = -30;
+
     /**
      * Pneumatics constants
      */

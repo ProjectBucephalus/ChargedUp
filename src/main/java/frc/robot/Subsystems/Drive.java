@@ -5,12 +5,17 @@ import java.util.function.DoubleSupplier;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.Pigeon2;
 
+import frc.robot.Config;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 
 public class Drive extends SubsystemBase{
 
@@ -40,6 +45,8 @@ public class Drive extends SubsystemBase{
 
     private final DifferentialDrive driveMotors = new DifferentialDrive(leftDrive, rightDrive);
 
+    private static Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
+
     private static boolean brakeState = false; //Define default state for the brakes
 
 
@@ -56,9 +63,13 @@ public class Drive extends SubsystemBase{
         rightDriveB.configFactoryDefault();
         rightDriveC.configFactoryDefault();
 
-        rightDriveA.setInverted(TalonFXInvertType.CounterClockwise); //Invert the right side meaning that a foward command 
-        rightDriveB.setInverted(TalonFXInvertType.CounterClockwise); //will result in all motors flashing green
-        rightDriveC.setInverted(TalonFXInvertType.CounterClockwise);
+        leftDriveA.setInverted(TalonFXInvertType.Clockwise);
+        leftDriveB.setInverted(TalonFXInvertType.Clockwise);
+        leftDriveC.setInverted(TalonFXInvertType.Clockwise);
+
+        rightDriveA.setInverted(TalonFXInvertType.Clockwise); //Invert the right side meaning that a foward command 
+        rightDriveB.setInverted(TalonFXInvertType.Clockwise); //will result in all motors flashing green
+        rightDriveC.setInverted(TalonFXInvertType.Clockwise);
 
     }
 
@@ -92,6 +103,10 @@ public class Drive extends SubsystemBase{
     rightDriveB.setSelectedSensorPosition(0);
     rightDriveC.setSelectedSensorPosition(0);
 
+  }
+
+  public double getThrottleInput(CommandJoystick m_joy) {
+    return -((-m_joy.getThrottle() + 1) / 2);
   }
 
   /**
@@ -134,6 +149,47 @@ public class Drive extends SubsystemBase{
                     >= distanceMeters)
         // Stop the drive when the command ends
         .finallyDo(interrupted -> driveMotors.stopMotor());
+  }
+
+  /**
+   * Return a compensated speed based off of the position of the 
+   * @param requestedSpeeed
+   * @return requested speed compensated for position of arm
+   */
+  public double getCompensatedDriveSpeed(double requestedSpeeed) {
+    if(requestedSpeeed >= 0) {
+      return (
+          (
+            (
+              HorizontalExtension.getMeasurement() / Config.kHorizontalExtensionMaxLength
+            ) * Config.kAntiTipHorizontalExtensionCompensationWeight + 
+            (
+              VerticalExtension.getMeasurement() / Config.kElevatorVerticalExtensionLegnth
+            ) * Config.kAntiTipVerticalExtensionCompensationWeight) / 2
+          ) * Config.kAntiTipExtensionCompensationForwardModifier
+          * requestedSpeeed;
+    } else {
+        return (
+          (
+            (
+              HorizontalExtension.getMeasurement() / Config.kHorizontalExtensionMaxLength
+            ) * Config.kAntiTipHorizontalExtensionCompensationWeight + 
+            (
+              VerticalExtension.getMeasurement() / Config.kElevatorVerticalExtensionLegnth
+            ) * Config.kAntiTipVerticalExtensionCompensationWeight) / 2
+          ) * Config.kAntiTipExtensionCompansationReverseModifier
+          * requestedSpeeed;
+    }
+  }
+
+  public double getDriveAntiTipMultiplier() {
+    if(imu.getPitch() >= Config.kAntiTipPositivePitchThreshold) {
+      return 1;//todo
+    } else if(imu.getPitch() <= Config.kAntiTipNegativePitchThreshold) {
+      return 1;//todo
+    } else {
+      return 1;
+    }
   }
 
   /**
@@ -196,6 +252,25 @@ public class Drive extends SubsystemBase{
    */
   public boolean getBrakes() {
     return brakeState; //locally updated variable to track brake state
+  }
+
+  public static void diag() {
+    SmartDashboard.putNumber("left a current", leftDriveA.getStatorCurrent());
+    SmartDashboard.putNumber("left b current", leftDriveB.getStatorCurrent());
+    SmartDashboard.putNumber("left c current", leftDriveC.getStatorCurrent());
+
+    SmartDashboard.putNumber("right a current", rightDriveA.getStatorCurrent());
+    SmartDashboard.putNumber("right b current", rightDriveB.getStatorCurrent());
+    SmartDashboard.putNumber("right c current", rightDriveC.getStatorCurrent());
+    
+    SmartDashboard.putNumber("left a temp", leftDriveA.getTemperature());
+    SmartDashboard.putNumber("left b temp", leftDriveB.getTemperature());
+    SmartDashboard.putNumber("left c temp", leftDriveC.getTemperature());
+
+    SmartDashboard.putNumber("right a temp", rightDriveA.getTemperature());
+    SmartDashboard.putNumber("right b temp", rightDriveB.getTemperature());
+    SmartDashboard.putNumber("right c temp", rightDriveC.getTemperature());
+
   }
 
 }

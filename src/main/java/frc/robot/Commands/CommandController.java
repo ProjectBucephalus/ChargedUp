@@ -48,7 +48,7 @@ public class CommandController {
     // Control the drive with split-stick arcade controls
     m_drive.setDefaultCommand(
         m_drive.arcadeDriveCommand(
-            () -> m_driverJoystick.getX(), () -> m_driverJoystick.getY()));
+            () -> -m_driverJoystick.getX() * 1 * m_drive.getThrottleInput(m_driverJoystick), () -> m_driverJoystick.getY() * 3 * m_drive.getThrottleInput(m_driverJoystick)));
     
     m_driverHID.y()
       .onTrue(
@@ -59,12 +59,12 @@ public class CommandController {
         new ArmHomePosCommand(m_wrist, m_vertical, m_horizontal)
       );
     
-      m_driverHID.x()
+    m_driverHID.x()
       .onTrue(
         new ArmLowPosCommand(m_wrist, m_vertical, m_horizontal)
       );
 
-      m_driverHID.b()
+    m_driverHID.b()
       .onTrue(
         new ArmMediumPosCommand(m_wrist, m_vertical, m_horizontal)
       );
