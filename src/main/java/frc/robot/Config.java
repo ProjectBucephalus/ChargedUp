@@ -131,8 +131,8 @@ public class Config {
 
     
     public static final int kPneumaticsModuleCanId = 51; //CAN ID of the PCM
-    public static final double kPneumaticsMinPressure = 110; //The pressure the pneumatics will start charging at
-    public static final double kPneumaticsMaxPressure = 120; //The pressure the pneumatics will stop charging at
+    public static final double kPneumaticsMinPressure = 100; //The pressure the pneumatics will start charging at
+    public static final double kPneumaticsMaxPressure = 110; //The pressure the pneumatics will stop charging at
     public static final double kCompressorRunCurrent = 10;//Ampres. Used for error checking //TODO
     public static final byte kCompressorCheckIterations = 50;//50 cycles of code. Checks that the compressor still does not run after x cycles
 

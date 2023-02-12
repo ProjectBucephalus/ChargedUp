@@ -81,4 +81,8 @@ public class Pneumatics extends SubsystemBase {
     }
   }
 
+  public double getPressure()
+  {
+    return comp.getPressure();
+  }
 }
