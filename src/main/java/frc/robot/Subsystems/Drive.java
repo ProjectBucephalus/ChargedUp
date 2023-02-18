@@ -1,5 +1,6 @@
 package frc.robot.Subsystems;
 
+import java.io.ObjectInputFilter.Status;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -32,12 +33,12 @@ public class Drive extends SubsystemBase{
    *  ============
    */
 
-    private static WPI_TalonFX leftDriveA = new WPI_TalonFX(Constants.kLeftDriveACanId);
-    private static WPI_TalonFX leftDriveB = new WPI_TalonFX(Constants.kLeftDriveBCanId);
-    private static WPI_TalonFX leftDriveC = new WPI_TalonFX(Constants.kLeftDriveCCanId);
-    private static WPI_TalonFX rightDriveA = new WPI_TalonFX(Constants.kRightDriveACanId);
-    private static WPI_TalonFX rightDriveB = new WPI_TalonFX(Constants.kRightDriveBCanId);
-    private static WPI_TalonFX rightDriveC = new WPI_TalonFX(Constants.kRightDriveCCanId); 
+    private WPI_TalonFX leftDriveA = new WPI_TalonFX(Constants.kLeftDriveACanId);
+    private WPI_TalonFX leftDriveB = new WPI_TalonFX(Constants.kLeftDriveBCanId);
+    private WPI_TalonFX leftDriveC = new WPI_TalonFX(Constants.kLeftDriveCCanId);
+    private WPI_TalonFX rightDriveA = new WPI_TalonFX(Constants.kRightDriveACanId);
+    private WPI_TalonFX rightDriveB = new WPI_TalonFX(Constants.kRightDriveBCanId);
+    private WPI_TalonFX rightDriveC = new WPI_TalonFX(Constants.kRightDriveCCanId); 
     
     //Setup objects for use with the DifferentialDrive
     private final MotorControllerGroup leftDrive = new MotorControllerGroup(leftDriveA, leftDriveB, leftDriveC);
@@ -45,9 +46,9 @@ public class Drive extends SubsystemBase{
 
     private final DifferentialDrive driveMotors = new DifferentialDrive(leftDrive, rightDrive);
 
-    private static Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
+    private Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
 
-    private static boolean brakeState = false; //Define default state for the brakes
+    private boolean brakeState = false; //Define default state for the brakes
 
 
     /**
@@ -73,7 +74,18 @@ public class Drive extends SubsystemBase{
 
     }
 
-    public Drive() {
+    private static Drive myInstance;
+
+    public static Drive getInstance()
+    {
+      if (myInstance == null)
+      {
+        myInstance = new Drive();
+      }
+      return myInstance;
+    }
+
+    private Drive() {
         initSystem(); //run the above method to initalise the controllers
         setBrakes(false); //Set the falcons to coast mode on robot init
     }
@@ -87,7 +99,10 @@ public class Drive extends SubsystemBase{
   public CommandBase arcadeDriveCommand(DoubleSupplier fwd, DoubleSupplier rot) {
     // A split-stick arcade command, with forward/backward controlled by the left
     // hand, and turning controlled by the right.
-    return run(() -> driveMotors.arcadeDrive(fwd.getAsDouble(), rot.getAsDouble())) //run the WPILIB arcadeDrive method with supplied values
+    return run(() -> driveMotors.arcadeDrive(
+      Math.copySign(Math.pow(fwd.getAsDouble(), 2),fwd.getAsDouble()),
+      Math.copySign(Math.pow(rot.getAsDouble(), 1), rot.getAsDouble()),
+      false)) //run the WPILIB arcadeDrive method with supplied values
         .withName("arcadeDrive");
   }
 
@@ -198,7 +213,7 @@ public class Drive extends SubsystemBase{
    * This works by requesting the falcon's firmware verison, which will return -1 if
    * the device is not on the bus
    */
-  public static boolean checkCanDevices() {
+  public boolean checkCanDevices() {
     boolean canOk = true;
     if(leftDriveA.getFirmwareVersion() == -1) {
       System.out.println("WARNING leftDriveA missing from CANBus!");
@@ -226,7 +241,7 @@ public class Drive extends SubsystemBase{
    * 
    * @param brakes true for brakes enabled
    */
-  public static void setBrakes(boolean brakes) {
+  public void setBrakes(boolean brakes) {
     if(brakes) {
       leftDriveA.setNeutralMode(NeutralMode.Brake);
       leftDriveB.setNeutralMode(NeutralMode.Brake);
@@ -254,7 +269,7 @@ public class Drive extends SubsystemBase{
     return brakeState; //locally updated variable to track brake state
   }
 
-  public static void diag() {
+  public void diag() {
     SmartDashboard.putNumber("left a current", leftDriveA.getStatorCurrent());
     SmartDashboard.putNumber("left b current", leftDriveB.getStatorCurrent());
     SmartDashboard.putNumber("left c current", leftDriveC.getStatorCurrent());

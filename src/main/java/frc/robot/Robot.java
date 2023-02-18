@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.networktables.LogMessage;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.CommandController;
@@ -36,11 +37,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     DataLogManager.start();
+    DriverStation.startDataLog(DataLogManager.getLog());
     m_verticalExtension.initSystem();
     m_horizontalExtension.initSystem();
     m_robot.configureBindings(); //setup bindings for drive, mechanisms etc.
-    Drive.setBrakes(false); //disable brakes so robot can be pushed
-
   }
 
   /**
@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    Drive.diag();
+    Drive.getInstance().diag();
 
   }
 
@@ -69,7 +69,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    Drive.setBrakes(true); //run brakes
+    Drive.getInstance().setBrakes(true); //run brakes
     m_pneumatics.setPneumatics(true);
 
   }
@@ -83,7 +83,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    Drive.setBrakes(false); //run brakes
+    Drive.getInstance().setBrakes(false); //run brakes
     m_pneumatics.setPneumatics(true);
     m_verticalExtension.initSystem();
     m_verticalExtension.getMeasurement();
@@ -101,7 +101,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    Drive.setBrakes(false); //disable brakes so robot is pushable
+    Drive.getInstance().setBrakes(false); //disable brakes so robot is pushable
     m_pneumatics.setPneumatics(false);
 
   }

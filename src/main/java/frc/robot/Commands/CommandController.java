@@ -26,7 +26,7 @@ import frc.robot.Subsystems.Wrist;
 /** Add your docs here. */
 public class CommandController {
 
-    private final Drive m_drive = new Drive();
+    private final Drive m_drive = Drive.getInstance();
     private final Wrist m_wrist = new Wrist();
     private final HorizontalExtension m_horizontal = new HorizontalExtension();
     private final VerticalExtension m_vertical = new VerticalExtension();
@@ -48,7 +48,8 @@ public class CommandController {
     // Control the drive with split-stick arcade controls
     m_drive.setDefaultCommand(
         m_drive.arcadeDriveCommand(
-            () -> -m_driverJoystick.getX() * 1 * m_drive.getThrottleInput(m_driverJoystick), () -> m_driverJoystick.getY() * 3 * m_drive.getThrottleInput(m_driverJoystick)));
+            () -> -m_driverJoystick.getX() * 1 * m_drive.getThrottleInput(m_driverJoystick),
+            () -> m_driverJoystick.getY() * 1 * m_drive.getThrottleInput(m_driverJoystick)));
     
     m_driverHID.y()
       .onTrue(
