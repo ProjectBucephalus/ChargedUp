@@ -48,8 +48,8 @@ public class CommandController {
     // Control the drive with split-stick arcade controls
     m_drive.setDefaultCommand(
         m_drive.arcadeDriveCommand(
-            () -> -m_driverJoystick.getX() * 1 * m_drive.getThrottleInput(m_driverJoystick),
-            () -> m_driverJoystick.getY() * 1 * m_drive.getThrottleInput(m_driverJoystick)));
+            () -> -m_driverJoystick.getY() * 1 * m_drive.getThrottleInput(m_driverJoystick),
+            () -> -m_driverJoystick.getX() * 1 * m_drive.getThrottleInput(m_driverJoystick)));
     
     m_driverHID.y()
       .onTrue(

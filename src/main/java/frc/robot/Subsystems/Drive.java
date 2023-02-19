@@ -64,9 +64,9 @@ public class Drive extends SubsystemBase{
         rightDriveB.configFactoryDefault();
         rightDriveC.configFactoryDefault();
 
-        leftDriveA.setInverted(TalonFXInvertType.Clockwise);
-        leftDriveB.setInverted(TalonFXInvertType.Clockwise);
-        leftDriveC.setInverted(TalonFXInvertType.Clockwise);
+        leftDriveA.setInverted(TalonFXInvertType.CounterClockwise);
+        leftDriveB.setInverted(TalonFXInvertType.CounterClockwise);
+        leftDriveC.setInverted(TalonFXInvertType.CounterClockwise);
 
         rightDriveA.setInverted(TalonFXInvertType.Clockwise); //Invert the right side meaning that a foward command 
         rightDriveB.setInverted(TalonFXInvertType.Clockwise); //will result in all motors flashing green
@@ -100,8 +100,8 @@ public class Drive extends SubsystemBase{
     // A split-stick arcade command, with forward/backward controlled by the left
     // hand, and turning controlled by the right.
     return run(() -> driveMotors.arcadeDrive(
-      Math.copySign(Math.pow(fwd.getAsDouble(), 2),fwd.getAsDouble()),
-      Math.copySign(Math.pow(rot.getAsDouble(), 1), rot.getAsDouble()),
+      Math.copySign(Math.pow(fwd.getAsDouble(), Constants.kDriveSpeedExpo),fwd.getAsDouble()),
+      Math.copySign(Math.pow(rot.getAsDouble(), Constants.kDriveTurnExpo), rot.getAsDouble()),
       false)) //run the WPILIB arcadeDrive method with supplied values
         .withName("arcadeDrive");
   }
