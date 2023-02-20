@@ -30,6 +30,7 @@ public class CommandController {
 
     private final Drive m_drive = Drive.getInstance();
     private final Wrist m_wrist = new Wrist();
+    private final Claw m_claw = new Claw();
     private final HorizontalExtension m_horizontal = new HorizontalExtension();
     private final VerticalExtension m_vertical = new VerticalExtension();
     CommandJoystick m_driverJoystick = new CommandJoystick(0); //declare joystick on ds port 0 
@@ -74,6 +75,13 @@ public class CommandController {
         new ArmMediumPosCommand(m_wrist, m_vertical, m_horizontal)
       );
 
+      m_driverHID.leftTrigger().onTrue(
+        new CloseClaw(m_claw) //closes the claw when left trigger is pushed
+      );
+
+      m_driverHID.rightTrigger().onTrue(
+        new OpenClaw(m_claw)  //opens claw when right trigger is pushed
+      );
 
   }
 

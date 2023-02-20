@@ -19,9 +19,11 @@ public class Claw extends SubsystemBase {
      */
     public void setClaw(ClawPosition position) {
         if (position == ClawPosition.OPEN) {
-            clawSolenoid.set(true);
-        }else if(position == ClawPosition.CLOSED) {
             clawSolenoid.set(false);
+        }else if(position == ClawPosition.CLOSED) {
+            clawSolenoid.set(true); //claw should be opened on default
         }
     }
+
+
 }
