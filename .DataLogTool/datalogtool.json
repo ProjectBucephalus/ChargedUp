@@ -1,6 +1,7 @@
 {
   "download": {
-    "localDir": "C:\\Users\\Joshua Moran\\Documents\\Logs\\more",
+    "deleteAfter": false,
+    "localDir": "C:\\tmp",
     "serverTeam": "5985"
   }
 }
