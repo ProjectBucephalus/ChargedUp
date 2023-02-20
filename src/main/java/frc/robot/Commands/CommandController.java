@@ -22,6 +22,8 @@ import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
+import frc.robot.Utilities.PbSlewRateLimiter;
+import frc.robot.Utilities.PbSlewRateLimiter.Constraints;
 
 /** Add your docs here. */
 public class CommandController {
@@ -32,6 +34,8 @@ public class CommandController {
     private final VerticalExtension m_vertical = new VerticalExtension();
     CommandJoystick m_driverJoystick = new CommandJoystick(0); //declare joystick on ds port 0 
     CommandXboxController m_driverHID = new CommandXboxController(1); //declare xbox on ds port 1
+    private static PbSlewRateLimiter limiter = new PbSlewRateLimiter(new PbSlewRateLimiter.Constraints(2,.5),new PbSlewRateLimiter.State(5, 0), new PbSlewRateLimiter.State(0, 0) );
+
 
 
 
@@ -48,7 +52,7 @@ public class CommandController {
     // Control the drive with split-stick arcade controls
     m_drive.setDefaultCommand(
         m_drive.arcadeDriveCommand(
-            () -> -m_driverJoystick.getX() * 1 * m_drive.getThrottleInput(m_driverJoystick), () -> m_driverJoystick.getY() * 3 * m_drive.getThrottleInput(m_driverJoystick)));
+            () -> -m_driverJoystick.getX() * 1 * m_drive.getThrottleInput(m_driverJoystick), () -> (-m_driverJoystick.getY() * 3 * m_drive.getThrottleInput(m_driverJoystick))));
     
     m_driverHID.y()
       .onTrue(

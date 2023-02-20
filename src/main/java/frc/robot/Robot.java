@@ -83,7 +83,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    Drive.setBrakes(false); //run brakes
+    Drive.setBrakes(true); //run brakes
     m_pneumatics.setPneumatics(true);
     m_verticalExtension.initSystem();
     m_verticalExtension.getMeasurement();
