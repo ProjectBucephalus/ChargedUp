@@ -4,12 +4,22 @@
 
 package frc.robot;
 
+import java.util.concurrent.ThreadPoolExecutor;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.CommandController;
 import frc.robot.Subsystems.Drive;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Utilities.Pneumatics;
+import frc.robot.Utilities.Jetson.Jetson;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -17,22 +27,25 @@ import frc.robot.Utilities.Pneumatics;
  * project.
  */
 public class Robot extends TimedRobot {
-
-  private Pneumatics m_pneumatics = Pneumatics.getInstance();
-  private static VerticalExtension m_verticalExtension = new VerticalExtension();
-
-  private final CommandController m_robot = new CommandController();
-
-
-
+  private static CANSparkMax s1 = new CANSparkMax(1,MotorType.kBrushed);
+  private static CANSparkMax s2 = new CANSparkMax(2,MotorType.kBrushed);
+  private static CANSparkMax s3 = new CANSparkMax(3,MotorType.kBrushed);
+  private static CANSparkMax s4 = new CANSparkMax(4,MotorType.kBrushed);
+  private MotorControllerGroup left = new MotorControllerGroup(s1, s2);
+  private MotorControllerGroup right = new MotorControllerGroup(s3, s4);
+  private Joystick stick = new Joystick(0);
+  private static Jetson jetson  = new Jetson();
+  double steering;
+  double power;
+  double throttle;
+  double yaw;
+  double yawtarget;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
-    m_robot.configureBindings(); //setup bindings for drive, mechanisms etc.
-    Drive.setBrakes(false); //disable brakes so robot can be pushed
 
   }
 
@@ -60,8 +73,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    Drive.setBrakes(true); //run brakes
-    m_pneumatics.setPneumatics(true);
 
   }
 
@@ -74,25 +85,24 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    Drive.setBrakes(true); //run brakes
-    m_pneumatics.setPneumatics(true);
-    m_verticalExtension.initSystem();
-    m_verticalExtension.getMeasurement();
 
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    System.out.println(m_verticalExtension.getMeasurement());
-
+   // steering = stick.getX();
+   // power = stick.getY();
+   // throttle = stick.getThrottle();
+   // left.set((power - steering) * throttle);
+   // right.set(-(power + steering) * throttle);
+   yaw = jetson.getRobotYaw();
+   System.out.println(yaw);    
   }
 
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    Drive.setBrakes(false); //disable brakes so robot is pushable
-    m_pneumatics.setPneumatics(false);
 
   }
   /** This function is called periodically when disabled. */

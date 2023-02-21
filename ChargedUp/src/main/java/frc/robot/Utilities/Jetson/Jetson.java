@@ -21,7 +21,7 @@ public class Jetson {
     }
 
     public Jetson() {
-        m_table = NetworkTableInstance.getDefault().getTable("jetson");
+        m_table = NetworkTableInstance.getDefault().getTable("Apriltag Localisation");
     }
 
     /**
@@ -71,6 +71,13 @@ public class Jetson {
         return m_table.getEntry("robotY").getDouble(0);
     }
 
+    public double getRobotZ(){
+        return m_table.getEntry("robotZ").getDouble(0);
+
+    }
+    public double getRobotYaw(){
+        return m_table.getEntry("robotYaw").getDouble(0);
+    }
     /**
      * Disable camera
      * @param selectedCamera to disable
