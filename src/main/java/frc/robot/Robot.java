@@ -8,6 +8,7 @@ import edu.wpi.first.networktables.LogMessage;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.CommandController;
 import frc.robot.Subsystems.Drive;
@@ -23,7 +24,7 @@ import frc.robot.Utilities.Pneumatics;
 public class Robot extends TimedRobot {
 
   private Pneumatics m_pneumatics = Pneumatics.getInstance();
-  private static VerticalExtension m_verticalExtension = new VerticalExtension();
+  private static VerticalExtension m_verticalExtension = VerticalExtension.getInstance();
   private static HorizontalExtension m_horizontalExtension = new HorizontalExtension();
 
 
@@ -52,9 +53,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    VerticalExtension.getInstance().checkCalibration();
     CommandScheduler.getInstance().run();
     Drive.getInstance().diag();
-
+    SmartDashboard.putBoolean("Bottom", VerticalExtension.getInstance().getLowLimit());
+    SmartDashboard.putBoolean("Top", VerticalExtension.getInstance().getHighLimit());
+    SmartDashboard.putNumber("ArmPos", VerticalExtension.getInstance().getMeasurement());
   }
 
   /**

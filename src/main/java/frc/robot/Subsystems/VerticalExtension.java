@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
@@ -21,7 +22,7 @@ import frc.robot.Constants;
 /** Add your docs here. */
 public class VerticalExtension extends SubsystemBase {
 
-    private final static WPI_TalonFX verticalExtensionMotor = new WPI_TalonFX(Constants.kVerticalElevatorCanId);
+    private final WPI_TalonFX verticalExtensionMotor = new WPI_TalonFX(Constants.kVerticalElevatorCanId);
     private final CANCoder verticalExtensionEncoder = new CANCoder(Constants.kVerticalElevatorEncoderCanId);
     private double armGoal = 0;
 
@@ -32,8 +33,18 @@ public class VerticalExtension extends SubsystemBase {
         Config.kVerticalExtensionKV, Config.kVerticalExtensionKA //kV is the velocity constant, kA is the acceleration constant
       );
 
+  private static VerticalExtension myInstance;
+
+  public static VerticalExtension getInstance()
+  {
+    if (myInstance == null)
+    {
+      myInstance = new VerticalExtension();
+    }
+    return myInstance;
+  }
   /** Create a new ArmSubsystem. */
-  public VerticalExtension() {
+  private VerticalExtension() {
 
   }
 
@@ -78,7 +89,7 @@ public class VerticalExtension extends SubsystemBase {
    * @return true if arm is within defined position tollerence.
    */
   public boolean getArmAtPosition() {
-    if(getMeasurement() <= armGoal + Config.kVerticalExtensionPositionTollerenceMetres && getMeasurement() >= armGoal - Config.kVerticalExtensionPositionTollerenceMetres) {
+    if(getMeasurement() <= armGoal + Config.kVerticalExtensionPositionTolerenceMetres && getMeasurement() >= armGoal - Config.kVerticalExtensionPositionTolerenceMetres) {
       return true;
     }
     return false;
@@ -89,16 +100,41 @@ public class VerticalExtension extends SubsystemBase {
    * Get position of arm
    * @return vertical extension position in metres
    */
-  public static double getMeasurement() {
+  public double getMeasurement() {
     return verticalExtensionMotor.getSelectedSensorPosition() / Config.kVerticalExtensionPulsesPerMetre;
   } 
 
   /**
    * Reset all sensors
    */
-  public static void resetSensors() {
+  public void resetSensors() {
     verticalExtensionMotor.setSelectedSensorPosition(0);
   }
+
+  public boolean getLowLimit()
+  {
+    TalonFXSensorCollection sc = verticalExtensionMotor.getSensorCollection();
+    return (sc.isRevLimitSwitchClosed() == 0);             //checks if the low limit switch is tripped
+  }
+
+public boolean getHighLimit()
+{
+  TalonFXSensorCollection sc = verticalExtensionMotor.getSensorCollection();
+  return (sc.isFwdLimitSwitchClosed() == 0);               //checks if the high limit switch is tripped
+}
+
+private boolean lastLow = false;
+
+public void checkCalibration()        //resets sensors upon first reaching bottom limit switch
+{
+  boolean thisLow = getLowLimit();
+  if ((thisLow == true) && (lastLow == false))
+  {
+    resetSensors();
+  }  
+  lastLow = thisLow;
+}
+
 
   /**
    * Move arm to desired position using motionMagic
@@ -113,6 +149,14 @@ public class VerticalExtension extends SubsystemBase {
     System.out.println("SP " + position * Config.kVerticalExtensionPulsesPerMetre);
     armGoal = position;
     verticalExtensionMotor.set(ControlMode.MotionMagic, position * Config.kVerticalExtensionPulsesPerMetre);
+  }
+
+    /**
+   * Move arm to desired position using motionMagic
+   * @param position in metres
+   */
+  public void setSpeed(double speed) {
+    verticalExtensionMotor.set(ControlMode.PercentOutput, speed);
   }
 
 }

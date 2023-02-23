@@ -10,12 +10,12 @@ import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
 
-public class ArmHomePosCommand extends CommandBase {
+public class ArmZeroPosCommand extends CommandBase {
   private final Wrist m_wrist;
   private final HorizontalExtension m_horizontalExtension;
   private final VerticalExtension m_verticalExtension;
   /** Creates a new ArmHomePosCommand. */
-  public ArmHomePosCommand(Wrist wristSubsystem, VerticalExtension verticalExtensionSubsystem, HorizontalExtension horizontalExtensionSubsystem) {
+  public ArmZeroPosCommand(Wrist wristSubsystem, VerticalExtension verticalExtensionSubsystem, HorizontalExtension horizontalExtensionSubsystem) {
     m_wrist = wristSubsystem;
     m_verticalExtension = verticalExtensionSubsystem;
     m_horizontalExtension = horizontalExtensionSubsystem;
@@ -25,26 +25,29 @@ public class ArmHomePosCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_wrist.setWristPosition(Config.kArmHomePosWrist);
+    System.out.println("Start");
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_verticalExtension.setPosition(Config.kArmHomePosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmHomePosX, Config.kArmHomePosY));
-    m_horizontalExtension.setPosition(Config.kArmHomePosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmHomePosX, Config.kArmHomePosY));
+    System.out.println("Run");
+    m_verticalExtension.setSpeed(-0.1);
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    new ArmZeroPosCommand(m_wrist, m_verticalExtension, m_horizontalExtension).schedule(); //zeroes the arm after going to home position
+    m_verticalExtension.setSpeed(0.0);
+    System.out.println("Finish");
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_verticalExtension.getArmAtPosition();
+    return m_verticalExtension.getLowLimit();
   }
 }

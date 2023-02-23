@@ -17,6 +17,7 @@ import frc.robot.Commands.Arm.ArmHighPosCommand;
 import frc.robot.Commands.Arm.ArmHomePosCommand;
 import frc.robot.Commands.Arm.ArmLowPosCommand;
 import frc.robot.Commands.Arm.ArmMediumPosCommand;
+import frc.robot.Commands.Arm.ArmZeroPosCommand;
 import frc.robot.Subsystems.Drive;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.Intake;
@@ -32,7 +33,7 @@ public class CommandController {
     private final Wrist m_wrist = new Wrist();
     private final Claw m_claw = new Claw();
     private final HorizontalExtension m_horizontal = new HorizontalExtension();
-    private final VerticalExtension m_vertical = new VerticalExtension();
+    private final VerticalExtension m_vertical = VerticalExtension.getInstance();
     CommandJoystick m_driverJoystick = new CommandJoystick(0); //declare joystick on ds port 0 
     CommandXboxController m_driverHID = new CommandXboxController(1); //declare xbox on ds port 1
     private static PbSlewRateLimiter limiter = new PbSlewRateLimiter(new PbSlewRateLimiter.Constraints(2,.5),new PbSlewRateLimiter.State(5, 0), new PbSlewRateLimiter.State(0, 0) );
@@ -73,6 +74,11 @@ public class CommandController {
     m_driverHID.b()
       .onTrue(
         new ArmMediumPosCommand(m_wrist, m_vertical, m_horizontal)
+      );
+
+      m_driverHID.leftBumper()
+      .onTrue(
+        new ArmZeroPosCommand(m_wrist, m_vertical, m_horizontal)
       );
 
       m_driverHID.leftTrigger().onTrue(

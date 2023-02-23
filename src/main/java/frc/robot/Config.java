@@ -140,7 +140,7 @@ public class Config {
     public static final double kVertialExtensionGearRatio = 27/1;
     public static final double kVerticalExtensionMetresPerRotation = 1.5 * 0.0254 * Math.PI; //0.00118872;
     public static final double kVerticalExtensionPulsesPerMetre = 836935.385;//(kVertialExtensionGearRatio * kVerticalExtensionEncoderPPR * kVerticalExtensionMetresPerRotation);
-    public static final double kVerticalExtensionPositionTollerenceMetres = 0.1;
+    public static final double kVerticalExtensionPositionTolerenceMetres = 0.01;
     public static final double kVerticalExtensionMaxHeight = 0.65;
 
     public static final double kVerticalExtensionNeutralPosition = 0;

@@ -179,7 +179,7 @@ public class Drive extends SubsystemBase{
               HorizontalExtension.getMeasurement() / Config.kHorizontalExtensionMaxLength
             ) * Config.kAntiTipHorizontalExtensionCompensationWeight + 
             (
-              VerticalExtension.getMeasurement() / Config.kElevatorVerticalExtensionLegnth
+              VerticalExtension.getInstance().getMeasurement() / Config.kElevatorVerticalExtensionLegnth
             ) * Config.kAntiTipVerticalExtensionCompensationWeight) / 2
           ) * Config.kAntiTipExtensionCompensationForwardModifier
           * requestedSpeeed;
@@ -190,7 +190,7 @@ public class Drive extends SubsystemBase{
               HorizontalExtension.getMeasurement() / Config.kHorizontalExtensionMaxLength
             ) * Config.kAntiTipHorizontalExtensionCompensationWeight + 
             (
-              VerticalExtension.getMeasurement() / Config.kElevatorVerticalExtensionLegnth
+              VerticalExtension.getInstance().getMeasurement() / Config.kElevatorVerticalExtensionLegnth
             ) * Config.kAntiTipVerticalExtensionCompensationWeight) / 2
           ) * Config.kAntiTipExtensionCompansationReverseModifier
           * requestedSpeeed;
