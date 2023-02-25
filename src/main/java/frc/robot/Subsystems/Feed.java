@@ -24,7 +24,7 @@ public class Feed extends SubsystemBase{
         if (status == FeedMotorsStatus.ON) {
             FeedMotors.set(Config.kFeedMotorPower);
         } else if (status == FeedMotorsStatus.OFF) {
-            FeedMotors.set(Config.kFeedMotorPower);
+            FeedMotors.set(0);
         }
     }
 }

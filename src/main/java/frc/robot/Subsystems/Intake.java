@@ -38,7 +38,7 @@ public class Intake extends SubsystemBase{
         if (status == IntakeMotorStatus.ON) {
             intakeMotors.set(Config.kIntakeMotorPower);
         }else if(status == IntakeMotorStatus.OFF) {
-            intakeMotors.set(Config.kIntakeMotorPower);
+            intakeMotors.set(0);
         }
     }
 }
