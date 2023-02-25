@@ -25,7 +25,7 @@ public class Constants {
 
     public static final int kVerticalElevatorCanId = 10;
     public static final int kHorizontalElevatorCanId = 9; 
-    public static final int kWristMotorCanId = 11;
+    public static final int kWristMotorCanId = 12;
     public static final int kVerticalElevatorEncoderCanId = 31;
     public static final int kHorizontalElevatorEncoderCanId = 32; 
     public static final int kWristEncoderCanId = 33;
@@ -33,8 +33,10 @@ public class Constants {
     public static final int kRightWingMotorCanId = 23;
 
 
-    public static final int kIntakeMotorsCanId = 14;
-    public static final int kFeedMotorsCanId = 15;
+    public static final int kIntakeMotorLeftCanId = 16;
+    public static final int kIntakeMotorRightCanId = 17;
+    public static final int kFeedMotorsACanId = 18; //Bottom Pass-Through
+    public static final int kFeedMotorsBCanId = 19; //Top Roller
     public static final int kPneumaticsModuleCanId = 51;
 
     public static final int kPigeonCanId = 53;

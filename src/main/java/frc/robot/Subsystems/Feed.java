@@ -13,7 +13,8 @@ import frc.robot.Constants;
 
 /** Add your docs here. */
 public class Feed extends SubsystemBase{
-    private WPI_VictorSPX FeedMotors = new WPI_VictorSPX(Constants.kFeedMotorsCanId);
+    private WPI_VictorSPX FeedMotorsBottom = new WPI_VictorSPX(Constants.kFeedMotorsACanId);
+    private WPI_VictorSPX FeedMotorsTop = new WPI_VictorSPX(Constants.kFeedMotorsBCanId);
     
     public enum FeedMotorsStatus {
         ON,
@@ -22,9 +23,11 @@ public class Feed extends SubsystemBase{
 
     public void setFeed(FeedMotorsStatus status) {
         if (status == FeedMotorsStatus.ON) {
-            FeedMotors.set(Config.kFeedMotorPower);
+            FeedMotorsBottom.set(Config.kFeedMotorPower);
+            FeedMotorsTop.set(Config.kFeedMotorPower);
         } else if (status == FeedMotorsStatus.OFF) {
-            FeedMotors.set(0);
+            FeedMotorsBottom.set(0);
+            FeedMotorsTop.set(0);
         }
     }
 }

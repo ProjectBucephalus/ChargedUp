@@ -14,7 +14,8 @@ import frc.robot.Constants;
 /** Add your docs here. */
 public class Intake extends SubsystemBase{
     private Solenoid intakeSolenoid = new Solenoid(Config.kPneumaticsModuleCanId, PneumaticsModuleType.REVPH, Config.kIntakeSolenoidPort);
-    private WPI_VictorSPX intakeMotors = new WPI_VictorSPX(Constants.kIntakeMotorsCanId);
+    private WPI_VictorSPX intakeMotor1 = new WPI_VictorSPX(Constants.kIntakeMotorLeftCanId);
+    private WPI_VictorSPX intakeMotor2 = new WPI_VictorSPX(Constants.kIntakeMotorRightCanId);
 
     public enum IntakePosition {
         EXTENDED,
@@ -36,9 +37,11 @@ public class Intake extends SubsystemBase{
 
     public void setWheels(IntakeMotorStatus status) {
         if (status == IntakeMotorStatus.ON) {
-            intakeMotors.set(Config.kIntakeMotorPower);
+            intakeMotor1.set(Config.kIntakeMotorPower);
+            intakeMotor2.set(Config.kIntakeMotorPower);
         }else if(status == IntakeMotorStatus.OFF) {
-            intakeMotors.set(0);
+            intakeMotor1.set(0);
+            intakeMotor2.set(0);
         }
     }
 }
