@@ -17,6 +17,7 @@ import frc.robot.Subsystems.Drive;
 public class Robot extends TimedRobot {
 
   private final CommandController m_robot = new CommandController();
+  private final TestAuto m_testAuto = new TestAuto();
 
 
 
@@ -56,11 +57,13 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Drive.setBrakes(true); //run brakes
+    m_testAuto.getAutonomousCommand().schedule(); //run autonomous command
+    
 
   }
 
   /** This function is called periodically during autonomous. */
-  @Override
+  @Overrid
   public void autonomousPeriodic() {
 
   }
