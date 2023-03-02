@@ -1,6 +1,9 @@
 package frc.robot.Autonomous;
 
 public class autoSelector {
+    public enum startScore{
+        
+    }
     public enum startPos{
         TWO,
         THREE,
@@ -8,8 +11,7 @@ public class autoSelector {
         FIVE,
         SIX,
         SEVEN,
+        EIGHT,
     };
-    public enum stepTwo{
-        
-    }
+
 }
