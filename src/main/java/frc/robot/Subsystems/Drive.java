@@ -46,7 +46,7 @@ public class Drive extends SubsystemBase{
 
     private final DifferentialDrive driveMotors = new DifferentialDrive(leftDrive, rightDrive);
 
-    private Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
+   // private Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
 
     private boolean brakeState = false; //Define default state for the brakes
 
@@ -99,12 +99,13 @@ public class Drive extends SubsystemBase{
   public CommandBase arcadeDriveCommand(DoubleSupplier fwd, DoubleSupplier rot) {
     // A split-stick arcade command, with forward/backward controlled by the left
     // hand, and turning controlled by the right.
-    return run(() -> driveMotors.arcadeDrive(
-      Math.copySign(Math.pow(fwd.getAsDouble(), Constants.kDriveSpeedExpo),fwd.getAsDouble()),
-      Math.copySign(Math.pow(rot.getAsDouble(), Constants.kDriveTurnExpo), rot.getAsDouble()),
-      false)) //run the WPILIB arcadeDrive method with supplied values
-        .withName("arcadeDrive");
-  }
+      return run(() -> driveMotors.arcadeDrive(
+        Math.copySign(Math.pow(fwd.getAsDouble(), Constants.kDriveSpeedExpo),fwd.getAsDouble()),
+        Math.copySign(Math.pow(rot.getAsDouble(), Constants.kDriveTurnExpo), rot.getAsDouble()),
+        false)) //run the WPILIB arcadeDrive method with supplied values
+          .withName("arcadeDrive");
+          
+      }
 
   /**
    * Resets the drive encoders to a position of zero
@@ -197,15 +198,15 @@ public class Drive extends SubsystemBase{
     }
   }
 
-  public double getDriveAntiTipMultiplier() {
-    if(imu.getPitch() >= Config.kAntiTipPositivePitchThreshold) {
-      return 1;//todo
-    } else if(imu.getPitch() <= Config.kAntiTipNegativePitchThreshold) {
-      return 1;//todo
-    } else {
-      return 1;
-    }
-  }
+//  public double getDriveAntiTipMultiplier() {
+//    if(imu.getPitch() >= Config.kAntiTipPositivePitchThreshold) {
+//      return 1;//todo
+//    } else if(imu.getPitch() <= Config.kAntiTipNegativePitchThreshold) {
+//      return 1;//todo
+//    } else {
+//      return 1;
+//    }
+//  }
 
   /**
    * Tests if any motors are disconnected from CANBus. Will print and return if so!

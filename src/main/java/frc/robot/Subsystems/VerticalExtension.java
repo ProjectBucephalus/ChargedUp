@@ -23,7 +23,7 @@ import frc.robot.Constants;
 public class VerticalExtension extends SubsystemBase {
 
     private final WPI_TalonFX verticalExtensionMotor = new WPI_TalonFX(Constants.kVerticalElevatorCanId);
-    private final CANCoder verticalExtensionEncoder = new CANCoder(Constants.kVerticalElevatorEncoderCanId);
+  //  private final CANCoder verticalExtensionEncoder = new CANCoder(Constants.kVerticalElevatorEncoderCanId);
     private double armGoal = 0;
 
     //this subsystem uses a combination of a feedfoward and feedback control.
@@ -69,8 +69,8 @@ public class VerticalExtension extends SubsystemBase {
     //verticalExtensionMotor.configRemoteFeedbackFilter(verticalExtensionEncoder, 0);
     //verticalExtensionMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
 
-    verticalExtensionEncoder.configFactoryDefault(); //reset and configure the encoder
-    verticalExtensionEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
+ //   verticalExtensionEncoder.configFactoryDefault(); //reset and configure the encoder
+   // verticalExtensionEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
     resetSensors();
   }
 
@@ -89,7 +89,7 @@ public class VerticalExtension extends SubsystemBase {
    * @return true if arm is within defined position tollerence.
    */
   public boolean getArmAtPosition() {
-    if(getMeasurement() <= armGoal + Config.kVerticalExtensionPositionTolerenceMetres && getMeasurement() >= armGoal - Config.kVerticalExtensionPositionTolerenceMetres) {
+if(getMeasurement() <= armGoal + Config.kVerticalExtensionPositionTolerenceMetres && getMeasurement() >= armGoal - Config.kVerticalExtensionPositionTolerenceMetres) {
       return true;
     }
     return false;
@@ -146,7 +146,6 @@ public void checkCalibration()        //resets sensors upon first reaching botto
     // } else if(position <= 0) {
     //   position = 0;
     // }
-    System.out.println("SP " + position * Config.kVerticalExtensionPulsesPerMetre);
     armGoal = position;
     verticalExtensionMotor.set(ControlMode.MotionMagic, position * Config.kVerticalExtensionPulsesPerMetre);
   }

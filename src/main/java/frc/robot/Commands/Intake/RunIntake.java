@@ -13,6 +13,7 @@ public class RunIntake extends SequentialCommandGroup {
   public RunIntake(Intake intakeSubsystem) {
     addCommands(
       new ExtendIntake(intakeSubsystem),
+      
       new RunIntakeMotors(intakeSubsystem)
     );
     // Use addRequirements() here to declare subsystem dependencies.

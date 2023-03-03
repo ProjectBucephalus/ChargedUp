@@ -32,8 +32,8 @@ public class ArmZeroPosCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Run");
-    m_verticalExtension.setSpeed(-0.1);
+    m_verticalExtension.setSpeed(-0.55);
+  //  m_horizontalExtension.setSpeed(-.1);
 
   }
 
@@ -41,6 +41,8 @@ public class ArmZeroPosCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_verticalExtension.setSpeed(0.0);
+//    m_horizontalExtension.setSpeed(-.1);
+
     System.out.println("Finish");
 
   }

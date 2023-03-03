@@ -89,8 +89,8 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     Drive.getInstance().setBrakes(false); //run brakes
     m_pneumatics.setPneumatics(true);
-    m_verticalExtension.initSystem();
     m_verticalExtension.getMeasurement();
+
 
   }
 
@@ -98,7 +98,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //System.out.println(m_verticalExtension.getMeasurement());
-    System.out.println("Pressure - " + m_pneumatics.getPressure());
 
   }
 

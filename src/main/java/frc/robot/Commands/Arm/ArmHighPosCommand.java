@@ -25,8 +25,6 @@ public class ArmHighPosCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_wrist.setWristPosition(Config.kArmHighPosWrist);
-    System.out.println("hellow");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,13 +32,18 @@ public class ArmHighPosCommand extends CommandBase {
   public void execute() {
     System.out.println(m_verticalExtension.getMeasurement());
     m_verticalExtension.setPosition(Config.kArmHighPosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmHighPosX, Config.kArmHighPosY));
-    m_horizontalExtension.setPosition(Config.kArmHighPosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmHighPosX, Config.kArmHighPosY));
+    if(m_verticalExtension.getArmAtPosition()){
 
+      m_horizontalExtension.setPosition(Config.kArmHighPosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmHighPosX, Config.kArmHighPosY));
+      m_wrist.setWristPosition(Config.kArmHighPosWrist);
+
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

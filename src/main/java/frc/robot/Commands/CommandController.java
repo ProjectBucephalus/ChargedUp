@@ -8,8 +8,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.Claw.CloseClaw;
 import frc.robot.Commands.Claw.OpenClaw;
+import frc.robot.Commands.Intake.ExtendIntake;
+import frc.robot.Commands.Intake.RetractIntake;
+import frc.robot.Commands.Intake.RunFeed;
 import frc.robot.Commands.Intake.RunIntake;
+import frc.robot.Commands.Intake.RunIntakeMotors;
+import frc.robot.Commands.Intake.StopFeed;
 import frc.robot.Commands.Intake.StopIntake;
+import frc.robot.Commands.Intake.StopIntakeMotors;
 import frc.robot.Subsystems.Claw;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot;
@@ -18,7 +24,9 @@ import frc.robot.Commands.Arm.ArmHomePosCommand;
 import frc.robot.Commands.Arm.ArmLowPosCommand;
 import frc.robot.Commands.Arm.ArmMediumPosCommand;
 import frc.robot.Commands.Arm.ArmZeroPosCommand;
+import frc.robot.Commands.Arm.intakeArm;
 import frc.robot.Subsystems.Drive;
+import frc.robot.Subsystems.Feed;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.VerticalExtension;
@@ -32,13 +40,14 @@ public class CommandController {
     private final Drive m_drive = Drive.getInstance();
     private final Wrist m_wrist = new Wrist();
     private final Claw m_claw = new Claw();
+    private final Feed m_feed = new Feed();
     private final HorizontalExtension m_horizontal = new HorizontalExtension();
     private final VerticalExtension m_vertical = VerticalExtension.getInstance();
     CommandJoystick m_driverJoystick = new CommandJoystick(0); //declare joystick on ds port 0 
     CommandXboxController m_driverHID = new CommandXboxController(1); //declare xbox on ds port 1
     private static PbSlewRateLimiter limiter = new PbSlewRateLimiter(new PbSlewRateLimiter.Constraints(2,.5),new PbSlewRateLimiter.State(5, 0), new PbSlewRateLimiter.State(0, 0) );
-
-
+    private final Intake m_intake = new Intake();
+    private boolean revState = false;
 
 
     /**
@@ -56,6 +65,7 @@ public class CommandController {
         m_drive.arcadeDriveCommand(
             () -> -m_driverJoystick.getY() * 1 * m_drive.getThrottleInput(m_driverJoystick),
             () -> -m_driverJoystick.getX() * 1 * m_drive.getThrottleInput(m_driverJoystick)));
+    
     
     m_driverHID.y()
       .onTrue(
@@ -80,7 +90,9 @@ public class CommandController {
       .onTrue(
         new ArmZeroPosCommand(m_wrist, m_vertical, m_horizontal)
       );
-
+      m_driverHID.rightBumper().onTrue(
+        new intakeArm(m_wrist, m_vertical, m_horizontal)
+      );
       m_driverHID.leftTrigger().onTrue(
         new CloseClaw(m_claw) //closes the claw when left trigger is pushed
       );
@@ -88,7 +100,18 @@ public class CommandController {
       m_driverHID.rightTrigger().onTrue(
         new OpenClaw(m_claw)  //opens claw when right trigger is pushed
       );
-
+      m_driverHID.leftStick().onTrue(
+        new RunIntake(m_intake)
+      );
+      m_driverHID.leftStick().onTrue(
+       new RunFeed(m_feed)
+      );
+      m_driverHID.rightStick().onTrue(
+        new StopIntake(m_intake)
+      );
+      m_driverHID.rightStick().onTrue(
+        new StopFeed(m_feed)
+      );
   }
 
   
