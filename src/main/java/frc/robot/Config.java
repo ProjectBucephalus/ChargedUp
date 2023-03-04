@@ -37,8 +37,8 @@ public class Config {
     public static final double kHorizontalExtensionKA = 0.91854;
     public static final double kHorizontalExtensionKP = 0.39027;
     public static final double kHorizontalExtensionKD = 0;
-    public static final double kHorizontalExtensionMaxVelocity = 1.5;
-    public static final double kHorizontalExtensionMaxAcceleration = 1;
+    public static final double kHorizontalExtensionMaxVelocity = 1.2;
+    public static final double kHorizontalExtensionMaxAcceleration = .7;
     public static final double kHorizontalExtensionEncoderPPR = 2048; //CANCoder, falcon is 2048 EPR
     public static final double kHorizontalxtensionGearRatio = 27/1;
     public static final double kHorizontalExtensionMetresPerRotation = 1.5 * 0.0254 * Math.PI; //0.00118872;
@@ -82,7 +82,7 @@ public class Config {
 
     
      public static final double kArmMedPosX = 0.95;
-     public static final double kArmMedPosY = 0.43;
+     public static final double kArmMedPosY = 0.465;
      public static final WristPosition kArmMedPosWrist = WristPosition.RAISED;
      
      public static final double kArmHighPosX = 2.4;
@@ -111,7 +111,7 @@ public class Config {
      * Intake constants
      */
      public static final double kFeedMotorPower = .6;
-     public static final double kIntakeMotorPower = .35;
+     public static final double kIntakeMotorPower = .285;
      public static final int kIntakeSolenoidPort = 3; //PCM port of the claw solenoid
 
     /**

@@ -23,6 +23,7 @@ import frc.robot.Commands.Arm.ArmHighPosCommand;
 import frc.robot.Commands.Arm.ArmHomePosCommand;
 import frc.robot.Commands.Arm.ArmLowPosCommand;
 import frc.robot.Commands.Arm.ArmMediumPosCommand;
+import frc.robot.Commands.Arm.ArmMidHigh;
 import frc.robot.Commands.Arm.ArmZeroPosCommand;
 import frc.robot.Commands.Arm.intakeArm;
 import frc.robot.Subsystems.Drive;
@@ -93,25 +94,30 @@ public class CommandController {
       m_driverHID.rightBumper().onTrue(
         new intakeArm(m_wrist, m_vertical, m_horizontal)
       );
-      m_driverHID.leftTrigger().onTrue(
-        new CloseClaw(m_claw) //closes the claw when left trigger is pushed
-      );
 
-      m_driverHID.rightTrigger().onTrue(
-        new OpenClaw(m_claw)  //opens claw when right trigger is pushed
+
+      m_driverJoystick.button(2).onTrue(
+        new CloseClaw(m_claw) 
       );
-      m_driverHID.leftStick().onTrue(
+      m_driverJoystick.button(2).onFalse(
+        new OpenClaw(m_claw)    
+        );
+      m_driverHID.leftTrigger().onTrue(
         new RunIntake(m_intake)
       );
-      m_driverHID.leftStick().onTrue(
-       new RunFeed(m_feed)
+      m_driverHID.leftTrigger().onTrue(
+        new RunFeed(m_feed)
       );
-      m_driverHID.rightStick().onTrue(
+      m_driverHID.leftTrigger().onFalse(
         new StopIntake(m_intake)
       );
-      m_driverHID.rightStick().onTrue(
+      m_driverHID.leftTrigger().onFalse(
         new StopFeed(m_feed)
       );
+      m_driverHID.leftStick().onTrue(
+        new ArmMidHigh(m_wrist, m_vertical, m_horizontal)
+      );
+
   }
 
   

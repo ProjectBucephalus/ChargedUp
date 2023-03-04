@@ -41,8 +41,8 @@ public class Constants {
 
     public static final int kPigeonCanId = 53;
 
-    public static final int kDriveSpeedExpo = 1;
-    public static final int kDriveTurnExpo = 2;
+    public static final int kDriveSpeedExpo = 1; //fix later
+    public static final double kDriveTurnExpo = 1;
 
     
 }
