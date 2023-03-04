@@ -1,6 +1,4 @@
-package frc.robot;
-
-import frc.robot.GamePointPositions;
+package frc.robot.Autonomous;
 
 // X is left and right, left is positive and right is negative.
 // Y is up and down, up is positive and down is negative.

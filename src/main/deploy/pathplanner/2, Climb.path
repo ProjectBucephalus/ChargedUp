@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.8703318525518173,
-        "y": 1.606988388801953
+        "x": 1.9131681120505097,
+        "y": 1.0678907072099861
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6015677751261785,
-        "y": 1.599125636941409
+        "x": 2.9131681120505126,
+        "y": 1.0678907072099861
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -17,8 +17,7 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "scoreObject",
-          "turnUp"
+          "scoreGamepiece"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
@@ -27,25 +26,25 @@
     },
     {
       "anchorPoint": {
-        "x": 5.667822710053003,
-        "y": 0.8738098992785663
+        "x": 5.236039043506658,
+        "y": 1.074603577778585
       },
       "prevControl": {
-        "x": 1.5742132906066753,
-        "y": 0.5698760212686288
+        "x": 4.236213685491923,
+        "y": 1.055915253329711
       },
       "nextControl": {
-        "x": 6.665077823382663,
-        "y": 0.9478520422635993
+        "x": 5.954316194346673,
+        "y": 1.0880293189157824
       },
       "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": true,
+      "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "readyIntake"
+          "intake"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
@@ -54,12 +53,12 @@
     },
     {
       "anchorPoint": {
-        "x": 7.253977635917358,
-        "y": 0.8928057666541872
+        "x": 5.377009325447221,
+        "y": 2.73268260822236
       },
       "prevControl": {
-        "x": 6.825621879584395,
-        "y": 0.8928057666541872
+        "x": 5.920751841503682,
+        "y": 2.7393954787909576
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -69,13 +68,16 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "stopIntake"
+          "climb"
         ],
-        "executionBehavior": "parallel",
+        "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
       }
     }
   ],
+  "maxVelocity": 1.0,
+  "maxAcceleration": 1.0,
+  "isReversed": null,
   "markers": []
 }

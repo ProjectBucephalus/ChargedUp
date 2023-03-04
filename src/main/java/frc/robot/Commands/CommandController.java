@@ -4,6 +4,21 @@
 
 package frc.robot.Commands;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.Claw.CloseClaw;
@@ -37,9 +52,52 @@ public class CommandController {
     CommandJoystick m_driverJoystick = new CommandJoystick(0); //declare joystick on ds port 0 
     CommandXboxController m_driverHID = new CommandXboxController(1); //declare xbox on ds port 1
     private static PbSlewRateLimiter limiter = new PbSlewRateLimiter(new PbSlewRateLimiter.Constraints(2,.5),new PbSlewRateLimiter.State(5, 0), new PbSlewRateLimiter.State(0, 0) );
+    SendableChooser<Command> chooser = SendableChooser<>();
+
+  public CommandController(){
+    configureBindings();
+    chooser.addOption("2,Bottom,Climb", null);
+    chooser.addOption("2,Bottom", null);
+    chooser.addOption("2,Climb", null);
+    chooser.addOption("8,Bottom,Climb", null);
+    chooser.addOption("8,Bottom", null);
+    chooser.addOption("8,Climb", null);
+    chooser.addOption("5,Bottom,Climb", null);
+    chooser.addOption("5,Bottom", null);
+    chooser.addOption("5,Climb", null);
+    chooser.addOption("5,Top,Climb", null);
+    chooser.addOption("5,Top", null);
 
 
+    Shuffleboard.getTab("Autonomous").add(chooser);
+  }
+  public Command loadPathPlannerTrajectoryToRamseteCommand(String fileName, Boolean resetOdometry){
+    Trajectory traj;
+    try{
+      Path tracjectoryPath = Filesystem.getDeployDirectory().toPath().resolve(fileName);
+      traj = TrajectoryUtil.fromPathweaverJson(tracjectoryPath);
+    }catch(IOException exception){
+      DriverStation.reportError("Unable to open trajectory in " + fileName, exception.getStackTrace());
+      System.out.println("Unable to read from file " + fileName );
+      return new InstantCommand();
+    }
+    RamseteCommand ramseteCommand = new RamseteCommand(traj, drivetrainSubsystem::getpose,
+      new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
+      new SimpleMotorFeedforward(Constants.ks, Constants.kv,Constants.ka)
+      Constants.kDriveKinematics, drivetrainSubsystem::getWheelSpeeds,
+      new PIDController(Constants.kPDriveVel, 0, 0),
+      new PIDController(Constants.kPDriveVel, 0, 0),  drivetrainSubsystem::tankDriveVolts,
+      drivetrainSubsystem);
 
+
+  
+    if (resetOdometry){
+      return new SequentialCommandGroup(new InstandCommand(()->drivesubstyme.resetOdometry(trajectory.getInitialPose())), ramseteCommand);
+    }else{
+      return ramseteCommand;
+    }
+  
+  }
 
     /**
    * Use this method to define bindings between conditions and commands. These are useful for

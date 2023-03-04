@@ -2,23 +2,22 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.8781471686208826,
-        "y": 1.0447727056650358
+        "x": 1.9735839471678944,
+        "y": 1.0209006132297982
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6093830911952436,
-        "y": 1.036909953804492
+        "x": 2.9735839471678975,
+        "y": 1.0209006132297982
       },
       "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
-      "isLocked": true,
+      "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "scoreObject",
-          "turnUp"
+          "scoreGamepiece"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
@@ -27,39 +26,39 @@
     },
     {
       "anchorPoint": {
-        "x": 5.734308245867678,
-        "y": 1.0542706393469665
+        "x": 6.813563627127254,
+        "y": 0.9470590369752175
       },
       "prevControl": {
-        "x": 4.734308245867678,
-        "y": 1.0542706393469665
+        "x": 5.813563627127254,
+        "y": 0.9470590369752175
       },
       "nextControl": {
-        "x": 6.734308245867678,
-        "y": 1.0542706393469665
+        "x": 5.813563627127254,
+        "y": 0.9470590369752175
       },
       "holonomicAngle": 0,
-      "isReversal": false,
+      "isReversal": true,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "readyIntake"
+          "intake"
         ],
-        "executionBehavior": "parallel",
+        "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
       }
     },
     {
       "anchorPoint": {
-        "x": 7.1210065642880105,
-        "y": 1.0447727056591554
+        "x": 1.9735839471678944,
+        "y": 1.0141877426612007
       },
       "prevControl": {
-        "x": 6.692650807955047,
-        "y": 1.0447727056591554
+        "x": 3.018952291148082,
+        "y": 1.0141877426612007
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -69,9 +68,9 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "stopIntake"
+          "scoreGamepiece"
         ],
-        "executionBehavior": "parallel",
+        "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
       }

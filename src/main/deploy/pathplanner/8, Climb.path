@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.8796748083006656,
-        "y": 3.839954812776759
+        "x": 1.9145106861642298,
+        "y": 4.494829275372837
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6109107308750286,
-        "y": 3.832092060916215
+        "x": 2.914510686164234,
+        "y": 4.494829275372837
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -17,8 +17,7 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "scoreObject",
-          "turnUp"
+          "scoreGamepiece"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
@@ -27,25 +26,25 @@
     },
     {
       "anchorPoint": {
-        "x": 5.694113696214621,
-        "y": 4.702090419296626
+        "x": 5.027940055880112,
+        "y": 4.518306179469502
       },
       "prevControl": {
-        "x": 1.515299534095572,
-        "y": 4.783593343410463
+        "x": 4.0281146978653775,
+        "y": 4.499617855020628
       },
       "nextControl": {
-        "x": 6.69392355056794,
-        "y": 4.682590287554394
+        "x": 5.746217206720128,
+        "y": 4.531731920606699
       },
       "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": true,
+      "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "readyIntake"
+          "intake"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
@@ -54,12 +53,12 @@
     },
     {
       "anchorPoint": {
-        "x": 7.0830148295367685,
-        "y": 4.71097510915401
+        "x": 5.377009325447221,
+        "y": 2.73268260822236
       },
       "prevControl": {
-        "x": 6.654659073203805,
-        "y": 4.71097510915401
+        "x": 5.920751841503682,
+        "y": 2.7393954787909576
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -69,9 +68,9 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "stopIntake"
+          "climb"
         ],
-        "executionBehavior": "parallel",
+        "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
       }
