@@ -4,12 +4,25 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.Path;
+
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.networktables.LogMessage;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Commands.CommandController;
 import frc.robot.Subsystems.Drive;
 import frc.robot.Subsystems.HorizontalExtension;
@@ -27,8 +40,7 @@ public class Robot extends TimedRobot {
   private static VerticalExtension m_verticalExtension = VerticalExtension.getInstance();
   private static HorizontalExtension m_horizontalExtension = new HorizontalExtension();
 
-
-  private final CommandController m_robot = new CommandController();
+   private final CommandController m_robot = new CommandController();
 
 
   /**
@@ -42,10 +54,19 @@ public class Robot extends TimedRobot {
     m_verticalExtension.initSystem();
     m_horizontalExtension.initSystem();
     m_robot.configureBindings(); //setup bindings for drive, mechanisms etc.
+
+
   }
 
+
+
+
   /**
-   * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
+   * This f
+   * 
+   * 
+   *  Shuffleboard.getTab("Autonomous")
+   * unction is called every 20 ms, no matter the mode. Use this for items like diagnostics
    * that you want ran during disabled, autonomous, teleoperated and test.
    *
    * <p>This runs after the mode specific periodic functions, but before LiveWindow and
@@ -56,6 +77,7 @@ public class Robot extends TimedRobot {
     VerticalExtension.getInstance().checkCalibration();
     CommandScheduler.getInstance().run();
     Drive.getInstance().diag();
+    
     SmartDashboard.putBoolean("Bottom", VerticalExtension.getInstance().getLowLimit());
     SmartDashboard.putBoolean("Top", VerticalExtension.getInstance().getHighLimit());
     SmartDashboard.putNumber("ArmPos", VerticalExtension.getInstance().getMeasurement());
