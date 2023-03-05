@@ -88,7 +88,7 @@ public class CommandController {
       );
 
       m_driverHID.leftBumper()
-      .onTrue(
+       .onTrue(
         new ArmZeroPosCommand(m_wrist, m_vertical, m_horizontal)
       );
       m_driverHID.rightBumper().onTrue(
@@ -103,7 +103,7 @@ public class CommandController {
         new OpenClaw(m_claw)    
         );
       m_driverHID.leftTrigger().onTrue(
-        new RunIntake(m_intake)
+        new RunIntake(m_intake, m_claw)
       );
       m_driverHID.leftTrigger().onTrue(
         new RunFeed(m_feed)

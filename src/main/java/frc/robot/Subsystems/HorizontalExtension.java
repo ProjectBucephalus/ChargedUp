@@ -72,14 +72,18 @@ public class HorizontalExtension extends SubsystemBase {
    * @return true if arm is within defined position tollerence.
    */
   public boolean getArmAtPosition() {
-    System.out.println(getMeasurement());
-    System.out.println(armGoal);
     if(getMeasurement() <= armGoal + Config.kHorizontalExtensionPositionTollerenceMetres && getMeasurement() >= armGoal - Config.kHorizontalExtensionPositionTollerenceMetres) {
       return true;
     }
     return false;
   }
-
+  public boolean getIntakeLegal() {
+   // System.out.println(getMeasurement());
+    if(getMeasurement() <= 0.01 ){
+      return true;
+    }
+    return false;
+  }
 
   /**
    * Get position of arm
@@ -95,6 +99,7 @@ public class HorizontalExtension extends SubsystemBase {
   public static void resetSensors() {
     horizontalExtensionMotor.setSelectedSensorPosition(0);
   }
+
 
   /**
    * Move arm to desired position using motionMagic
