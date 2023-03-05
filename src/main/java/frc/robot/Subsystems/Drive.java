@@ -83,7 +83,7 @@ public class Drive extends SubsystemBase{
     Rotation2d rotation2d = new ;
     public void resetOdometry(Pose2d pose){
       resetDriveEncoders();
-      driveOdometry.resetPosition(Rotation2d(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres(), pose);;
+      driveOdometry.resetPosition(new Rotation2d(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres(), pose);;
     }
     /**
      * Configure all motor controllers, sensors, etc. of this subsystem

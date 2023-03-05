@@ -45,8 +45,11 @@ public class Constants {
     public static final double kDriveTurnExpo = 1;
 
     public static final double kPDriveVel = 0;
-    
+
     public static final double kvVoltSecondsPerMeter = 0;
     public static final double kaVoltSecondsSquaredPerMeter = 0;
+    public static final double ksVolts = 0;
+    public static final double kRamseteB = 0;
+    public static final double kRamseteZeta = 0;
     
 }
