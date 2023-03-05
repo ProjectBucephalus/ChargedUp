@@ -10,6 +10,11 @@ import com.ctre.phoenix.sensors.Pigeon2;
 
 import frc.robot.Config;
 import frc.robot.Constants;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -39,23 +44,54 @@ public class Drive extends SubsystemBase{
     private WPI_TalonFX rightDriveA = new WPI_TalonFX(Constants.kRightDriveACanId);
     private WPI_TalonFX rightDriveB = new WPI_TalonFX(Constants.kRightDriveBCanId);
     private WPI_TalonFX rightDriveC = new WPI_TalonFX(Constants.kRightDriveCCanId); 
-    
+    private Pigeon2 gyro = new Pigeon2(Constants.kPigeonCanId);
     //Setup objects for use with the DifferentialDrive
     private final MotorControllerGroup leftDrive = new MotorControllerGroup(leftDriveA, leftDriveB, leftDriveC);
     private final MotorControllerGroup rightDrive = new MotorControllerGroup(rightDriveA, rightDriveB, rightDriveC);
 
-    private final DifferentialDrive driveMotors = new DifferentialDrive(leftDrive, rightDrive);
+    public final DifferentialDrive driveMotors = new DifferentialDrive(leftDrive, rightDrive);
 
-   // private Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
+    public final DifferentialDriveKinematics driveKinematics = new DifferentialDriveKinematics(.61);
+   
+    public final DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(gyro.get(), getRightDriveEncodersDistanceMetres(), getLeftDriveEncodersDistanceMetres()); //FIXME
+    // private Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
 
     private boolean brakeState = false; //Define default state for the brakes
 
 
+    public Pose2d getPose() {
+      return driveOdometry.getPoseMeters();
+    }
+    public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+      return new DifferentialDriveWheelSpeeds(getLeftMotorVelocity(), getRightMotorVelocity());
+    }
+    private double getRightMotorVelocity(){
+      return ((rightDriveA.getSelectedSensorVelocity() +
+      rightDriveB.getSelectedSensorVelocity() + 
+      rightDriveC.getSelectedSensorVelocity()) / 3);
+    }
+    private double getLeftMotorVelocity(){
+      return ((leftDriveA.getSelectedSensorVelocity() +
+      leftDriveB.getSelectedSensorVelocity() + 
+      leftDriveC.getSelectedSensorVelocity()) / 3);
+    }
+    public void tankDriveVolts(double leftVolts, double rightVolts){
+      leftDrive.setVoltage(leftVolts);
+      rightDrive.setVoltage(rightVolts);
+      driveMotors.feed();
+    }
+    Rotation2d rotation2d = new ;
+    public void resetOdometry(Pose2d pose){
+      resetDriveEncoders();
+      driveOdometry.resetPosition(Rotation2d(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres(), pose);;
+    }
     /**
      * Configure all motor controllers, sensors, etc. of this subsystem
      * This means that in theory, on a controller fail, all that is needed to reconfigure
      * the new ones is to change the CAN ID and it will pick up its config.
      */
+
+
     public void initSystem() {
         leftDriveA.configFactoryDefault(); //Reset all settings on the drive motors
         leftDriveB.configFactoryDefault();
@@ -131,8 +167,8 @@ public class Drive extends SubsystemBase{
    */
   public double getLeftDriveEncodersDistanceMetres() {
     return ((leftDriveA.getSelectedSensorPosition() +
-            leftDriveB.getSelectedSensorPosition())/2 );// + 
-            //leftDriveC.getSelectedSensorPosition()) / 3); //comment for pegasus config.
+            leftDriveB.getSelectedSensorPosition() + 
+            leftDriveC.getSelectedSensorPosition()) / 3); //comment for pegasus config.
   }
 
   /**
@@ -141,8 +177,8 @@ public class Drive extends SubsystemBase{
    */
   public double getRightDriveEncodersDistanceMetres() {
     return ((rightDriveA.getSelectedSensorPosition() +
-            rightDriveB.getSelectedSensorPosition()) /2 ); //+ 
-           // rightDriveC.getSelectedSensorPosition()) / 3); //comment for pegasus config
+            rightDriveB.getSelectedSensorPosition() + 
+            rightDriveC.getSelectedSensorPosition()) / 3); //comment for pegasus config
   }
 
   /**
@@ -288,5 +324,6 @@ public class Drive extends SubsystemBase{
     SmartDashboard.putNumber("right c temp", rightDriveC.getTemperature());
 
   }
+
 
 }

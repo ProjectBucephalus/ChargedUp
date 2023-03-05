@@ -33,6 +33,7 @@ import frc.robot.Commands.Intake.StopIntake;
 import frc.robot.Commands.Intake.StopIntakeMotors;
 import frc.robot.Subsystems.Claw;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.Commands.Arm.ArmHighPosCommand;
 import frc.robot.Commands.Arm.ArmHomePosCommand;
@@ -49,7 +50,8 @@ import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
 import frc.robot.Utilities.PbSlewRateLimiter;
 import frc.robot.Utilities.PbSlewRateLimiter.Constraints;
-
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 /** Add your docs here. */
 public class CommandController {
 
@@ -67,7 +69,7 @@ public class CommandController {
     private boolean revState = false;
 
 
-    SendableChooser<Command> chooser = SendableChooser<>();
+    SendableChooser<Command> chooser = new SendableChooser<>();
 
   public CommandController(){
     configureBindings();
@@ -96,18 +98,19 @@ public class CommandController {
       System.out.println("Unable to read from file " + fileName );
       return new InstantCommand();
     }
-    RamseteCommand ramseteCommand = new RamseteCommand(traj, drivetrainSubsystem::getpose,
+    RamseteCommand ramseteCommand = new RamseteCommand(traj, Drive.getInstance()::getPose,
       new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-      new SimpleMotorFeedforward(Constants.ks, Constants.kv,Constants.ka)
-      Constants.kDriveKinematics, drivetrainSubsystem::getWheelSpeeds,
+      new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter,Constants.kaVoltSecondsSquaredPerMeter),
+      Drive.getInstance().driveMotors, Drive.getInstance().getWheelSpeeds(),
       new PIDController(Constants.kPDriveVel, 0, 0),
-      new PIDController(Constants.kPDriveVel, 0, 0),  drivetrainSubsystem::tankDriveVolts,
-      drivetrainSubsystem);
-
+      new PIDController(Constants.kPDriveVel, 0, 0),  Drive.getInstance().tankDriveVolts(),
+      Drive.getInstance());
 
   
     if (resetOdometry){
-      return new SequentialCommandGroup(new InstandCommand(()->drivesubstyme.resetOdometry(trajectory.getInitialPose())), ramseteCommand);
+      return new SequentialCommandGroup(
+        new InstantCommand(() -> Drive.getInstance().resetOdometry(traj.getInitialPose())), ramseteCommand);
+        
     }else{
       return ramseteCommand;
     }
