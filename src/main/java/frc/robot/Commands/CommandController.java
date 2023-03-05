@@ -67,52 +67,7 @@ public class CommandController {
     private boolean revState = false;
 
 
-    SendableChooser<Command> chooser = SendableChooser<>();
-
-  public CommandController(){
-    configureBindings();
-    chooser.addOption("2,Bottom,Climb", null);
-    chooser.addOption("2,Bottom", null);
-    chooser.addOption("2,Climb", null);
-    chooser.addOption("8,Bottom,Climb", null);
-    chooser.addOption("8,Bottom", null);
-    chooser.addOption("8,Climb", null);
-    chooser.addOption("5,Bottom,Climb", null);
-    chooser.addOption("5,Bottom", null);
-    chooser.addOption("5,Climb", null);
-    chooser.addOption("5,Top,Climb", null);
-    chooser.addOption("5,Top", null);
-
-
-    Shuffleboard.getTab("Autonomous").add(chooser);
-  }
-  public Command loadPathPlannerTrajectoryToRamseteCommand(String fileName, Boolean resetOdometry){
-    Trajectory traj;
-    try{
-      Path tracjectoryPath = Filesystem.getDeployDirectory().toPath().resolve(fileName);
-      traj = TrajectoryUtil.fromPathweaverJson(tracjectoryPath);
-    }catch(IOException exception){
-      DriverStation.reportError("Unable to open trajectory in " + fileName, exception.getStackTrace());
-      System.out.println("Unable to read from file " + fileName );
-      return new InstantCommand();
-    }
-    RamseteCommand ramseteCommand = new RamseteCommand(traj, drivetrainSubsystem::getpose,
-      new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-      new SimpleMotorFeedforward(Constants.ks, Constants.kv,Constants.ka)
-      Constants.kDriveKinematics, drivetrainSubsystem::getWheelSpeeds,
-      new PIDController(Constants.kPDriveVel, 0, 0),
-      new PIDController(Constants.kPDriveVel, 0, 0),  drivetrainSubsystem::tankDriveVolts,
-      drivetrainSubsystem);
-
-
   
-    if (resetOdometry){
-      return new SequentialCommandGroup(new InstandCommand(()->drivesubstyme.resetOdometry(trajectory.getInitialPose())), ramseteCommand);
-    }else{
-      return ramseteCommand;
-    }
-  
-  }
 
 
     /**
