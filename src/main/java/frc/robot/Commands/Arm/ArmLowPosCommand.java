@@ -32,8 +32,12 @@ public class ArmLowPosCommand extends CommandBase {
   @Override
   public void execute() {
     m_verticalExtension.setPosition(Config.kArmLowPosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmLowPosX, Config.kArmLowPosY));
-    m_horizontalExtension.setPosition(Config.kArmHighPosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmLowPosX, Config.kArmLowPosY));
+    if(m_verticalExtension.getArmAtPosition()){ 
+      m_horizontalExtension.setPosition(Config.kArmLowPosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmLowPosX, Config.kArmLowPosY));
+    }
+
   }
+  
 
   // Called once the command ends or is interrupted.
   @Override

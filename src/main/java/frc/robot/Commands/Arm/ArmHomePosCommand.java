@@ -31,15 +31,17 @@ public class ArmHomePosCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_verticalExtension.setPosition(Config.kArmHomePosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmHomePosX, Config.kArmHomePosY));
     m_horizontalExtension.setPosition(Config.kArmHomePosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmHomePosX, Config.kArmHomePosY));
+    if(m_horizontalExtension.getArmAtPosition()){
+      m_verticalExtension.setPosition(Config.kArmHomePosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmHomePosX, Config.kArmHomePosY));
+    }
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    new ArmZeroPosCommand(m_wrist, m_verticalExtension, m_horizontalExtension).schedule(); //zeroes the arm after going to home position
+   // new ArmZeroPosCommand(m_wrist, m_verticalExtension, m_horizontalExtension).schedule(); //zeroes the arm after going to home position
   }
 
   // Returns true when the command should end.

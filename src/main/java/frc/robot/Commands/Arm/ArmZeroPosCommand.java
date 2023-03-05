@@ -32,15 +32,14 @@ public class ArmZeroPosCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Run");
-    m_verticalExtension.setSpeed(-0.1);
-
+    m_verticalExtension.setPosition(0);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmMedPosX, Config.kArmMedPosY));
+    m_horizontalExtension.setPosition(0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_verticalExtension.setSpeed(0.0);
+
     System.out.println("Finish");
 
   }
@@ -48,6 +47,6 @@ public class ArmZeroPosCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_verticalExtension.getLowLimit();
+return true;  
   }
 }

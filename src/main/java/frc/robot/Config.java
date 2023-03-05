@@ -26,20 +26,25 @@ public class Config {
     public static final double wheelCircumferenceMetres = wheelDiameterMetres * Math.PI;
     public static final double kRatioMotorToWheel = (1/11.1/wheelCircumferenceMetres); //gearbox is 11.1:1
 
-    public static final double kHorizontalExtensionKS = 0;
-    public static final double kHorizontalExtensionKV = 0;
-    public static final double kHorizontalExtensionKG = 0;
-    public static final double kHorizontalExtensionKA = 0;
-    public static final double kHorizontalExtensionKP = 0;
-    public static final double kHorizontalExtensionKD = 0;
-    public static final double kHorizontalExtensionMaxVelocity = 0;
-    public static final double kHorizontalExtensionMaxAcceleration = 0;
-    public static final double kHorizontalExtensionEncoderPPR = 4096; //CANCoder, falcon is 2048 EPR
-    public static final double kHorizontalExtensionMetresPerRotation = 0.2;
-    public static final double kHorizontalExtensionPositionTollerenceMetres = 0.1;
+    public static final double kHorizontalExtensionPositionTollerenceMetres = .12;
     public static final double kHorizontalExtensionNeutralPosition = 0;
     public static final double kHorizontalExtensionEncoderOffset = 0;
     public static final double kHorizontalExtensionMaxLength = 1;
+
+    public static final double kHorizontalExtensionKS = 0.09598;
+    public static final double kHorizontalExtensionKV = 24.511;
+    public static final double kHorizontalExtensionKG = 0.078549;
+    public static final double kHorizontalExtensionKA = 0.91854;
+    public static final double kHorizontalExtensionKP = 0.39027;
+    public static final double kHorizontalExtensionKD = 0;
+    public static final double kHorizontalExtensionMaxVelocity = 1.2;
+    public static final double kHorizontalExtensionMaxAcceleration = .7;
+    public static final double kHorizontalExtensionEncoderPPR = 2048; //CANCoder, falcon is 2048 EPR
+    public static final double kHorizontalxtensionGearRatio = 27/1;
+    public static final double kHorizontalExtensionMetresPerRotation = 1.5 * 0.0254 * Math.PI; //0.00118872;
+    public static final double kHorizontalExtensionPositionTolerenceMetres = 0.01;
+    public static final double kHorizontalExtensionMaxHeight = 3.51;
+
 
     public static final double kWingKS = 0.09598;
     public static final double kWingKV = 24.511;
@@ -63,29 +68,29 @@ public class Config {
     public static final int kWristReversePortId = 1;
 
     /**
-     * Constants for arm positions for different elements of gameplay
+     * Constants for arm positions for different elements of gameplayzxdDdn/
      * ALL MEASUREMENTS IN METRES!!!
      */
 
-     public static final double kArmHomePosX = 0;
-     public static final double kArmHomePosY = 0.05;
+     public static final double kArmHomePosX = 0.00;
+     public static final double kArmHomePosY = -0.158;
      public static final WristPosition kArmHomePosWrist = WristPosition.LOWERED;
      
-     public static final double kArmLowPosX = 0.1;
-     public static final double kArmLowPosY = 0.5;
+     public static final double kArmLowPosX = 0.03;
+     public static final double kArmLowPosY = 0.3;
      public static final WristPosition kArmLowPosWrist = WristPosition.LOWERED;
 
     
-     public static final double kArmMedPosX = 0.3;
-     public static final double kArmMedPosY = 0.25;
+     public static final double kArmMedPosX = 0.95;
+     public static final double kArmMedPosY = 0.34;
      public static final WristPosition kArmMedPosWrist = WristPosition.RAISED;
      
-     public static final double kArmHighPosX = 0.5;
-     public static final double kArmHighPosY = 0.6;
+     public static final double kArmHighPosX = 2.4;
+     public static final double kArmHighPosY = 0.495;
      public static final WristPosition kArmHighPosWrist = WristPosition.RAISED;
      
-     public static final double kArmShelfPosX = 4;
-     public static final double kArmShelfPosY = 0.6;
+     public static final double kArmShelfPosX = .5;
+     public static final double kArmShelfPosY = 0.4;
      public static final WristPosition kArmShelfPosWrist = WristPosition.RAISED;
 
     /**
@@ -105,8 +110,8 @@ public class Config {
     /**
      * Intake constants
      */
-     public static final double kFeedMotorPower = 1;
-     public static final double kIntakeMotorPower = 1;
+     public static final double kFeedMotorPower = .6;
+     public static final double kIntakeMotorPower = .285;
      public static final int kIntakeSolenoidPort = 3; //PCM port of the claw solenoid
 
     /**
@@ -134,8 +139,8 @@ public class Config {
     public static final double kVerticalExtensionKA = 0.91854;
     public static final double kVerticalExtensionKP = 0.39027;
     public static final double kVerticalExtensionKD = 0;
-    public static final double kVerticalExtensionMaxVelocity = 1.5;
-    public static final double kVerticalExtensionMaxAcceleration = 1;
+    public static final double kVerticalExtensionMaxVelocity = 2;
+    public static final double kVerticalExtensionMaxAcceleration = 1.3;
     public static final double kVerticalExtensionEncoderPPR = 2048; //CANCoder, falcon is 2048 EPR
     public static final double kVertialExtensionGearRatio = 27/1;
     public static final double kVerticalExtensionMetresPerRotation = 1.5 * 0.0254 * Math.PI; //0.00118872;

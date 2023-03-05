@@ -5,21 +5,32 @@
 package frc.robot.Commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Commands.Claw.CloseClaw;
+import frc.robot.Commands.Claw.OpenClaw;
+import frc.robot.Subsystems.Claw;
 import frc.robot.Subsystems.Intake;
+import frc.robot.Subsystems.VerticalExtension;
+import frc.robot.Subsystems.Wrist;
+import frc.robot.Subsystems.Claw.ClawPosition;
 import frc.robot.Subsystems.Intake.IntakePosition;
 
 public class ExtendIntake extends CommandBase {
   private Intake m_intake;
+  private Claw m_claw;
   /** Creates a new ExtendIntake. */
-  public ExtendIntake(Intake intakeSubsystem) {
+  public ExtendIntake(Intake intakeSubsystem,Claw clawSubsystem) {
     m_intake = intakeSubsystem;
+    m_claw = clawSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.setIntake(IntakePosition.EXTENDED);
+    if(VerticalExtension.getInstance().getIntakeLegal()){
+      m_intake.setIntake(IntakePosition.EXTENDED);
+      m_claw.setClaw(ClawPosition.CLOSED);
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.

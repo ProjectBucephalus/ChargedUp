@@ -23,7 +23,7 @@ public class Feed extends SubsystemBase{
 
     public void setFeed(FeedMotorsStatus status) {
         if (status == FeedMotorsStatus.ON) {
-            FeedMotorsBottom.set(Config.kFeedMotorPower);
+            FeedMotorsBottom.set(-Config.kFeedMotorPower);
             FeedMotorsTop.set(Config.kFeedMotorPower);
         } else if (status == FeedMotorsStatus.OFF) {
             FeedMotorsBottom.set(0);

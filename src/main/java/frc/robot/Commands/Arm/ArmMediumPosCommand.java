@@ -25,7 +25,6 @@ public class ArmMediumPosCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_wrist.setWristPosition(Config.kArmMedPosWrist);
     System.out.println("hellow");
   }
 
@@ -33,13 +32,16 @@ public class ArmMediumPosCommand extends CommandBase {
   @Override
   public void execute() {
     m_verticalExtension.setPosition(Config.kArmMedPosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmMedPosX, Config.kArmMedPosY));
-    m_horizontalExtension.setPosition(Config.kArmMedPosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmMedPosX, Config.kArmMedPosY));
-
+    if(m_verticalExtension.getArmAtPosition()){
+      m_horizontalExtension.setPosition(Config.kArmMedPosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmMedPosX, Config.kArmMedPosY));
+      m_wrist.setWristPosition(Config.kArmMedPosWrist);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

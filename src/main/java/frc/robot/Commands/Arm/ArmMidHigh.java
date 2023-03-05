@@ -10,12 +10,12 @@ import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
 
-public class ArmShelfPosCommand extends CommandBase {
+public class ArmMidHigh extends CommandBase {
   private final Wrist m_wrist;
   private final HorizontalExtension m_horizontalExtension;
   private final VerticalExtension m_verticalExtension;
-  /** Creates a new ArmShelfPosCommand. */
-  public ArmShelfPosCommand(Wrist wristSubsystem, VerticalExtension verticalExtensionSubsystem, HorizontalExtension horizontalExtensionSubsystem) {
+  /** Creates a new ArmsumPosCommand. */
+  public ArmMidHigh(Wrist wristSubsystem, VerticalExtension verticalExtensionSubsystem, HorizontalExtension horizontalExtensionSubsystem) {
     m_wrist = wristSubsystem;
     m_verticalExtension = verticalExtensionSubsystem;
     m_horizontalExtension = horizontalExtensionSubsystem;
@@ -25,22 +25,22 @@ public class ArmShelfPosCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("hellow");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_verticalExtension.setPosition(Config.kArmShelfPosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmShelfPosX, Config.kArmShelfPosY));
+    m_verticalExtension.setPosition(Config.kArmMedPosY-.385);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmMedPosX, Config.kArmMedPosY));
     if(m_verticalExtension.getArmAtPosition()){
-      m_horizontalExtension.setPosition(Config.kArmShelfPosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmShelfPosX, Config.kArmShelfPosY));
-      m_wrist.setWristPosition(Config.kArmShelfPosWrist);
+      m_horizontalExtension.setPosition(Config.kArmMedPosX +1);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmMedPosX, Config.kArmMedPosY));
+      m_wrist.setWristPosition(Config.kArmMedPosWrist);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_wrist.setWristPosition(Config.kArmShelfPosWrist);
   }
 
   // Returns true when the command should end.

@@ -13,7 +13,7 @@ import frc.robot.Constants;
 
 /** Add your docs here. */
 public class Wrist extends SubsystemBase {
-
+  WristPosition lastWristPos = WristPosition.LOWERED;
   public enum WristPosition {
     RAISED,
     LOWERED,
@@ -32,11 +32,21 @@ public class Wrist extends SubsystemBase {
   public void setWristPosition(WristPosition wristPosition) {
     if(wristPosition == WristPosition.LOWERED) {
       wristSolenoid.set(Value.kReverse);
+      lastWristPos = WristPosition.LOWERED;
     } else if(wristPosition == WristPosition.RAISED) {
       wristSolenoid.set(Value.kForward);
+      lastWristPos = WristPosition.RAISED;
+
     }
   }
 
+  public boolean getWristLegal(){
+    if(lastWristPos == WristPosition.LOWERED) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
 
 

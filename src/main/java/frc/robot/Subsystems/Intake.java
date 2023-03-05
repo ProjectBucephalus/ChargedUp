@@ -38,7 +38,7 @@ public class Intake extends SubsystemBase{
     public void setWheels(IntakeMotorStatus status) {
         if (status == IntakeMotorStatus.ON) {
             intakeMotor1.set(Config.kIntakeMotorPower);
-            intakeMotor2.set(Config.kIntakeMotorPower);
+            intakeMotor2.set(-Config.kIntakeMotorPower);
         }else if(status == IntakeMotorStatus.OFF) {
             intakeMotor1.set(0);
             intakeMotor2.set(0);

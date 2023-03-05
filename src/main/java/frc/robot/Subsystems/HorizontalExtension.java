@@ -19,7 +19,7 @@ import frc.robot.Constants;
 public class HorizontalExtension extends SubsystemBase {
 
     private final static WPI_TalonFX horizontalExtensionMotor = new WPI_TalonFX(Constants.kHorizontalElevatorCanId);
-    private final CANCoder horizontalExtensionEncoder = new CANCoder(Constants.kHorizontalElevatorEncoderCanId);
+    //private final CANCoder horizontalExtensionEncoder = new CANCoder(Constants.kHorizontalElevatorEncoderCanId);
     private double armGoal = 0;
 
     //this subsystem uses a combination of a feedfoward and feedback control.
@@ -53,8 +53,6 @@ public class HorizontalExtension extends SubsystemBase {
     //horizontalExtensionMotor.configRemoteFeedbackFilter(horizontalExtensionEncoder, 0);
     //horizontalExtensionMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
 
-    horizontalExtensionEncoder.configFactoryDefault(); //reset and configure the encoder
-    horizontalExtensionEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
     resetSensors();
 
   }
@@ -79,7 +77,13 @@ public class HorizontalExtension extends SubsystemBase {
     }
     return false;
   }
-
+  public boolean getIntakeLegal() {
+   // System.out.println(getMeasurement());
+    if(getMeasurement() <= 0.01 ){
+      return true;
+    }
+    return false;
+  }
 
   /**
    * Get position of arm
@@ -96,13 +100,14 @@ public class HorizontalExtension extends SubsystemBase {
     horizontalExtensionMotor.setSelectedSensorPosition(0);
   }
 
+
   /**
    * Move arm to desired position using motionMagic
    * @param position in metres
    */
   public void setPosition(double position) {
     armGoal = position;
-    horizontalExtensionMotor.set(ControlMode.MotionMagic, position / (Config.kHorizontalExtensionMetresPerRotation / Config.kHorizontalExtensionEncoderPPR));
+    horizontalExtensionMotor.set(ControlMode.MotionMagic, -position / (Config.kHorizontalExtensionMetresPerRotation / Config.kHorizontalExtensionEncoderPPR));
   }
 
 }
