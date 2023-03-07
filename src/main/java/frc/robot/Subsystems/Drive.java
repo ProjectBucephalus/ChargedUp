@@ -49,6 +49,7 @@ public class Drive extends SubsystemBase{
    // private Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
 
     private boolean brakeState = false; //Define default state for the brakes
+    private boolean directionInvert = false;
 
 
     /**
@@ -271,6 +272,8 @@ public class Drive extends SubsystemBase{
   }
 
   public void diag() {
+    SmartDashboard.putBoolean("Direction swap", directionInvert);
+
     SmartDashboard.putNumber("left a current", leftDriveA.getStatorCurrent());
     SmartDashboard.putNumber("left b current", leftDriveB.getStatorCurrent());
     SmartDashboard.putNumber("left c current", leftDriveC.getStatorCurrent());
@@ -287,6 +290,23 @@ public class Drive extends SubsystemBase{
     SmartDashboard.putNumber("right b temp", rightDriveB.getTemperature());
     SmartDashboard.putNumber("right c temp", rightDriveC.getTemperature());
 
+  }
+
+  public void setDriveInvert(boolean invert) {
+
+    directionInvert = invert;
+  }
+
+  public boolean getDriveInvert() {
+    return directionInvert;
+  }
+
+  public double getDriveDirMultiplier() {
+    if(directionInvert) {
+      return -1;
+    } else {
+      return 1;
+    }
   }
 
 }

@@ -4,34 +4,8 @@
 
 package frc.robot.Commands;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Commands.Claw.CloseClaw;
-import frc.robot.Commands.Claw.OpenClaw;
-import frc.robot.Commands.Intake.ExtendIntake;
-import frc.robot.Commands.Intake.RetractIntake;
-import frc.robot.Commands.Intake.RunFeed;
-import frc.robot.Commands.Intake.RunIntake;
-import frc.robot.Commands.Intake.RunIntakeMotors;
-import frc.robot.Commands.Intake.StopFeed;
-import frc.robot.Commands.Intake.StopIntake;
-import frc.robot.Commands.Intake.StopIntakeMotors;
-import frc.robot.Subsystems.Claw;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot;
 import frc.robot.Commands.Arm.ArmHighPosCommand;
@@ -41,6 +15,13 @@ import frc.robot.Commands.Arm.ArmMediumPosCommand;
 import frc.robot.Commands.Arm.ArmMidHigh;
 import frc.robot.Commands.Arm.ArmZeroPosCommand;
 import frc.robot.Commands.Arm.intakeArm;
+import frc.robot.Commands.Claw.CloseClaw;
+import frc.robot.Commands.Claw.OpenClaw;
+import frc.robot.Commands.Intake.RunFeed;
+import frc.robot.Commands.Intake.RunIntake;
+import frc.robot.Commands.Intake.StopFeed;
+import frc.robot.Commands.Intake.StopIntake;
+import frc.robot.Subsystems.Claw;
 import frc.robot.Subsystems.Drive;
 import frc.robot.Subsystems.Feed;
 import frc.robot.Subsystems.HorizontalExtension;
@@ -48,7 +29,6 @@ import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
 import frc.robot.Utilities.PbSlewRateLimiter;
-import frc.robot.Utilities.PbSlewRateLimiter.Constraints;
 
 /** Add your docs here. */
 public class CommandController {
@@ -83,8 +63,8 @@ public class CommandController {
     // Control the drive with split-stick arcade controls
     m_drive.setDefaultCommand(
         m_drive.arcadeDriveCommand(
-            () -> -m_driverJoystick.getY() * 1 * m_drive.getThrottleInput(m_driverJoystick),
-            () -> -m_driverJoystick.getX() * 1 * m_drive.getThrottleInput(m_driverJoystick)));
+            () -> -m_driverJoystick.getY() * m_drive.getDriveDirMultiplier() * m_drive.getThrottleInput(m_driverJoystick),
+            () -> -m_driverJoystick.getX() * m_drive.getDriveDirMultiplier() * m_drive.getThrottleInput(m_driverJoystick)));
     
     
     m_driverHID.y()
@@ -135,6 +115,15 @@ public class CommandController {
       );
       m_driverHID.leftStick().onTrue(
         new ArmMidHigh(m_wrist, m_vertical, m_horizontal)
+      );
+
+      m_driverJoystick.pov(0).onTrue(
+        new InvertDirectionCommand(m_drive, false)
+      );
+
+      
+      m_driverJoystick.pov(180).onTrue(
+        new InvertDirectionCommand(m_drive, true)
       );
 
   }
