@@ -39,8 +39,9 @@ public class Robot extends TimedRobot {
   private Pneumatics m_pneumatics = Pneumatics.getInstance();
   private static VerticalExtension m_verticalExtension = VerticalExtension.getInstance();
   private static HorizontalExtension m_horizontalExtension = new HorizontalExtension();
-
+  private static Command m_autonomousCommand;
    private final CommandController m_robot = new CommandController();
+   private static Drive m_drive = new Drive().getInstance();
 
 
   /**
@@ -53,7 +54,7 @@ public class Robot extends TimedRobot {
     DriverStation.startDataLog(DataLogManager.getLog());
     m_verticalExtension.initSystem();
     m_horizontalExtension.initSystem();
-    m_robot.configureBindings(); //setup bindings for drive, mechanisms etc.
+     //setup bindings for drive, mechanisms etc.
 
 
   }
@@ -77,7 +78,7 @@ public class Robot extends TimedRobot {
     VerticalExtension.getInstance().checkCalibration();
     CommandScheduler.getInstance().run();
     Drive.getInstance().diag();
-    
+    //m_drive.periodic();
     SmartDashboard.putBoolean("Bottom", VerticalExtension.getInstance().getLowLimit());
     SmartDashboard.putBoolean("Top", VerticalExtension.getInstance().getHighLimit());
     SmartDashboard.putNumber("ArmPos", VerticalExtension.getInstance().getMeasurement());
@@ -97,13 +98,18 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     Drive.getInstance().setBrakes(true); //run brakes
     m_pneumatics.setPneumatics(true);
-
+    m_robot.getAutonomousCommand();
+    m_autonomousCommand = m_robot.getAutonomousCommand();
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
 
+  System.out.println(Drive.getInstance().getPose());
   }
 
   /** This function is called once when teleop is enabled. */

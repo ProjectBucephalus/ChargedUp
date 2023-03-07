@@ -6,6 +6,7 @@ package frc.robot.Commands;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.function.BiConsumer;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -73,38 +74,42 @@ public class CommandController {
 
   public CommandController(){
     configureBindings();
-    chooser.addOption("2,Bottom,Climb", null);
-    chooser.addOption("2,Bottom", null);
-    chooser.addOption("2,Climb", null);
-    chooser.addOption("8,Bottom,Climb", null);
-    chooser.addOption("8,Bottom", null);
-    chooser.addOption("8,Climb", null);
-    chooser.addOption("5,Bottom,Climb", null);
-    chooser.addOption("5,Bottom", null);
-    chooser.addOption("5,Climb", null);
-    chooser.addOption("5,Top,Climb", null);
-    chooser.addOption("5,Top", null);
+    chooser.addOption("2,Bottom,Climb", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/2BOTTOMClimb.wpilib.json", true));
+    chooser.addOption("2,Bottom", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/2BOTTOM.wpilib.json", true));
+    chooser.addOption("2,Climb", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/2Climb.wpilib.json", true));
+    chooser.addOption("8,TOP,Climb", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/8TOPClimb.wpilib.json", true));
+    chooser.addOption("8,TOP", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/8TOP.wpilib.json", true));
+    chooser.addOption("8,Climb", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/8Climb.wpilib.json", true));
+    chooser.addOption("5,Bottom,Climb", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/5BOTTOMClimb.wpilib.json", true));
+    chooser.addOption("5,Bottom", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/5BOTTOM.wpilib.json", true));
+    chooser.addOption("5,Climb", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/5Climb.wpilib.json", true));
+    chooser.addOption("5,Top,Climb", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/5TOPClimb.wpilib.json", true));
+    chooser.addOption("5,Top", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/5TOP.wpilib.json", true));
+    chooser.addOption("LUIN SUCKS!!!!", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/LuinStinks.wpilib.json", true));
 
 
-    Shuffleboard.getTab("Autonomous").add(chooser);
+    Shuffleboard.getTab("AutonomHEREous").add(chooser);
   }
   public Command loadPathPlannerTrajectoryToRamseteCommand(String fileName, Boolean resetOdometry){
     Trajectory traj;
     try{
       Path tracjectoryPath = Filesystem.getDeployDirectory().toPath().resolve(fileName);
+
       traj = TrajectoryUtil.fromPathweaverJson(tracjectoryPath);
+      
     }catch(IOException exception){
       DriverStation.reportError("Unable to open trajectory in " + fileName, exception.getStackTrace());
       System.out.println("Unable to read from file " + fileName );
       return new InstantCommand();
     }
-    RamseteCommand ramseteCommand = new RamseteCommand(traj, Drive.getInstance()::getPose,
+
+    RamseteCommand ramseteCommand = new RamseteCommand(traj, m_drive::getPose,
       new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
       new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter,Constants.kaVoltSecondsSquaredPerMeter),
-      Drive.getInstance().driveMotors, Drive.getInstance().getWheelSpeeds(),
+      m_drive.driveKinematics, m_drive::getWheelSpeeds,
       new PIDController(Constants.kPDriveVel, 0, 0),
-      new PIDController(Constants.kPDriveVel, 0, 0),  Drive.getInstance().tankDriveVolts(),
-      Drive.getInstance());
+      new PIDController(Constants.kPDriveVel, 0, 0), m_drive::tankDriveVolts,
+      m_drive); 
 
   
     if (resetOdometry){
@@ -129,6 +134,8 @@ public class CommandController {
   public void configureBindings() {
 
     // Control the drive with split-stick arcade controls
+
+
     m_drive.setDefaultCommand(
         m_drive.arcadeDriveCommand(
             () -> -m_driverJoystick.getY() * 1 * m_drive.getThrottleInput(m_driverJoystick),
@@ -188,7 +195,9 @@ public class CommandController {
   }
 
   
-
+  public Command getAutonomousCommand(){
+    return chooser.getSelected();
+  }
   
 
 

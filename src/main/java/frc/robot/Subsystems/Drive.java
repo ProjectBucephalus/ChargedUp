@@ -53,7 +53,7 @@ public class Drive extends SubsystemBase{
 
     public final DifferentialDriveKinematics driveKinematics = new DifferentialDriveKinematics(.61);
    
-    public final DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(gyro.get(), getRightDriveEncodersDistanceMetres(), getLeftDriveEncodersDistanceMetres()); //FIXME
+    public DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(new Rotation2d(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres()); //FIXME
     // private Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
 
     private boolean brakeState = false; //Define default state for the brakes
@@ -66,21 +66,21 @@ public class Drive extends SubsystemBase{
       return new DifferentialDriveWheelSpeeds(getLeftMotorVelocity(), getRightMotorVelocity());
     }
     private double getRightMotorVelocity(){
-      return ((rightDriveA.getSelectedSensorVelocity() +
-      rightDriveB.getSelectedSensorVelocity() + 
-      rightDriveC.getSelectedSensorVelocity()) / 3);
+      return (((((rightDriveA.getSelectedSensorVelocity()/2048) * 8/60 * .3192))+
+      (((rightDriveB.getSelectedSensorVelocity()/2048) * 8/60 * .3192)) + 
+      (((rightDriveC.getSelectedSensorVelocity()/2048) * 8/60 * .3192))) / 3);
     }
+
     private double getLeftMotorVelocity(){
-      return ((leftDriveA.getSelectedSensorVelocity() +
-      leftDriveB.getSelectedSensorVelocity() + 
-      leftDriveC.getSelectedSensorVelocity()) / 3);
+      return (((((leftDriveA.getSelectedSensorVelocity()/2048) * 8/60 * .3192))+
+      (((leftDriveB.getSelectedSensorVelocity()/2048) * 8/60 * .3192)) + 
+      (((leftDriveC.getSelectedSensorVelocity()/2048) * 8/60 * .3192))) / 3);
     }
     public void tankDriveVolts(double leftVolts, double rightVolts){
       leftDrive.setVoltage(leftVolts);
       rightDrive.setVoltage(rightVolts);
       driveMotors.feed();
     }
-    Rotation2d rotation2d = new ;
     public void resetOdometry(Pose2d pose){
       resetDriveEncoders();
       driveOdometry.resetPosition(new Rotation2d(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres(), pose);;
@@ -107,8 +107,11 @@ public class Drive extends SubsystemBase{
         rightDriveA.setInverted(TalonFXInvertType.Clockwise); //Invert the right side meaning that a foward command 
         rightDriveB.setInverted(TalonFXInvertType.Clockwise); //will result in all motors flashing green
         rightDriveC.setInverted(TalonFXInvertType.Clockwise);
+        
+        driveOdometry = new DifferentialDriveOdometry(new Rotation2d(gyro.getYaw()), getRightDriveEncodersDistanceMetres(), getLeftDriveEncodersDistanceMetres()); //FIXME
 
-    }
+      } 
+
 
     private static Drive myInstance;
 
@@ -121,7 +124,7 @@ public class Drive extends SubsystemBase{
       return myInstance;
     }
 
-    private Drive() {
+    public Drive() {
         initSystem(); //run the above method to initalise the controllers
         setBrakes(false); //Set the falcons to coast mode on robot init
     }
@@ -166,9 +169,9 @@ public class Drive extends SubsystemBase{
    * @return left encoder distance in metres (m), averaged from all three falcons
    */
   public double getLeftDriveEncodersDistanceMetres() {
-    return ((leftDriveA.getSelectedSensorPosition() +
-            leftDriveB.getSelectedSensorPosition() + 
-            leftDriveC.getSelectedSensorPosition()) / 3); //comment for pegasus config.
+    return (((((leftDriveA.getSelectedSensorPosition()/2048) * 8/60 * .3192))+
+            (((leftDriveB.getSelectedSensorPosition()/2048) * 8/60 * .3192)) + 
+            (((leftDriveC.getSelectedSensorPosition()/2048) * 8/60 * .3192))) / 3);
   }
 
   /**
@@ -176,9 +179,10 @@ public class Drive extends SubsystemBase{
    * @return right encoder distance in metres (m), averaged from all three falcons
    */
   public double getRightDriveEncodersDistanceMetres() {
-    return ((rightDriveA.getSelectedSensorPosition() +
-            rightDriveB.getSelectedSensorPosition() + 
-            rightDriveC.getSelectedSensorPosition()) / 3); //comment for pegasus config
+
+    return (((((rightDriveA.getSelectedSensorPosition()/2048) * 8/60 * .3192))+
+            (((rightDriveB.getSelectedSensorPosition()/2048) * 8/60 * .3192)) + 
+            (((rightDriveC.getSelectedSensorPosition()/2048) * 8/60 * .3192))) / 3); //comment for pegasus config
   }
 
   /**
@@ -324,6 +328,12 @@ public class Drive extends SubsystemBase{
     SmartDashboard.putNumber("right c temp", rightDriveC.getTemperature());
 
   }
-
+  @Override
+  public void periodic() {
+    // Update the odometry in the periodic block
+    
+    driveOdometry.update(
+      new Rotation2d(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres());
+  }
 
 }
