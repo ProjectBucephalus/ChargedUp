@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import frc.robot.Config;
 import frc.robot.Constants;
@@ -44,7 +45,7 @@ public class Drive extends SubsystemBase{
     private WPI_TalonFX rightDriveA = new WPI_TalonFX(Constants.kRightDriveACanId);
     private WPI_TalonFX rightDriveB = new WPI_TalonFX(Constants.kRightDriveBCanId);
     private WPI_TalonFX rightDriveC = new WPI_TalonFX(Constants.kRightDriveCCanId); 
-    private Pigeon2 gyro = new Pigeon2(Constants.kPigeonCanId);
+    private WPI_Pigeon2 gyro = new WPI_Pigeon2(Constants.kPigeonCanId);
     //Setup objects for use with the DifferentialDrive
     private final MotorControllerGroup leftDrive = new MotorControllerGroup(leftDriveA, leftDriveB, leftDriveC);
     private final MotorControllerGroup rightDrive = new MotorControllerGroup(rightDriveA, rightDriveB, rightDriveC);
@@ -53,7 +54,7 @@ public class Drive extends SubsystemBase{
 
     public final DifferentialDriveKinematics driveKinematics = new DifferentialDriveKinematics(.61);
    
-    public DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(new Rotation2d(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres()); //FIXME
+    public DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres()); //FIXME
     // private Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
 
     private boolean brakeState = false; //Define default state for the brakes
@@ -108,7 +109,8 @@ public class Drive extends SubsystemBase{
         rightDriveB.setInverted(TalonFXInvertType.Clockwise); //will result in all motors flashing green
         rightDriveC.setInverted(TalonFXInvertType.Clockwise);
         
-        driveOdometry = new DifferentialDriveOdometry(new Rotation2d(gyro.getYaw()), getRightDriveEncodersDistanceMetres(), getLeftDriveEncodersDistanceMetres()); //FIXME
+        gyro.setYaw(0);
+        driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(gyro.getYaw()), getRightDriveEncodersDistanceMetres(), getLeftDriveEncodersDistanceMetres()); //FIXME
 
       } 
 
@@ -333,7 +335,7 @@ public class Drive extends SubsystemBase{
     // Update the odometry in the periodic block
     
     driveOdometry.update(
-      new Rotation2d(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres());
+      Rotation2d.fromDegrees(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres());
   }
 
 }

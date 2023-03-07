@@ -117,7 +117,8 @@ public class CommandController {
         new InstantCommand(() -> Drive.getInstance().resetOdometry(traj.getInitialPose())), ramseteCommand);
         
     }else{
-      return ramseteCommand;
+      return ramseteCommand
+      ;
     }
   
   }

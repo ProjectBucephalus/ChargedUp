@@ -44,12 +44,12 @@ public class Constants {
     public static final int kDriveSpeedExpo = 1; //fix later
     public static final double kDriveTurnExpo = 1;
 
-    public static final double kPDriveVel = 0.84839;
+    public static final double kPDriveVel = 0.089974;//0.84839;
 
-    public static final double kvVoltSecondsPerMeter = 2.4531;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.29623;//0.52078;
-    public static final double ksVolts = 0.13378;
-    public static final double kRamseteB = 1.0;
+    public static final double kvVoltSecondsPerMeter = 2.4337;//2.4531;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.25671;//0.29623;//0.52078;
+    public static final double ksVolts = 0.13306;//0.13378;
+    public static final double kRamseteB = 2.0;
     public static final double kRamseteZeta = 0.7;
     
 }

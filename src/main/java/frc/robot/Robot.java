@@ -41,7 +41,6 @@ public class Robot extends TimedRobot {
   private static HorizontalExtension m_horizontalExtension = new HorizontalExtension();
   private static Command m_autonomousCommand;
    private final CommandController m_robot = new CommandController();
-   private static Drive m_drive = new Drive().getInstance();
 
 
   /**
@@ -108,7 +107,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-
+  
   System.out.println(Drive.getInstance().getPose());
   }
 
