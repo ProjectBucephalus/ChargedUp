@@ -4,6 +4,21 @@
 
 package frc.robot.Commands;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.Claw.CloseClaw;
@@ -47,8 +62,17 @@ public class CommandController {
     CommandJoystick m_driverJoystick = new CommandJoystick(0); //declare joystick on ds port 0 
     CommandXboxController m_driverHID = new CommandXboxController(1); //declare xbox on ds port 1
     private static PbSlewRateLimiter limiter = new PbSlewRateLimiter(new PbSlewRateLimiter.Constraints(2,.5),new PbSlewRateLimiter.State(5, 0), new PbSlewRateLimiter.State(0, 0) );
+<<<<<<< Updated upstream
     private final Intake m_intake = new Intake();
     private boolean revState = false;
+=======
+
+    private final Intake m_intake = new Intake();
+    private boolean revState = false;
+
+>>>>>>> Stashed changes
+
+  
 
 
     /**
@@ -88,7 +112,7 @@ public class CommandController {
       );
 
       m_driverHID.leftBumper()
-      .onTrue(
+       .onTrue(
         new ArmZeroPosCommand(m_wrist, m_vertical, m_horizontal)
       );
       m_driverHID.rightBumper().onTrue(
@@ -96,6 +120,12 @@ public class CommandController {
       );
 
 
+<<<<<<< Updated upstream
+=======
+      m_driverJoystick.button(1).onTrue(
+        m_drive.autoDriveCommand()
+      );
+>>>>>>> Stashed changes
       m_driverJoystick.button(2).onTrue(
         new CloseClaw(m_claw) 
       );
@@ -103,7 +133,11 @@ public class CommandController {
         new OpenClaw(m_claw)    
         );
       m_driverHID.leftTrigger().onTrue(
+<<<<<<< Updated upstream
         new RunIntake(m_intake)
+=======
+        new RunIntake(m_intake, m_claw)
+>>>>>>> Stashed changes
       );
       m_driverHID.leftTrigger().onTrue(
         new RunFeed(m_feed)

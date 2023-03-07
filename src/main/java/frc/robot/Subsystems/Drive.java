@@ -39,14 +39,19 @@ public class Drive extends SubsystemBase{
     private WPI_TalonFX rightDriveA = new WPI_TalonFX(Constants.kRightDriveACanId);
     private WPI_TalonFX rightDriveB = new WPI_TalonFX(Constants.kRightDriveBCanId);
     private WPI_TalonFX rightDriveC = new WPI_TalonFX(Constants.kRightDriveCCanId); 
-    
+    private double lastpitch = 0;
+
     //Setup objects for use with the DifferentialDrive
     private final MotorControllerGroup leftDrive = new MotorControllerGroup(leftDriveA, leftDriveB, leftDriveC);
     private final MotorControllerGroup rightDrive = new MotorControllerGroup(rightDriveA, rightDriveB, rightDriveC);
 
     private final DifferentialDrive driveMotors = new DifferentialDrive(leftDrive, rightDrive);
 
+<<<<<<< Updated upstream
    // private Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
+=======
+   private Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
+>>>>>>> Stashed changes
 
     private boolean brakeState = false; //Define default state for the brakes
 
@@ -107,6 +112,24 @@ public class Drive extends SubsystemBase{
           
       }
 
+
+  public CommandBase autoDriveCommand() {
+    // A split-stick arcade command, with forward/backward controlled by the left
+    // hand, and turning controlled by the right.
+      return run(() -> autoPosition());
+          }
+
+  public void autoPosition()
+  {
+  double currentpitch = imu.getPitch();
+  double deltaPitch = currentpitch-lastpitch;
+  driveMotors.arcadeDrive(
+  (deltaPitch * Constants.AutoTiltPozisionKD + currentpitch * Constants.AutoTiltPozisionKP),
+  0, false);
+    // driveMotors.arcadeDrive(0.3, 0);
+  lastpitch = currentpitch;
+  }
+    
   /**
    * Resets the drive encoders to a position of zero
    */
@@ -285,6 +308,9 @@ public class Drive extends SubsystemBase{
 
     SmartDashboard.putNumber("right a temp", rightDriveA.getTemperature());
     SmartDashboard.putNumber("right b temp", rightDriveB.getTemperature());
+    SmartDashboard.putNumber("right c temp", rightDriveC.getTemperature());
+   
+    SmartDashboard.putNumber("right c temp", rightDriveC.getTemperature());
     SmartDashboard.putNumber("right c temp", rightDriveC.getTemperature());
 
   }
