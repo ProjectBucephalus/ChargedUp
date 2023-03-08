@@ -6,6 +6,7 @@ package frc.robot.Commands;
 
 import java.io.IOException;
 import java.nio.file.Path;
+
 import java.util.HashMap;
 import java.util.function.BiConsumer;
 
@@ -18,17 +19,22 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.RamseteAutoBuilder;
 
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -79,8 +85,12 @@ public class CommandController {
     CommandXboxController m_driverHID = new CommandXboxController(1); //declare xbox on ds port 1
     private static PbSlewRateLimiter limiter = new PbSlewRateLimiter(new PbSlewRateLimiter.Constraints(2,.5),new PbSlewRateLimiter.State(5, 0), new PbSlewRateLimiter.State(0, 0) );
 
+
     private final Intake m_intake = new Intake();
     private boolean revState = false;
+
+
+  
 
 
     SendableChooser<Command> chooser = new SendableChooser<>();
@@ -194,6 +204,7 @@ public class CommandController {
       m_driverHID.rightBumper().onTrue(
         new intakeArm(m_wrist, m_vertical, m_horizontal)
       );
+
 
 
       m_driverJoystick.button(2).onTrue(
