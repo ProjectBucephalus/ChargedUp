@@ -58,7 +58,7 @@ public class VerticalExtension extends SubsystemBase {
     verticalExtensionMotor.config_kF(0, m_feedforward.calculate(Config.kVerticalExtensionMaxVelocity) / Config.kVerticalExtensionEncoderPPR);
     verticalExtensionMotor.config_kP(1, Config.kVerticalExtensionKP);
     verticalExtensionMotor.config_kD(1, Config.kVerticalExtensionKD);
-    verticalExtensionMotor.config_kF(1, m_feedforward.calculate(Config.kVerticalExtensionMaxVelocity) / Config.kVerticalExtensionEncoderPPR);
+    verticalExtensionMotor.config_kF( 1, m_feedforward.calculate(Config.kVerticalExtensionMaxVelocity) / Config.kVerticalExtensionEncoderPPR);
     verticalExtensionMotor.configMotionAcceleration(Config.kVerticalExtensionMaxAcceleration / (Config.kVerticalExtensionMetresPerRotation / Config.kVerticalExtensionEncoderPPR));
     verticalExtensionMotor.configMotionCruiseVelocity(Config.kVerticalExtensionMaxVelocity / (Config.kVerticalExtensionMetresPerRotation / Config.kVerticalExtensionEncoderPPR));
     verticalExtensionMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
@@ -89,13 +89,19 @@ public class VerticalExtension extends SubsystemBase {
    * @return true if arm is within defined position tollerence.
    */
   public boolean getArmAtPosition() {
-if(getMeasurement() <= armGoal + Config.kVerticalExtensionPositionTolerenceMetres && getMeasurement() >= armGoal - Config.kVerticalExtensionPositionTolerenceMetres) {
+  if(getMeasurement() <= armGoal + Config.kVerticalExtensionPositionTolerenceMetres && getMeasurement() >= armGoal - Config.kVerticalExtensionPositionTolerenceMetres) {
       return true;
     }
     return false;
   }
 
-
+  public boolean getIntakeLegal() {
+    if(getMeasurement() <= 0) {
+        return true;
+      }
+      return false;
+    }
+  
   /**
    * Get position of arm
    * @return vertical extension position in metres
@@ -110,7 +116,10 @@ if(getMeasurement() <= armGoal + Config.kVerticalExtensionPositionTolerenceMetre
   public void resetSensors() {
     verticalExtensionMotor.setSelectedSensorPosition(0);
   }
+  public void defineZeros(){
+    verticalExtensionMotor.setSelectedSensorPosition(Config.kArmHomePosY);
 
+  }
   public boolean getLowLimit()
   {
     TalonFXSensorCollection sc = verticalExtensionMotor.getSensorCollection();
@@ -130,7 +139,7 @@ public void checkCalibration()        //resets sensors upon first reaching botto
   boolean thisLow = getLowLimit();
   if ((thisLow == true) && (lastLow == false))
   {
-    resetSensors();
+    defineZeros();
   }  
   lastLow = thisLow;
 }

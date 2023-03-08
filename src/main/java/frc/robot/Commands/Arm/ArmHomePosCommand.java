@@ -41,7 +41,7 @@ public class ArmHomePosCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    new ArmZeroPosCommand(m_wrist, m_verticalExtension, m_horizontalExtension).schedule(); //zeroes the arm after going to home position
+   // new ArmZeroPosCommand(m_wrist, m_verticalExtension, m_horizontalExtension).schedule(); //zeroes the arm after going to home position
   }
 
   // Returns true when the command should end.

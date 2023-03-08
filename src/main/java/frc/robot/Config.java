@@ -68,29 +68,29 @@ public class Config {
     public static final int kWristReversePortId = 1;
 
     /**
-     * Constants for arm positions for different elements of gameplay
+     * Constants for arm positions for different elements of gameplayzxdDdn/
      * ALL MEASUREMENTS IN METRES!!!
      */
 
      public static final double kArmHomePosX = 0.00;
-     public static final double kArmHomePosY = 0.075;
+     public static final double kArmHomePosY = -0.158;
      public static final WristPosition kArmHomePosWrist = WristPosition.LOWERED;
      
      public static final double kArmLowPosX = 0.03;
-     public static final double kArmLowPosY = 0.5;
+     public static final double kArmLowPosY = 0.3;
      public static final WristPosition kArmLowPosWrist = WristPosition.LOWERED;
 
     
      public static final double kArmMedPosX = 0.95;
-     public static final double kArmMedPosY = 0.465;
+     public static final double kArmMedPosY = 0.34;
      public static final WristPosition kArmMedPosWrist = WristPosition.RAISED;
      
      public static final double kArmHighPosX = 2.4;
-     public static final double kArmHighPosY = 0.652;
+     public static final double kArmHighPosY = 0.495;
      public static final WristPosition kArmHighPosWrist = WristPosition.RAISED;
      
      public static final double kArmShelfPosX = .5;
-     public static final double kArmShelfPosY = 0.6;
+     public static final double kArmShelfPosY = 0.4;
      public static final WristPosition kArmShelfPosWrist = WristPosition.RAISED;
 
     /**
