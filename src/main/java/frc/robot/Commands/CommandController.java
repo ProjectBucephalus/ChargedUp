@@ -6,17 +6,29 @@ package frc.robot.Commands;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.function.BiConsumer;
+
+import frc.robot.Autonomous.autoClimb;
+import frc.robot.Autonomous.autoIntake;
+import frc.robot.Autonomous.autoScore;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.RamseteAutoBuilder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -36,6 +48,7 @@ import frc.robot.Subsystems.Claw;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.Autonomous.autoScore;
 import frc.robot.Commands.Arm.ArmHighPosCommand;
 import frc.robot.Commands.Arm.ArmHomePosCommand;
 import frc.robot.Commands.Arm.ArmLowPosCommand;
@@ -74,51 +87,63 @@ public class CommandController {
 
   public CommandController(){
     configureBindings();
-    chooser.addOption("2,Bottom,Climb", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/2BOTTOMClimb.wpilib.json", true));
-    chooser.addOption("2,Bottom", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/2BOTTOM.wpilib.json", true));
-    chooser.addOption("2,Climb", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/2Climb.wpilib.json", true));
-    chooser.addOption("8,TOP,Climb", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/8TOPClimb.wpilib.json", true));
-    chooser.addOption("8,TOP", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/8TOP.wpilib.json", true));
-    chooser.addOption("8,Climb", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/8Climb.wpilib.json", true));
-    chooser.addOption("5,Bottom,Climb", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/5BOTTOMClimb.wpilib.json", true));
-    chooser.addOption("5,Bottom", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/5BOTTOM.wpilib.json", true));
-    chooser.addOption("5,Climb", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/5Climb.wpilib.json", true));
-    chooser.addOption("5,Top,Climb", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/5TOPClimb.wpilib.json", true));
-    chooser.addOption("5,Top", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/5TOP.wpilib.json", true));
-    chooser.addOption("LUIN SUCKS!!!!", loadPathPlannerTrajectoryToRamseteCommand("pathplanner/generatedJSON/LuinStinks.wpilib.json", true));
+    //chooser.addOption("2,Bottom,Climb", loadPathPlannerTrajectoryToRamseteCommand("2BOTTOMClimb", true));
+    //chooser.addOption("2,Bottom", loadPathPlannerTrajectoryToRamseteCommand("2BOTTOM", true));
+    chooser.addOption("8,Climb", loadPathPlannerTrajectoryToRamseteCommand("2Climb", true));
+    //chooser.addOption("8,TOP,Climb", loadPathPlannerTrajectoryToRamseteCommand("8TOPClimb", true));
+    //chooser.addOption("8,TOP", loadPathPlannerTrajectoryToRamseteCommand("8TOP", true));
+    chooser.addOption("2,Climb", loadPathPlannerTrajectoryToRamseteCommand("8Climb", true));
+    //chooser.addOption("5,Bottom,Climb", loadPathPlannerTrajectoryToRamseteCommand("5BOTTOMClimb", true));
+    //chooser.addOption("5,Bottom", loadPathPlannerTrajectoryToRamseteCommand("5BOTTOM", true));
+    chooser.addOption("5,Climb", loadPathPlannerTrajectoryToRamseteCommand("5Climb", true));
+    //chooser.addOption("5,Top,Climb", loadPathPlannerTrajectoryToRamseteCommand("5TOPClimb", true));
+    //chooser.addOption("5,Top", loadPathPlannerTrajectoryToRamseteCommand("5TOP", true));
+    //chooser.addOption("LUIN SUCKS!!!!", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true));
 
 
     Shuffleboard.getTab("AutonomHEREous").add(chooser);
   }
   public Command loadPathPlannerTrajectoryToRamseteCommand(String fileName, Boolean resetOdometry){
-    Trajectory traj;
+    PathPlannerTrajectory traj;
     try{
-      Path tracjectoryPath = Filesystem.getDeployDirectory().toPath().resolve(fileName);
-
-      traj = TrajectoryUtil.fromPathweaverJson(tracjectoryPath);
-      
-    }catch(IOException exception){
-      DriverStation.reportError("Unable to open trajectory in " + fileName, exception.getStackTrace());
-      System.out.println("Unable to read from file " + fileName );
-      return new InstantCommand();
+      traj = PathPlanner.loadPath(fileName, new PathConstraints(1.0, .3));
+    }finally{
+      System.out.println("haii :P");
     }
 
-    RamseteCommand ramseteCommand = new RamseteCommand(traj, m_drive::getPose,
-      new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-      new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter,Constants.kaVoltSecondsSquaredPerMeter),
-      m_drive.driveKinematics, m_drive::getWheelSpeeds,
-      new PIDController(Constants.kPDriveVel, 0, 0),
-      new PIDController(Constants.kPDriveVel, 0, 0), m_drive::tankDriveVolts,
-      m_drive); 
+    RamseteController ramseteController = new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta);
+
+
+
+    PIDConstants pidConstants = new PIDConstants(Constants.kPDriveVel, 0, 0);
+    SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter, Constants.kaVoltSecondsSquaredPerMeter);
+    
+    HashMap<String, Command> eventMap = new HashMap<>();
+    //eventMap.put("scoreGamepiece", new autoScore(m_drive, m_wrist, m_vertical, m_horizontal, m_claw)); //STUB FUNCTION !
+    //eventMap.put("intake", new autoIntake(m_drive)); //STUB FUNCTION!!
+    //eventMap.put("climb", new autoClimb(m_drive)); //STUB FUCINGIOTON
+    RamseteAutoBuilder ramseteAuto = new RamseteAutoBuilder(
+      m_drive::getPose, 
+      m_drive::resetOdometry,
+      ramseteController, 
+      m_drive.driveKinematics,
+      feedForward,
+      m_drive::getWheelSpeeds,
+      pidConstants,
+      (leftVolts, rightVolts) -> {
+      m_drive.tankDriveVolts(leftVolts, rightVolts);},
+      eventMap, 
+      true,
+      m_drive);
+  
 
   
     if (resetOdometry){
       return new SequentialCommandGroup(
-        new InstantCommand(() -> Drive.getInstance().resetOdometry(traj.getInitialPose())), ramseteCommand);
+        new InstantCommand(() -> Drive.getInstance().resetOdometry(traj.getInitialPose())), ramseteAuto.fullAuto(traj));
         
     }else{
-      return ramseteCommand
-      ;
+      return ramseteAuto.fullAuto(traj);
     }
   
   }
@@ -191,6 +216,9 @@ public class CommandController {
       );
       m_driverHID.leftStick().onTrue(
         new ArmMidHigh(m_wrist, m_vertical, m_horizontal)
+      );
+      m_driverJoystick.button(5).onTrue(
+        new autoScore( m_wrist, m_vertical, m_horizontal, m_claw)
       );
 
   }

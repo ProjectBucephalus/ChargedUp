@@ -13,12 +13,16 @@ import frc.robot.Config;
 import frc.robot.Constants;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -54,12 +58,17 @@ public class Drive extends SubsystemBase{
 
     public final DifferentialDriveKinematics driveKinematics = new DifferentialDriveKinematics(.61);
    
-    public DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres()); //FIXME
+    public DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(((gyro.getYaw()))), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres()); //FIXME
     // private Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
 
     private boolean brakeState = false; //Define default state for the brakes
 
-
+    public double getDesiredLeft(){
+      return leftDrive.get();
+    }
+    public double getDesiredRight(){
+      return rightDrive.get();
+    }
     public Pose2d getPose() {
       return driveOdometry.getPoseMeters();
     }
@@ -84,7 +93,8 @@ public class Drive extends SubsystemBase{
     }
     public void resetOdometry(Pose2d pose){
       resetDriveEncoders();
-      driveOdometry.resetPosition(new Rotation2d(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres(), pose);;
+      gyro.setYaw(pose.getRotation().getDegrees());
+      driveOdometry.resetPosition(new Rotation2d(((gyro.getYaw()))), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres(), pose);;
     }
     /**
      * Configure all motor controllers, sensors, etc. of this subsystem
@@ -101,21 +111,22 @@ public class Drive extends SubsystemBase{
         rightDriveB.configFactoryDefault();
         rightDriveC.configFactoryDefault();
 
-        leftDriveA.setInverted(TalonFXInvertType.CounterClockwise);
-        leftDriveB.setInverted(TalonFXInvertType.CounterClockwise);
-        leftDriveC.setInverted(TalonFXInvertType.CounterClockwise);
+        rightDriveA.setInverted(TalonFXInvertType.CounterClockwise);
+        rightDriveB.setInverted(TalonFXInvertType.CounterClockwise);
+        rightDriveC.setInverted(TalonFXInvertType.CounterClockwise);
 
-        rightDriveA.setInverted(TalonFXInvertType.Clockwise); //Invert the right side meaning that a foward command 
-        rightDriveB.setInverted(TalonFXInvertType.Clockwise); //will result in all motors flashing green
-        rightDriveC.setInverted(TalonFXInvertType.Clockwise);
+        leftDriveA.setInverted(TalonFXInvertType.Clockwise); //Invert the right side meaning that a foward command 
+        leftDriveB.setInverted(TalonFXInvertType.Clockwise); //will result in all motors flashing green
+        leftDriveC.setInverted(TalonFXInvertType.Clockwise);
         
-        gyro.setYaw(0);
-        driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(gyro.getYaw()), getRightDriveEncodersDistanceMetres(), getLeftDriveEncodersDistanceMetres()); //FIXME
 
       } 
 
 
     private static Drive myInstance;
+
+
+    
 
     public static Drive getInstance()
     {
@@ -141,8 +152,8 @@ public class Drive extends SubsystemBase{
     // A split-stick arcade command, with forward/backward controlled by the left
     // hand, and turning controlled by the right.
       return run(() -> driveMotors.arcadeDrive(
-        Math.copySign(Math.pow(fwd.getAsDouble(), Constants.kDriveSpeedExpo),fwd.getAsDouble()),
-        Math.copySign(Math.pow(rot.getAsDouble(), Constants.kDriveTurnExpo), rot.getAsDouble()),
+        Math.copySign(Math.pow(fwd.getAsDouble(), Constants.kDriveSpeedExpo),-fwd.getAsDouble()),
+        Math.copySign(Math.pow(rot.getAsDouble(), Constants.kDriveTurnExpo), -rot.getAsDouble()),
         false)) //run the WPILIB arcadeDrive method with supplied values
           .withName("arcadeDrive");
           
@@ -336,6 +347,9 @@ public class Drive extends SubsystemBase{
     
     driveOdometry.update(
       Rotation2d.fromDegrees(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres());
-  }
+
+
+    }
+
 
 }
