@@ -175,7 +175,7 @@ public class Drive extends SubsystemBase{
   double currentpitch = gyro.getPitch();
   double deltaPitch = currentpitch-lastpitch;
   driveMotors.arcadeDrive(
-  (deltaPitch * Constants.AutoTiltPozisionKD + (currentpitch *3) * Constants.AutoTiltPozisionKP),
+    (deltaPitch * Constants.AutoTiltPozisionKD + (Math.copySign(Math.pow(Math.abs(currentpitch),.36), currentpitch) *(4.8) * Constants.AutoTiltPozisionKP)),
   0, false);
     // driveMotors.arcadeDrive(0.3, 0);
   lastpitch = currentpitch;
