@@ -32,7 +32,7 @@ public class intakeArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_verticalExtension.setPosition(0.00);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmShelfPosX, Config.kArmShelfPosY));
+    m_verticalExtension.setPosition(Config.kArmHomePosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmShelfPosX, Config.kArmShelfPosY));
     if(m_verticalExtension.getArmAtPosition()){
       m_horizontalExtension.setPosition(2);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmShelfPosX, Config.kArmShelfPosY));
       m_wrist.setWristPosition(WristPosition.LOWERED);
