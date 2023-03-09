@@ -9,6 +9,7 @@ import frc.robot.Config;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
+import frc.robot.Subsystems.Wrist.WristPosition;
 
 public class ArmZeroPosCommand extends CommandBase {
   private final Wrist m_wrist;
@@ -34,6 +35,7 @@ public class ArmZeroPosCommand extends CommandBase {
   public void execute() {
     m_verticalExtension.setPosition(0);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmMedPosX, Config.kArmMedPosY));
     m_horizontalExtension.setPosition(0);
+    m_wrist.setWristPosition(WristPosition.LOWERED);
   }
 
   // Called once the command ends or is interrupted.

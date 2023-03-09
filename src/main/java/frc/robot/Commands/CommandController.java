@@ -4,6 +4,7 @@
 
 package frc.robot.Commands;
 
+
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -38,19 +39,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Commands.Claw.CloseClaw;
-import frc.robot.Commands.Claw.OpenClaw;
-import frc.robot.Commands.Intake.ExtendIntake;
-import frc.robot.Commands.Intake.RetractIntake;
-import frc.robot.Commands.Intake.RunFeed;
-import frc.robot.Commands.Intake.RunIntake;
-import frc.robot.Commands.Intake.RunIntakeMotors;
-import frc.robot.Commands.Intake.StopFeed;
-import frc.robot.Commands.Intake.StopIntake;
-import frc.robot.Commands.Intake.StopIntakeMotors;
-import frc.robot.Subsystems.Claw;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -62,6 +53,13 @@ import frc.robot.Commands.Arm.ArmMediumPosCommand;
 import frc.robot.Commands.Arm.ArmMidHigh;
 import frc.robot.Commands.Arm.ArmZeroPosCommand;
 import frc.robot.Commands.Arm.intakeArm;
+import frc.robot.Commands.Claw.CloseClaw;
+import frc.robot.Commands.Claw.OpenClaw;
+import frc.robot.Commands.Intake.RunFeed;
+import frc.robot.Commands.Intake.RunIntake;
+import frc.robot.Commands.Intake.StopFeed;
+import frc.robot.Commands.Intake.StopIntake;
+import frc.robot.Subsystems.Claw;
 import frc.robot.Subsystems.Drive;
 import frc.robot.Subsystems.Feed;
 import frc.robot.Subsystems.HorizontalExtension;
@@ -72,6 +70,7 @@ import frc.robot.Utilities.PbSlewRateLimiter;
 import frc.robot.Utilities.PbSlewRateLimiter.Constraints;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+
 /** Add your docs here. */
 public class CommandController {
 
@@ -174,8 +173,8 @@ public class CommandController {
 
     m_drive.setDefaultCommand(
         m_drive.arcadeDriveCommand(
-            () -> -m_driverJoystick.getY() * 1 * m_drive.getThrottleInput(m_driverJoystick),
-            () -> -m_driverJoystick.getX() * 1 * m_drive.getThrottleInput(m_driverJoystick)));
+            () -> -m_driverJoystick.getY() * m_drive.getDriveDirMultiplier() * m_drive.getThrottleInput(m_driverJoystick),
+            () -> -m_driverJoystick.getX() * m_drive.getDriveDirMultiplier() * m_drive.getThrottleInput(m_driverJoystick)));
     
     
     m_driverHID.y()
@@ -230,6 +229,15 @@ public class CommandController {
       );
       m_driverJoystick.button(5).onTrue(
         new autoScore( m_wrist, m_vertical, m_horizontal, m_claw)
+      );
+
+      m_driverJoystick.pov(0).onTrue(
+        new InvertDirectionCommand(m_drive, false)
+      );
+
+      
+      m_driverJoystick.pov(180).onTrue(
+        new InvertDirectionCommand(m_drive, true)
       );
 
   }

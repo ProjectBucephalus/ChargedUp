@@ -66,6 +66,7 @@ public class Drive extends SubsystemBase{
     public DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(((gyro.getYaw()))), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres()); //FIXME
 
     private boolean brakeState = false; //Define default state for the brakes
+    private boolean directionInvert = false;
 
     public double getDesiredLeft(){
       return leftDrive.get();
@@ -352,6 +353,8 @@ public class Drive extends SubsystemBase{
   }
 
   public void diag() {
+    SmartDashboard.putBoolean("Direction swap", directionInvert);
+
     SmartDashboard.putNumber("left a current", leftDriveA.getStatorCurrent());
     SmartDashboard.putNumber("left b current", leftDriveB.getStatorCurrent());
     SmartDashboard.putNumber("left c current", leftDriveC.getStatorCurrent());
@@ -382,5 +385,22 @@ public class Drive extends SubsystemBase{
 
     }
 
+
+  public void setDriveInvert(boolean invert) {
+
+    directionInvert = invert;
+  }
+
+  public boolean getDriveInvert() {
+    return directionInvert;
+  }
+
+  public double getDriveDirMultiplier() {
+    if(directionInvert) {
+      return -1;
+    } else {
+      return 1;
+    }
+  }
 
 }
