@@ -7,12 +7,22 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import frc.robot.Config;
 import frc.robot.Constants;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -39,24 +49,65 @@ public class Drive extends SubsystemBase{
     private WPI_TalonFX rightDriveA = new WPI_TalonFX(Constants.kRightDriveACanId);
     private WPI_TalonFX rightDriveB = new WPI_TalonFX(Constants.kRightDriveBCanId);
     private WPI_TalonFX rightDriveC = new WPI_TalonFX(Constants.kRightDriveCCanId); 
-    
+    private double lastpitch = 0;
+
+
+    private WPI_Pigeon2 gyro = new WPI_Pigeon2(Constants.kPigeonCanId);
     //Setup objects for use with the DifferentialDrive
     private final MotorControllerGroup leftDrive = new MotorControllerGroup(leftDriveA, leftDriveB, leftDriveC);
     private final MotorControllerGroup rightDrive = new MotorControllerGroup(rightDriveA, rightDriveB, rightDriveC);
 
-    private final DifferentialDrive driveMotors = new DifferentialDrive(leftDrive, rightDrive);
+    public final DifferentialDrive driveMotors = new DifferentialDrive(leftDrive, rightDrive);
 
-   // private Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
+
+
+    public final DifferentialDriveKinematics driveKinematics = new DifferentialDriveKinematics(.61);
+   
+    public DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(((gyro.getYaw()))), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres()); //FIXME
 
     private boolean brakeState = false; //Define default state for the brakes
     private boolean directionInvert = false;
 
+    public double getDesiredLeft(){
+      return leftDrive.get();
+    }
+    public double getDesiredRight(){
+      return rightDrive.get();
+    }
+    public Pose2d getPose() {
+      return driveOdometry.getPoseMeters();
+    }
+    public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+      return new DifferentialDriveWheelSpeeds(getLeftMotorVelocity(), getRightMotorVelocity());
+    }
+    private double getRightMotorVelocity(){
+      return (((((rightDriveA.getSelectedSensorVelocity()/2048) * 8/60 * .3192))+
+      (((rightDriveB.getSelectedSensorVelocity()/2048) * 8/60 * .3192)) + 
+      (((rightDriveC.getSelectedSensorVelocity()/2048) * 8/60 * .3192))) / 3);
+    }
 
+    private double getLeftMotorVelocity(){
+      return (((((leftDriveA.getSelectedSensorVelocity()/2048) * 8/60 * .3192))+
+      (((leftDriveB.getSelectedSensorVelocity()/2048) * 8/60 * .3192)) + 
+      (((leftDriveC.getSelectedSensorVelocity()/2048) * 8/60 * .3192))) / 3);
+    }
+    public void tankDriveVolts(double leftVolts, double rightVolts){
+      leftDrive.setVoltage(leftVolts);
+      rightDrive.setVoltage(rightVolts);
+      driveMotors.feed();
+    }
+    public void resetOdometry(Pose2d pose){
+      resetDriveEncoders();
+      gyro.setYaw(pose.getRotation().getDegrees());
+      driveOdometry.resetPosition(new Rotation2d(((gyro.getYaw()))), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres(), pose);;
+    }
     /**
      * Configure all motor controllers, sensors, etc. of this subsystem
      * This means that in theory, on a controller fail, all that is needed to reconfigure
      * the new ones is to change the CAN ID and it will pick up its config.
      */
+
+
     public void initSystem() {
         leftDriveA.configFactoryDefault(); //Reset all settings on the drive motors
         leftDriveB.configFactoryDefault();
@@ -65,17 +116,22 @@ public class Drive extends SubsystemBase{
         rightDriveB.configFactoryDefault();
         rightDriveC.configFactoryDefault();
 
-        leftDriveA.setInverted(TalonFXInvertType.CounterClockwise);
-        leftDriveB.setInverted(TalonFXInvertType.CounterClockwise);
-        leftDriveC.setInverted(TalonFXInvertType.CounterClockwise);
+        rightDriveA.setInverted(TalonFXInvertType.CounterClockwise);
+        rightDriveB.setInverted(TalonFXInvertType.CounterClockwise);
+        rightDriveC.setInverted(TalonFXInvertType.CounterClockwise);
 
-        rightDriveA.setInverted(TalonFXInvertType.Clockwise); //Invert the right side meaning that a foward command 
-        rightDriveB.setInverted(TalonFXInvertType.Clockwise); //will result in all motors flashing green
-        rightDriveC.setInverted(TalonFXInvertType.Clockwise);
+        leftDriveA.setInverted(TalonFXInvertType.Clockwise); //Invert the right side meaning that a foward command 
+        leftDriveB.setInverted(TalonFXInvertType.Clockwise); //will result in all motors flashing green
+        leftDriveC.setInverted(TalonFXInvertType.Clockwise);
+        
 
-    }
+      } 
+
 
     private static Drive myInstance;
+
+
+    
 
     public static Drive getInstance()
     {
@@ -86,7 +142,7 @@ public class Drive extends SubsystemBase{
       return myInstance;
     }
 
-    private Drive() {
+    public Drive() {
         initSystem(); //run the above method to initalise the controllers
         setBrakes(false); //Set the falcons to coast mode on robot init
     }
@@ -101,13 +157,37 @@ public class Drive extends SubsystemBase{
     // A split-stick arcade command, with forward/backward controlled by the left
     // hand, and turning controlled by the right.
       return run(() -> driveMotors.arcadeDrive(
-        Math.copySign(Math.pow(fwd.getAsDouble(), Constants.kDriveSpeedExpo),fwd.getAsDouble()),
-        Math.copySign(Math.pow(rot.getAsDouble(), Constants.kDriveTurnExpo), rot.getAsDouble()),
+        Math.copySign(Math.pow(fwd.getAsDouble(), Constants.kDriveSpeedExpo),-fwd.getAsDouble()),
+        Math.copySign(Math.pow(rot.getAsDouble(), Constants.kDriveTurnExpo), -rot.getAsDouble()),
         false)) //run the WPILIB arcadeDrive method with supplied values
           .withName("arcadeDrive");
           
       }
 
+
+  public CommandBase autoDriveCommand() {
+    // A split-stick arcade command, with forward/backward controlled by the left
+    // hand, and turning controlled by the right.
+      return run(() -> autoPosition());
+          }
+
+  public void autoPosition()
+  {
+  double currentpitch = gyro.getPitch();
+  double deltaPitch = currentpitch-lastpitch;
+  driveMotors.arcadeDrive(
+    (deltaPitch * Constants.AutoTiltPozisionKD + (Math.copySign(Math.pow(Math.abs(currentpitch),.36), currentpitch) *(4.8) * Constants.AutoTiltPozisionKP)),
+  0, false);
+    // driveMotors.arcadeDrive(0.3, 0);
+  lastpitch = currentpitch;
+  }
+  
+  public boolean getLevel(){
+    if(gyro.getPitch() == 0){
+      return true;
+    }
+    return false;
+  }
   /**
    * Resets the drive encoders to a position of zero
    */
@@ -131,9 +211,9 @@ public class Drive extends SubsystemBase{
    * @return left encoder distance in metres (m), averaged from all three falcons
    */
   public double getLeftDriveEncodersDistanceMetres() {
-    return ((leftDriveA.getSelectedSensorPosition() +
-            leftDriveB.getSelectedSensorPosition())/2 );// + 
-            //leftDriveC.getSelectedSensorPosition()) / 3); //comment for pegasus config.
+    return (((((leftDriveA.getSelectedSensorPosition()/2048) * 8/60 * .3192))+
+            (((leftDriveB.getSelectedSensorPosition()/2048) * 8/60 * .3192)) + 
+            (((leftDriveC.getSelectedSensorPosition()/2048) * 8/60 * .3192))) / 3);
   }
 
   /**
@@ -141,9 +221,10 @@ public class Drive extends SubsystemBase{
    * @return right encoder distance in metres (m), averaged from all three falcons
    */
   public double getRightDriveEncodersDistanceMetres() {
-    return ((rightDriveA.getSelectedSensorPosition() +
-            rightDriveB.getSelectedSensorPosition()) /2 ); //+ 
-           // rightDriveC.getSelectedSensorPosition()) / 3); //comment for pegasus config
+
+    return (((((rightDriveA.getSelectedSensorPosition()/2048) * 8/60 * .3192))+
+            (((rightDriveB.getSelectedSensorPosition()/2048) * 8/60 * .3192)) + 
+            (((rightDriveC.getSelectedSensorPosition()/2048) * 8/60 * .3192))) / 3); //comment for pegasus config
   }
 
   /**
@@ -289,8 +370,21 @@ public class Drive extends SubsystemBase{
     SmartDashboard.putNumber("right a temp", rightDriveA.getTemperature());
     SmartDashboard.putNumber("right b temp", rightDriveB.getTemperature());
     SmartDashboard.putNumber("right c temp", rightDriveC.getTemperature());
+   
+    SmartDashboard.putNumber("right c temp", rightDriveC.getTemperature());
+    SmartDashboard.putNumber("right c temp", rightDriveC.getTemperature());
 
   }
+  @Override
+  public void periodic() {
+    // Update the odometry in the periodic block
+    
+    driveOdometry.update(
+      Rotation2d.fromDegrees(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres());
+
+
+    }
+
 
   public void setDriveInvert(boolean invert) {
 

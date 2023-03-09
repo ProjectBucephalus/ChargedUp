@@ -1,5 +1,13 @@
 package frc.robot;
 
+import javax.swing.plaf.InputMapUIResource;
+
+import edu.wpi.first.wpilibj.ADIS16448_IMU.IMUAxis;
+
+import java.util.HashMap;
+
+import edu.wpi.first.wpilibj2.command.Command;
+
 public class Constants {
 
     /**
@@ -44,5 +52,16 @@ public class Constants {
     public static final int kDriveSpeedExpo = 1; //fix later
     public static final double kDriveTurnExpo = 1;
 
+    public static final double AutoTiltPozisionKP = -0.013;
+    public static final double AutoTiltPozisionKD = -0.07; 
+
+    public static final double kPDriveVel = 0.23386;//0.089974;//0.84839;
+
+    public static final double kvVoltSecondsPerMeter = 2.5034;//2.4337;//2.4531;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.49194;//0.25671;//0.29623;//0.52078;
+    public static final double ksVolts = 0.17467;//0.13306;//0.13378;
+    public static final double kRamseteB = 2;//2;
+    public static final double kRamseteZeta = 0.7;//.7;
     
+
 }
