@@ -107,7 +107,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
   
-  System.out.println(Drive.getInstance().getPose());
   }
 
   /** This function is called once when teleop is enabled. */

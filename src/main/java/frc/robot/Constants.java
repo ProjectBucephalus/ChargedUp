@@ -53,7 +53,7 @@ public class Constants {
     public static final double kDriveTurnExpo = 1;
 
     public static final double AutoTiltPozisionKP = -0.013;
-    public static final double AutoTiltPozisionKD = -0.02; 
+    public static final double AutoTiltPozisionKD = -0.07; 
 
     public static final double kPDriveVel = 0.23386;//0.089974;//0.84839;
 

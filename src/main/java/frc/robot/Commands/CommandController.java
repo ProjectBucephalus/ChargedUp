@@ -131,7 +131,7 @@ public class CommandController {
     HashMap<String, Command> eventMap = new HashMap<>();
     //eventMap.put("scoreGamepiece", new autoScore(m_drive, m_wrist, m_vertical, m_horizontal, m_claw)); //STUB FUNCTION !
     //eventMap.put("intake", new autoIntake(m_drive)); //STUB FUNCTION!!
-    //eventMap.put("climb", new autoClimb(m_drive)); //STUB FUCINGIOTON
+    eventMap.put("climb", new autoClimb(m_drive, m_driverJoystick)); //STUB FUCINGIOTON
     RamseteAutoBuilder ramseteAuto = new RamseteAutoBuilder(
       m_drive::getPose, 
       m_drive::resetOdometry,

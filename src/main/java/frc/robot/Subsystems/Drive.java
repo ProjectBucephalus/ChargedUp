@@ -60,7 +60,6 @@ public class Drive extends SubsystemBase{
     public final DifferentialDrive driveMotors = new DifferentialDrive(leftDrive, rightDrive);
 
 
-   private Pigeon2 imu = new Pigeon2(Constants.kPigeonCanId); //Setup the Pigeon IMU
 
     public final DifferentialDriveKinematics driveKinematics = new DifferentialDriveKinematics(.61);
    
@@ -173,15 +172,21 @@ public class Drive extends SubsystemBase{
 
   public void autoPosition()
   {
-  double currentpitch = imu.getPitch();
+  double currentpitch = gyro.getPitch();
   double deltaPitch = currentpitch-lastpitch;
   driveMotors.arcadeDrive(
-  (deltaPitch * Constants.AutoTiltPozisionKD + currentpitch * Constants.AutoTiltPozisionKP),
+  (deltaPitch * Constants.AutoTiltPozisionKD + (currentpitch *3) * Constants.AutoTiltPozisionKP),
   0, false);
     // driveMotors.arcadeDrive(0.3, 0);
   lastpitch = currentpitch;
   }
-    
+  
+  public boolean getLevel(){
+    if(gyro.getPitch() == 0){
+      return true;
+    }
+    return false;
+  }
   /**
    * Resets the drive encoders to a position of zero
    */
