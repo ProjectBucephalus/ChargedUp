@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
 import frc.robot.Config;
 import frc.robot.Constants;
@@ -99,7 +100,11 @@ public class Drive extends SubsystemBase{
     public void resetOdometry(Pose2d pose){
       resetDriveEncoders();
       gyro.setYaw(pose.getRotation().getDegrees());
-      driveOdometry.resetPosition(new Rotation2d(((gyro.getYaw()))), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres(), pose);;
+      driveOdometry.resetPosition(Rotation2d.fromDegrees(((gyro.getYaw()))), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres(), pose);;
+    }
+    public Pose2d proseToPose(PathPlannerState prose){
+      Pose2d pose = new Pose2d(prose.poseMeters.getTranslation(), prose.holonomicRotation);
+      return pose;
     }
     /**
      * Configure all motor controllers, sensors, etc. of this subsystem
@@ -192,7 +197,7 @@ public class Drive extends SubsystemBase{
    * Resets the drive encoders to a position of zero
    */
   public void resetDriveEncoders() {
-
+    
     leftDriveA.setSelectedSensorPosition(0);
     leftDriveB.setSelectedSensorPosition(0);
     leftDriveC.setSelectedSensorPosition(0);

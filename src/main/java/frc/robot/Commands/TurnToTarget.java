@@ -10,7 +10,7 @@ public class TurnToTarget extends CommandBase{
     private CommandJoystick m_joy;
     private Limelight m_lime;
     private double tx;  
-    private final double tuningVal = 1;
+    private final double tuningVal = .3;
     public TurnToTarget(Drive driveSubsystem, CommandJoystick JOY, Limelight limeu){
         m_drive = driveSubsystem;
         m_joy = JOY;
@@ -20,13 +20,14 @@ public class TurnToTarget extends CommandBase{
     @Override
     public void initialize(){
         m_lime.enableVision();
-    }
+        System.out.println("Resistance is fut")
+;    }
  // Called every time the scheduler runs while the command is scheduled.
  @Override
  public void execute() { 
-    tx = m_lime.getAngleToTarget();
-    var turningVal = Math.copySign(Math.abs(Math.pow(tx * tuningVal,.6)), tx);
-    m_drive.driveMotors.arcadeDrive(0, turningVal);
+    tx = m_lime.getAngleToTarget() - 1.2;
+    var turningVal = Math.copySign(Math.pow(Math.abs(tx), 0.15), tx) * tuningVal;
+    m_drive.driveMotors.arcadeDrive(0, -turningVal);
 }
  // Called once the command ends or is interrupted.
  @Override

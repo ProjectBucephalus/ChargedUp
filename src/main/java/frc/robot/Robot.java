@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
   private static HorizontalExtension m_horizontalExtension = new HorizontalExtension();
 
   private static Command m_autonomousCommand;
+  
   private final CommandController m_robot = new CommandController();
 
 
@@ -54,7 +55,7 @@ public class Robot extends TimedRobot {
     DriverStation.startDataLog(DataLogManager.getLog());
     m_verticalExtension.initSystem();
     m_horizontalExtension.initSystem();
-    m_robot.configureBindings(); //setup bindings for drive, mechanisms etc.
+   //setup bindings for drive, mechanisms etc.
   }
 
 

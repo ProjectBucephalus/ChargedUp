@@ -6,24 +6,16 @@ import frc.robot.Constants;
  * Put docs here // TODO
  */
 public class Limelight {
-    private static Limelight mInstance;
-
-    public static Limelight getInstance() {
-      if (mInstance == null) {
-        mInstance = new Limelight();
-      }
-      return mInstance;
-    }
-
-    Limelight() {
-      //setPipeline(0);
+    private String names;
+    public Limelight(String name) {
+      names = name;
     }
 
 
 
     public boolean getTargetAcquired() {
       //setPipeline(0);
-      double targetAcquired = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0.0);
+      double targetAcquired = NetworkTableInstance.getDefault().getTable(names).getEntry("tv").getDouble(0.0);
       boolean yesorno;
       if(targetAcquired == 1.0){
         yesorno = true;
@@ -36,7 +28,7 @@ public class Limelight {
 
     public double getAngleToTarget() {
       //setPipeline(0);
-      double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0.0);
+      double tx = NetworkTableInstance.getDefault().getTable(names).getEntry("tx").getDouble(0.0);
       return tx;
     }
 
@@ -45,7 +37,7 @@ public class Limelight {
     }
 
     private void setPipeline(int pipelineId) {
-      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(pipelineId);
+      NetworkTableInstance.getDefault().getTable(names).getEntry("pipeline").setNumber(pipelineId);
     }
 
 

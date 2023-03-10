@@ -68,6 +68,7 @@ import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
+import frc.robot.Utilities.Limelight;
 import frc.robot.Utilities.PbSlewRateLimiter;
 import frc.robot.Utilities.PbSlewRateLimiter.Constraints;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -85,13 +86,10 @@ public class CommandController {
     CommandJoystick m_driverJoystick = new CommandJoystick(0); //declare joystick on ds port 0 
     CommandXboxController m_driverHID = new CommandXboxController(1); //declare xbox on ds port 1
     private static PbSlewRateLimiter limiter = new PbSlewRateLimiter(new PbSlewRateLimiter.Constraints(2,.5),new PbSlewRateLimiter.State(5, 0), new PbSlewRateLimiter.State(0, 0) );
-
-
     private final Intake m_intake = new Intake();
     private boolean revState = false;
 
-
-  
+    private Limelight m_lime = new Limelight("limelight");
 
 
     SendableChooser<Command> chooser = new SendableChooser<>();
@@ -110,8 +108,8 @@ public class CommandController {
     //chooser.addOption("5,Top,Climb", loadPathPlannerTrajectoryToRamseteCommand("5TOPClimb", true));
     //chooser.addOption("5,Top", loadPathPlannerTrajectoryToRamseteCommand("5TOP", true));
     chooser.addOption("Move back in a line", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true,1.2,.5));
-    chooser.addOption("nuth n", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true,0,0));
-
+    
+    chooser.setDefaultOption("nuth n", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true,0,0));
 
     Shuffleboard.getTab("AutonomHEREous").add(chooser);
   }
@@ -151,8 +149,7 @@ public class CommandController {
 
   
     if (resetOdometry){
-      return new SequentialCommandGroup(
-        new InstantCommand(() -> Drive.getInstance().resetOdometry(traj.getInitialPose())), ramseteAuto.fullAuto(traj));
+      return new SequentialCommandGroup( new InstantCommand(() -> Drive.getInstance().resetOdometry(m_drive.proseToPose(traj.getInitialState()))), ramseteAuto.fullAuto(traj));
         
     }else{
       return ramseteAuto.fullAuto(traj);
@@ -237,12 +234,12 @@ public class CommandController {
       );
       //m_driverJoystick.button(1).onTrue();
       m_driverJoystick.button(5).onTrue(
-        new autoScore( m_wrist, m_vertical, m_horizontal, m_claw)
+        new TurnToTarget(m_drive, m_driverJoystick, m_lime)
       );
 // 
-       m_driverJoystick.pov(0).onTrue(
-         new InvertDirectionCommand(m_drive, false)
-       );
+     //  m_driverJoystick.pov(0).onTrue(
+      //   new InvertDirectionCommand(m_drive, false)
+       //);
 // 
       // 
       // m_driverJoystick.pov(180).onTrue(
@@ -253,7 +250,7 @@ public class CommandController {
 
   
   public Command getAutonomousCommand(){
-    return chooser.getSelected();
+        return chooser.getSelected();
   }
   
 
