@@ -110,7 +110,7 @@ public class Config {
     /**
      * Intake constants
      */
-     public static final double kFeedMotorPower = .6;
+     public static final double kFeedMotorPower = -.6;
      public static final double kIntakeMotorPower = .285;
      public static final int kIntakeSolenoidPort = 3; //PCM port of the claw solenoid
 

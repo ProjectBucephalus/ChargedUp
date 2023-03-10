@@ -59,6 +59,8 @@ import frc.robot.Commands.Intake.RunFeed;
 import frc.robot.Commands.Intake.RunIntake;
 import frc.robot.Commands.Intake.StopFeed;
 import frc.robot.Commands.Intake.StopIntake;
+import frc.robot.Commands.Intake.outTake;
+import frc.robot.Commands.Intake.reverseFeed;
 import frc.robot.Subsystems.Claw;
 import frc.robot.Subsystems.Drive;
 import frc.robot.Subsystems.Feed;
@@ -98,24 +100,25 @@ public class CommandController {
     configureBindings();
     //chooser.addOption("2,Bottom,Climb", loadPathPlannerTrajectoryToRamseteCommand("2BOTTOMClimb", true));
     //chooser.addOption("2,Bottom", loadPathPlannerTrajectoryToRamseteCommand("2BOTTOM", true));
-    chooser.addOption("8,Climb", loadPathPlannerTrajectoryToRamseteCommand("2Climb", true));
+    chooser.addOption("8,Climb", loadPathPlannerTrajectoryToRamseteCommand("2Climb", true,2.6,.9));
     //chooser.addOption("8,TOP,Climb", loadPathPlannerTrajectoryToRamseteCommand("8TOPClimb", true));
     //chooser.addOption("8,TOP", loadPathPlannerTrajectoryToRamseteCommand("8TOP", true));
-    chooser.addOption("2,Climb", loadPathPlannerTrajectoryToRamseteCommand("8Climb", true));
+    chooser.addOption("2,Climb", loadPathPlannerTrajectoryToRamseteCommand("8Climb", true,2.6,.9));
     //chooser.addOption("5,Bottom,Climb", loadPathPlannerTrajectoryToRamseteCommand("5BOTTOMClimb", true));
     //chooser.addOption("5,Bottom", loadPathPlannerTrajectoryToRamseteCommand("5BOTTOM", true));
-    chooser.addOption("5,Climb", loadPathPlannerTrajectoryToRamseteCommand("5Climb", true));
+    chooser.addOption("5,Climb", loadPathPlannerTrajectoryToRamseteCommand("5Climb", true,0.4,.14 ));
     //chooser.addOption("5,Top,Climb", loadPathPlannerTrajectoryToRamseteCommand("5TOPClimb", true));
     //chooser.addOption("5,Top", loadPathPlannerTrajectoryToRamseteCommand("5TOP", true));
-    //chooser.addOption("LUIN SUCKS!!!!", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true));
+    chooser.addOption("Move back in a line", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true,1.2,.5));
+    chooser.addOption("nuth n", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true,0,0));
 
 
     Shuffleboard.getTab("AutonomHEREous").add(chooser);
   }
-  public Command loadPathPlannerTrajectoryToRamseteCommand(String fileName, Boolean resetOdometry){
+  public Command loadPathPlannerTrajectoryToRamseteCommand(String fileName, Boolean resetOdometry,double maxvel, double maxacel){
     PathPlannerTrajectory traj;
     try{
-      traj = PathPlanner.loadPath(fileName, new PathConstraints(1.0, .3));
+      traj = PathPlanner.loadPath(fileName, new PathConstraints(maxvel, maxacel));
     }finally{
       System.out.println("haii :P");
     }
@@ -128,7 +131,7 @@ public class CommandController {
     SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter, Constants.kaVoltSecondsSquaredPerMeter);
     
     HashMap<String, Command> eventMap = new HashMap<>();
-    //eventMap.put("scoreGamepiece", new autoScore(m_drive, m_wrist, m_vertical, m_horizontal, m_claw)); //STUB FUNCTION !
+    eventMap.put("scoreGamepiece", new autoScore(m_wrist, m_vertical, m_horizontal, m_claw)); //STUB FUNCTION !
     //eventMap.put("intake", new autoIntake(m_drive)); //STUB FUNCTION!!
     eventMap.put("climb", new autoClimb(m_drive, m_driverJoystick)); //STUB FUCINGIOTON
     RamseteAutoBuilder ramseteAuto = new RamseteAutoBuilder(
@@ -204,7 +207,12 @@ public class CommandController {
         new intakeArm(m_wrist, m_vertical, m_horizontal)
       );
 
+      m_driverHID.rightStick().onTrue(new outTake(m_intake, m_claw));
 
+      m_driverHID.rightStick().onFalse(new StopIntake(m_intake));
+      m_driverHID.rightStick().onTrue(new reverseFeed(m_feed));
+
+      m_driverHID.rightStick().onFalse(new StopFeed(m_feed));
 
       m_driverJoystick.button(2).onTrue(
         new CloseClaw(m_claw) 
@@ -227,18 +235,19 @@ public class CommandController {
       m_driverHID.leftStick().onTrue(
         new ArmMidHigh(m_wrist, m_vertical, m_horizontal)
       );
+      //m_driverJoystick.button(1).onTrue();
       m_driverJoystick.button(5).onTrue(
         new autoScore( m_wrist, m_vertical, m_horizontal, m_claw)
       );
-
-      m_driverJoystick.pov(0).onTrue(
-        new InvertDirectionCommand(m_drive, false)
-      );
-
-      
-      m_driverJoystick.pov(180).onTrue(
-        new InvertDirectionCommand(m_drive, true)
-      );
+// 
+       m_driverJoystick.pov(0).onTrue(
+         new InvertDirectionCommand(m_drive, false)
+       );
+// 
+      // 
+      // m_driverJoystick.pov(180).onTrue(
+        // new InvertDirectionCommand(m_drive, true)
+      // );
 
   }
 

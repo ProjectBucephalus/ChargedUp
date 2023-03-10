@@ -24,7 +24,8 @@ public class Intake extends SubsystemBase{
 
     public enum IntakeMotorStatus {
         ON,
-        OFF
+        OFF,
+        REVERSE
     };
 
     public void setIntake(IntakePosition position) {
@@ -42,6 +43,10 @@ public class Intake extends SubsystemBase{
         }else if(status == IntakeMotorStatus.OFF) {
             intakeMotor1.set(0);
             intakeMotor2.set(0);
+        }else if(status == IntakeMotorStatus.REVERSE){
+            intakeMotor2.set(Config.kIntakeMotorPower);
+            intakeMotor1.set(-Config.kIntakeMotorPower);
+
         }
     }
 }

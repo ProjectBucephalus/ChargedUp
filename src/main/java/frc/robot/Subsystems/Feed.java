@@ -18,7 +18,8 @@ public class Feed extends SubsystemBase{
     
     public enum FeedMotorsStatus {
         ON,
-        OFF
+        OFF,
+        REVERSE
     };
 
     public void setFeed(FeedMotorsStatus status) {
@@ -28,6 +29,10 @@ public class Feed extends SubsystemBase{
         } else if (status == FeedMotorsStatus.OFF) {
             FeedMotorsBottom.set(0);
             FeedMotorsTop.set(0);
+        } else if (status == FeedMotorsStatus.REVERSE){
+            FeedMotorsTop.set(-Config.kFeedMotorPower);
+            FeedMotorsBottom.set(Config.kFeedMotorPower);
+
         }
     }
 }

@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.9265938531877065,
-        "y": 2.7461083493595564
+        "x": 1.9351347707434756,
+        "y": 2.6689193662747517
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5374650749301497,
-        "y": 2.739395478790959
+        "x": 2.1440893118753066,
+        "y": 2.6689193662747517
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -19,19 +19,19 @@
         "names": [
           "scoreGamepiece"
         ],
-        "executionBehavior": "sequential",
+        "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
       }
     },
     {
       "anchorPoint": {
-        "x": 5.164432224599047,
-        "y": 2.8683759737187726
+        "x": 2.7804508689586105,
+        "y": 2.6784172999625615
       },
       "prevControl": {
-        "x": 4.613552070706038,
-        "y": 2.8493801063431508
+        "x": 2.561792014806384,
+        "y": 2.6784172999625615
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -41,16 +41,13 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "scoreGamepiece"
+          "climb"
         ],
-        "executionBehavior": "sequential",
+        "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
       }
     }
   ],
-  "maxVelocity": 4.0,
-  "maxAcceleration": 1.2,
-  "isReversed": null,
   "markers": []
 }
