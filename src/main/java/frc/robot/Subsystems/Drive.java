@@ -99,7 +99,6 @@ public class Drive extends SubsystemBase{
     }
     public void resetOdometry(Pose2d pose){
       resetDriveEncoders();
-      gyro.setYaw(pose.getRotation().getDegrees());
       driveOdometry.resetPosition(Rotation2d.fromDegrees(((gyro.getYaw()))), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres(), pose);;
     }
     public Pose2d proseToPose(PathPlannerState prose){
@@ -386,8 +385,8 @@ public class Drive extends SubsystemBase{
     
     driveOdometry.update(
       Rotation2d.fromDegrees(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres());
-
-
+    
+    
     }
 
 

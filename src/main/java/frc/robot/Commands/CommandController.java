@@ -27,7 +27,8 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableInstance; // we live in a society....
+
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -104,14 +105,21 @@ public class CommandController {
     chooser.addOption("2,Climb", loadPathPlannerTrajectoryToRamseteCommand("8Climb", true,2.6,.9));
     //chooser.addOption("5,Bottom,Climb", loadPathPlannerTrajectoryToRamseteCommand("5BOTTOMClimb", true));
     //chooser.addOption("5,Bottom", loadPathPlannerTrajectoryToRamseteCommand("5BOTTOM", true));
-    chooser.addOption("5,Climb", loadPathPlannerTrajectoryToRamseteCommand("5Climb", true,0.4,.14 ));
+    chooser.addOption("5,Climb", loadPathPlannerTrajectoryToRamseteCommand("5Climb", true,.42,.375));
     //chooser.addOption("5,Top,Climb", loadPathPlannerTrajectoryToRamseteCommand("5TOPClimb", true));
     //chooser.addOption("5,Top", loadPathPlannerTrajectoryToRamseteCommand("5TOP", true));
+    chooser.addOption("Start at 3, cone, climb", loadPathPlannerTrajectoryToRamseteCommand("3ConeClimb", true, 2.5, .85));
+    chooser.addOption("Start at 7, cone, climb", loadPathPlannerTrajectoryToRamseteCommand("7ConeClimb", true, 2.5, .85));
+    chooser.addOption("Start at 7, cone, cross line", loadPathPlannerTrajectoryToRamseteCommand("7Cone", true, 2.5, .85));
+    chooser.addOption("Start at 3, cone, cross line", loadPathPlannerTrajectoryToRamseteCommand("3Cone", true, 2.5, .85));
+    chooser.addOption("Start at 2, cube, cross line", loadPathPlannerTrajectoryToRamseteCommand("2Cube", true, 2.5, .85));
+    chooser.addOption("Start at 8, cube, cross line", loadPathPlannerTrajectoryToRamseteCommand("8Cube", true, 2.5, .85));
+
     chooser.addOption("Move back in a line", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true,1.2,.5));
     
     chooser.setDefaultOption("nuth n", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true,0,0));
 
-    Shuffleboard.getTab("AutonomHEREous").add(chooser);
+    Shuffleboard.getTab("Autonomous").add(chooser);
   }
   public Command loadPathPlannerTrajectoryToRamseteCommand(String fileName, Boolean resetOdometry,double maxvel, double maxacel){
     PathPlannerTrajectory traj;
@@ -138,7 +146,7 @@ public class CommandController {
       ramseteController, 
       m_drive.driveKinematics,
       feedForward,
-      m_drive::getWheelSpeeds,
+      m_drive::getWheelSpeeds,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
       pidConstants,
       (leftVolts, rightVolts) -> {
       m_drive.tankDriveVolts(leftVolts, rightVolts);},
@@ -149,7 +157,7 @@ public class CommandController {
 
   
     if (resetOdometry){
-      return new SequentialCommandGroup( new InstantCommand(() -> Drive.getInstance().resetOdometry(m_drive.proseToPose(traj.getInitialState()))), ramseteAuto.fullAuto(traj));
+      return new SequentialCommandGroup( new InstantCommand(() -> Drive.getInstance().resetOdometry(m_drive.proseToPose(traj.getInitialState())                           )), ramseteAuto.fullAuto(traj));
         
     }else{
       return ramseteAuto.fullAuto(traj);

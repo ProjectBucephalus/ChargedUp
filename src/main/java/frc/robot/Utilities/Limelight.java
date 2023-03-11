@@ -39,7 +39,7 @@ public class Limelight {
     private void setPipeline(int pipelineId) {
       NetworkTableInstance.getDefault().getTable(names).getEntry("pipeline").setNumber(pipelineId);
     }
-
+    
 
     public void enableVision() {
       setPipeline(0);

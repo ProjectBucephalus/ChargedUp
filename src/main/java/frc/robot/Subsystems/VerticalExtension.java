@@ -134,15 +134,15 @@ public boolean getHighLimit()
 
 private boolean lastLow = false;
 
-public void checkCalibration()        //resets sensors upon first reaching bottom limit switch
-{
-  boolean thisLow = getLowLimit();
-  if ((thisLow == true) && (lastLow == false))
-  {
-    defineZeros();
-  }  
-  lastLow = thisLow;
-}
+// public void checkCalibration()        //resets sensors upon first reaching bottom limit switch
+// {
+//   boolean thisLow = getLowLimit();
+//   if ((thisLow == true) && (lastLow == false))
+//   {
+//     defineZeros();
+//   }  
+//   lastLow = thisLow;
+// }
 
 
   /**

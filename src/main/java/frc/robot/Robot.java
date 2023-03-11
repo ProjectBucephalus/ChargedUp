@@ -11,6 +11,8 @@ import java.nio.file.Path;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.networktables.LogMessage;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -52,6 +54,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     DataLogManager.start();
+    //NetworkTableInstance.getDefault().getTable("drivelight").getEntry("camMode").setNumber(1);
     DriverStation.startDataLog(DataLogManager.getLog());
     m_verticalExtension.initSystem();
     m_horizontalExtension.initSystem();
@@ -74,13 +77,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    VerticalExtension.getInstance().checkCalibration();
+  //  VerticalExtension.getInstance().checkCalibration();
     CommandScheduler.getInstance().run();
-    Drive.getInstance().diag();
+    Drive.getInstance().diag(); 
+   // Shuffleboard.getTab("LimelightCamera").add(NetworkTableInstance.getDefault().getTable("drivelight").getEntry("tv").getDouble(0.0);
 
-    SmartDashboard.putBoolean("Bottom", VerticalExtension.getInstance().getLowLimit());
-    SmartDashboard.putBoolean("Top", VerticalExtension.getInstance().getHighLimit());
-    SmartDashboard.putNumber("ArmPos", VerticalExtension.getInstance().getMeasurement());
   }
 
   /**
