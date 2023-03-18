@@ -81,8 +81,8 @@ public class Config {
      public static final WristPosition kArmLowPosWrist = WristPosition.LOWERED;
 
     
-     public static final double kArmMedPosX = 0.95;
-     public static final double kArmMedPosY = 0.31;
+     public static final double kArmMedPosX = 0.03;
+     public static final double kArmMedPosY = 0.295;
      public static final WristPosition kArmMedPosWrist = WristPosition.RAISED;
      
      public static final double kArmHighPosX = 2.4;

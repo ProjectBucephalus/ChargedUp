@@ -25,7 +25,7 @@ public class TurnToTarget extends CommandBase{
  // Called every time the scheduler runs while the command is scheduled.
  @Override
  public void execute() { 
-    tx = m_lime.getAngleToTarget() - 1.2;
+    tx = m_lime.getAngleToTarget() ;
     var turningVal = Math.copySign(Math.pow(Math.abs(tx), 0.15), tx) * tuningVal;
     m_drive.driveMotors.arcadeDrive(0, -turningVal);
 }

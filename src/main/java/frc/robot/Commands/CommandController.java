@@ -105,7 +105,7 @@ public class CommandController {
     chooser.addOption("2,Climb", loadPathPlannerTrajectoryToRamseteCommand("8Climb", true,2.6,.9));
     //chooser.addOption("5,Bottom,Climb", loadPathPlannerTrajectoryToRamseteCommand("5BOTTOMClimb", true));
     //chooser.addOption("5,Bottom", loadPathPlannerTrajectoryToRamseteCommand("5BOTTOM", true));
-    chooser.addOption("5,Climb", loadPathPlannerTrajectoryToRamseteCommand("5Climb", true,.42,.375));
+    chooser.addOption("5,Climb", loadPathPlannerTrajectoryToRamseteCommand("5Climb", true,1.4,1.1));
     //chooser.addOption("5,Top,Climb", loadPathPlannerTrajectoryToRamseteCommand("5TOPClimb", true));
     //chooser.addOption("5,Top", loadPathPlannerTrajectoryToRamseteCommand("5TOP", true));
     chooser.addOption("Start at 3, cone, climb", loadPathPlannerTrajectoryToRamseteCommand("3ConeClimb", true, 2.5, .85));

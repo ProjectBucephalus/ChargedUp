@@ -60,6 +60,8 @@ public class autoScore extends CommandBase{
             break;
         case VERTICAL:
             m_vert.setPosition(Config.kArmHighPosY);
+            m_wrist.setWristPosition(Config.kArmHighPosWrist);
+
             if(newState){
                 loops = 0;
                 newState = false;
@@ -75,7 +77,6 @@ public class autoScore extends CommandBase{
             }
             loops++;
             m_horiz.setPosition(Config.kArmHighPosX);
-            m_wrist.setWristPosition(Config.kArmHighPosWrist);
             if(loops>80){desiredState = autoScoreState.SCORE; newState = true;}
             currentState = desiredState;
             break;
