@@ -10,18 +10,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class Constants {
 
-    /**
-     * 2023 robot config
-     */
-    // public static final int kLeftDriveACanId = 1;
-    // public static final int kLeftDriveBCanId = 3;
-    // public static final int kLeftDriveCCanId = 5;
-    // public static final int kRightDriveACanId = 2;
-    // public static final int kRightDriveBCanId = 4;
-    // public static final int kRightDriveCCanId = 6;
 
     /**
-     * Pegasus config
+     * Grus config
      */
 
     public static final int kLeftDriveACanId = 1;
@@ -40,21 +31,29 @@ public class Constants {
     public static final int kLeftWingMotorCanId = 22;
     public static final int kRightWingMotorCanId = 23;
 
+    public static final int kLeftClawCanId= 28;
+    public static final int kRightClawCanId= 27;
 
     public static final int kIntakeMotorLeftCanId = 16;
     public static final int kIntakeMotorRightCanId = 17;
-    public static final int kFeedMotorsACanId = 18; //Bottom Pass-Through
-    public static final int kFeedMotorsBCanId = 19; //Top Roller
+    //public static final int kFeedMotorsACanId = 18; //Bottom Pass-Through
+    public static final int kFeedMotorsBCanId = 18; //Top Roller
+    
     public static final int kPneumaticsModuleCanId = 51;
+
+
 
     public static final int kPigeonCanId = 53;
 
+    //Exponential Drive Constants
     public static final int kDriveSpeedExpo = 1; //fix later
     public static final double kDriveTurnExpo = 1;
 
+    //Autonomous Climb Constants
     public static final double AutoTiltPozisionKP = -0.011;
     public static final double AutoTiltPozisionKD = -0.098; 
 
+    //Autonomous Constants
     public static final double kPDriveVel = 0.23386;//0.089974;//0.84839;
 
     public static final double kvVoltSecondsPerMeter = 2.5034;//2.4337;//2.4531;
@@ -64,4 +63,11 @@ public class Constants {
     public static final double kRamseteZeta = 0.7;//.7;
     
 
+    //Limelight Constants :3
+    public static final double kLimelightFocalHeight = .775; //FIXME
+    public static final double kHighTargetHeight = (41.96875 * 2.54)/100;
+    public static final double kLimelightMountingAngle = 0;
+    public static final double kLimelightErrorValue = 32387943713712937127893.32324;
+
+    public static final double kHorizontalMetresToPosition = 1;
 }

@@ -2,25 +2,30 @@ package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import frc.robot.Config;
+import frc.robot.Constants;
 import frc.robot.Subsystems.Drive;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.VerticalExtension.verticalState;
 import frc.robot.Utilities.Limelight;
 
-public class TurnToTarget extends CommandBase{
+public class MoveHorizontalExtension extends CommandBase{
     private final Drive m_drive;
     private CommandJoystick m_joy;
-    private VerticalExtension m_vert;
     private Limelight m_lime;
+    private HorizontalExtension m_horiz;
+    private VerticalExtension m_vert;
     private double tx;  
     private final double tuningVal = .3;
-    public TurnToTarget(Drive driveSubsystem, CommandJoystick JOY, Limelight limeu, VerticalExtension vert){
+    private double distToTarget;  
+
+    public MoveHorizontalExtension(Drive driveSubsystem, CommandJoystick JOY, Limelight limeu, HorizontalExtension horiz, VerticalExtension vert){
         m_drive = driveSubsystem;
         m_joy = JOY;
         m_lime = limeu;
+        m_horiz = horiz;
         m_vert = vert;
-
     } 
     
     @Override
@@ -29,14 +34,17 @@ public class TurnToTarget extends CommandBase{
             m_lime.enableBotVision();
         }else{
             m_lime.enableTopVision();
-        }
-    }
+        }    }
  // Called every time the scheduler runs while the command is scheduled.
  @Override
  public void execute() { 
-    tx = m_lime.getAngleToTarget() ;
-    var turningVal = Math.copySign(Math.pow(Math.abs(tx), 0.12), tx) * tuningVal;
-    m_drive.driveMotors.arcadeDrive(0, -turningVal);
+    distToTarget = m_lime.getHorizontalDistance();
+    if(distToTarget != Constants.kLimelightErrorValue){
+        if(distToTarget * Constants.kHorizontalMetresToPosition < Config.kArmHighPosX){
+        m_horiz.setPosition(distToTarget);
+
+        }
+    }
 }
  // Called once the command ends or is interrupted.
  @Override

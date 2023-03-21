@@ -9,6 +9,7 @@ import frc.robot.Config;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
+import frc.robot.Subsystems.VerticalExtension.verticalState;
 
 public class ArmShelfPosCommand extends CommandBase {
   private final Wrist m_wrist;
@@ -31,6 +32,8 @@ public class ArmShelfPosCommand extends CommandBase {
   @Override
   public void execute() {
     m_verticalExtension.setPosition(Config.kArmShelfPosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmShelfPosX, Config.kArmShelfPosY));
+    m_verticalExtension.setDesiredState(verticalState.SHELF);
+
     if(m_verticalExtension.getArmAtPosition()){
       m_horizontalExtension.setPosition(Config.kArmShelfPosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmShelfPosX, Config.kArmShelfPosY));
       m_wrist.setWristPosition(Config.kArmShelfPosWrist);

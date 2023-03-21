@@ -110,4 +110,10 @@ public class HorizontalExtension extends SubsystemBase {
     horizontalExtensionMotor.set(ControlMode.MotionMagic, -position / (Config.kHorizontalExtensionMetresPerRotation / Config.kHorizontalExtensionEncoderPPR));
   }
 
+
+  public double metresToPosition(double metres){
+    return metres * Constants.kHorizontalMetresToPosition;
+  }
+
+
 }

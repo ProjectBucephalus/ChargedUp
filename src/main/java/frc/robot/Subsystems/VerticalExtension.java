@@ -21,6 +21,7 @@ import frc.robot.Constants;
 
 /** Add your docs here. */
 public class VerticalExtension extends SubsystemBase {
+  private verticalState currentState = verticalState.ZERO;
 
     private final WPI_TalonFX verticalExtensionMotor = new WPI_TalonFX(Constants.kVerticalElevatorCanId);
   //  private final CANCoder verticalExtensionEncoder = new CANCoder(Constants.kVerticalElevatorEncoderCanId);
@@ -48,7 +49,23 @@ public class VerticalExtension extends SubsystemBase {
 
   }
 
-  /**
+  public enum verticalState{
+    HIGH,
+    SHELF,
+    MEDIUM,
+    LOW,
+    HOME,
+    ZERO,
+    MIDHIGH,
+  }
+
+  public void setDesiredState(verticalState state){
+    currentState = state;
+  }
+  public verticalState getState(){
+    return currentState;
+  }
+  /** 
    * Reset and configure sensors, motors, and encoders.
    */
   public void initSystem() {
@@ -101,7 +118,12 @@ public class VerticalExtension extends SubsystemBase {
       }
       return false;
     }
-  
+    public boolean getClawSafe() {
+      if(getMeasurement() <= .1 && getMeasurement() >= -0.1) {
+          return false;
+        }
+        return true;
+      }
   /**
    * Get position of arm
    * @return vertical extension position in metres

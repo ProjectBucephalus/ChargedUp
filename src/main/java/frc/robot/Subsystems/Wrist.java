@@ -31,10 +31,10 @@ public class Wrist extends SubsystemBase {
    */
   public void setWristPosition(WristPosition wristPosition) {
     if(wristPosition == WristPosition.LOWERED) {
-      wristSolenoid.set(Value.kReverse);
+      wristSolenoid.set(Value.kForward);
       lastWristPos = WristPosition.LOWERED;
     } else if(wristPosition == WristPosition.RAISED) {
-      wristSolenoid.set(Value.kForward);
+      wristSolenoid.set(Value.kReverse);
       lastWristPos = WristPosition.RAISED;
 
     }

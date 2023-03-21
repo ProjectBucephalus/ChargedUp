@@ -191,7 +191,7 @@ public class CommandController {
       );
     m_driverHID.a()
       .onTrue(
-        new ArmHomePosCommand(m_wrist, m_vertical, m_horizontal)
+        new ArmHomePosCommand(m_wrist, m_vertical, m_horizontal, m_claw)
       );
     
     m_driverHID.x()
@@ -206,7 +206,7 @@ public class CommandController {
 
       m_driverHID.leftBumper()
        .onTrue(
-        new ArmZeroPosCommand(m_wrist, m_vertical, m_horizontal)
+        new ArmZeroPosCommand(m_wrist, m_vertical, m_horizontal, m_claw)
       );
       m_driverHID.rightBumper().onTrue(
         new intakeArm(m_wrist, m_vertical, m_horizontal)
@@ -220,7 +220,7 @@ public class CommandController {
       m_driverHID.rightStick().onFalse(new StopFeed(m_feed));
 
       m_driverJoystick.button(2).onTrue(
-        new CloseClaw(m_claw) 
+        new CloseClaw(m_claw, m_vertical) 
       );
       m_driverJoystick.button(2).onFalse(
         new OpenClaw(m_claw)    
@@ -242,7 +242,10 @@ public class CommandController {
       );
       //m_driverJoystick.button(1).onTrue();
       m_driverJoystick.button(5).onTrue(
-        new TurnToTarget(m_drive, m_driverJoystick, m_lime)
+        new TurnToTarget(m_drive, m_driverJoystick, m_lime, m_vertical)
+      );
+      m_driverJoystick.button(6).onTrue(
+        new MoveHorizontalExtension(m_drive, m_driverJoystick, m_lime, m_horizontal, m_vertical)
       );
 // 
      //  m_driverJoystick.pov(0).onTrue(
@@ -255,7 +258,6 @@ public class CommandController {
       // );
 
   }
-
   
   public Command getAutonomousCommand(){
         return chooser.getSelected();

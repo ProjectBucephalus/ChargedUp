@@ -9,6 +9,7 @@ import frc.robot.Config;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
+import frc.robot.Subsystems.VerticalExtension.verticalState;
 
 public class ArmHighPosCommand extends CommandBase {
   private final Wrist m_wrist;
@@ -30,7 +31,8 @@ public class ArmHighPosCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println(m_verticalExtension.getMeasurement());
+
+    m_verticalExtension.setDesiredState(verticalState.HIGH);
     m_verticalExtension.setPosition(Config.kArmHighPosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmHighPosX, Config.kArmHighPosY));
     if(m_verticalExtension.getArmAtPosition()){
 

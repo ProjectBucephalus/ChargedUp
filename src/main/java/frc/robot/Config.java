@@ -110,8 +110,8 @@ public class Config {
     /**
      * Intake constants
      */
-     public static final double kFeedMotorPower = -.6;
-     public static final double kIntakeMotorPower = .285;
+     public static final double kFeedMotorPower = -.85;
+     public static final double kIntakeMotorPower = .45;
      public static final int kIntakeSolenoidPort = 3; //PCM port of the claw solenoid
 
     /**
@@ -142,9 +142,9 @@ public class Config {
     public static final double kVerticalExtensionMaxVelocity = 2;
     public static final double kVerticalExtensionMaxAcceleration = 1.3;
     public static final double kVerticalExtensionEncoderPPR = 2048; //CANCoder, falcon is 2048 EPR
-    public static final double kVertialExtensionGearRatio = 27/1;
+    public static final double kVertialExtensionGearRatio = 15/1;
     public static final double kVerticalExtensionMetresPerRotation = 1.5 * 0.0254 * Math.PI; //0.00118872;
-    public static final double kVerticalExtensionPulsesPerMetre = 836935.385;//(kVertialExtensionGearRatio * kVerticalExtensionEncoderPPR * kVerticalExtensionMetresPerRotation);
+    public static final double kVerticalExtensionPulsesPerMetre = 464964.102777777;//(kVertialExtensionGearRatio * kVerticalExtensionEncoderPPR * kVerticalExtensionMetresPerRotation);
     public static final double kVerticalExtensionPositionTolerenceMetres = 0.01;
     public static final double kVerticalExtensionMaxHeight = 0.65;
 
