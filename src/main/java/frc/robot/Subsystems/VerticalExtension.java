@@ -138,10 +138,7 @@ public class VerticalExtension extends SubsystemBase {
   public void resetSensors() {
     verticalExtensionMotor.setSelectedSensorPosition(0);
   }
-  public void defineZeros(){
-    verticalExtensionMotor.setSelectedSensorPosition(Config.kArmHomePosY);
 
-  }
   public boolean getLowLimit()
   {
     TalonFXSensorCollection sc = verticalExtensionMotor.getSensorCollection();
@@ -155,17 +152,26 @@ public boolean getHighLimit()
 }
 
 private boolean lastLow = false;
+private boolean lastHigh = false;
 
-// public void checkCalibration()        //resets sensors upon first reaching bottom limit switch
-// {
-//   boolean thisLow = getLowLimit();
-//   if ((thisLow == true) && (lastLow == false))
-//   {
-//     defineZeros();
-//   }  
-//   lastLow = thisLow;
-// }
-
+/**
+ * Resets height if either top or bottom limit switches are activated.
+ */
+public void checkCalibration()
+{
+  boolean thisLow = getLowLimit();
+  if ((thisLow == true) && (lastLow == false))
+  {
+    verticalExtensionMotor.setSelectedSensorPosition(Config.kArmBasePosY * Config.kVerticalExtensionPulsesPerMetre);
+  }  
+  lastLow = thisLow;
+  boolean thisHigh = getHighLimit();
+  if ((thisHigh == true) && (lastHigh == false))
+  {
+    verticalExtensionMotor.setSelectedSensorPosition(Config.kArmPeakPosY * Config.kVerticalExtensionPulsesPerMetre);
+  }  
+  lastHigh = thisHigh;
+}
 
   /**
    * Move arm to desired position using motionMagic

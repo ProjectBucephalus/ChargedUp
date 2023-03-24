@@ -77,8 +77,8 @@ public class Config {
      public static final WristPosition kArmHomePosWrist = WristPosition.LOWERED;
      
      public static final double kArmLowPosX = 0.03;
-     public static final double kArmLowPosY = 0.3;
-     public static final WristPosition kArmLowPosWrist = WristPosition.LOWERED;
+     public static final double kArmLowPosY = 0.26;
+     public static final WristPosition kArmLowPosWrist = WristPosition.RAISED;
 
     
      public static final double kArmMedPosX = 0.85;
@@ -93,7 +93,11 @@ public class Config {
      public static final double kArmShelfPosY = 0.4;
      public static final WristPosition kArmShelfPosWrist = WristPosition.RAISED;
 
-    /**
+     //Position to calibrate the arm to when the bottom limit switch is selected.
+     public static final double kArmBasePosY = -0.158;
+     public static final double kArmPeakPosY = 0.500;
+
+     /**
      * Elevator constants
      * ALL UNITS ARE METRES (M)
      */

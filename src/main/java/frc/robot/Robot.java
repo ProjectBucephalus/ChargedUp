@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-  //  VerticalExtension.getInstance().checkCalibration();
+   VerticalExtension.getInstance().checkCalibration();
     CommandScheduler.getInstance().run();
     Drive.getInstance().diag(); 
    // Shuffleboard.getTab("LimelightCamera").add(NetworkTableInstance.getDefault().getTable("drivelight").getEntry("tv").getDouble(0.0);

@@ -197,10 +197,10 @@ public class CommandController {
         new ArmHomePosCommand(m_wrist, m_vertical, m_horizontal, m_claw)
       );
     
-   // m_driverHID.x()
-   //   .onTrue(
-   //     new ArmLowPosCommand(m_wrist, m_vertical, m_horizontal)
-   //   );
+   m_driverHID.x()
+     .onTrue(
+       new ArmLowPosCommand(m_wrist, m_vertical, m_horizontal)
+     );
 
     m_driverHID.b()
       .onTrue(
