@@ -53,7 +53,7 @@ public class Limelight {
       setPipeline(2);
     }
     public double getHorizontalDistance(){
-      if((Constants.kLimelightMountingAngle + getVerticalAngle())  != 0){
+      if((Constants.kLimelightMountingAngle + getVerticalAngle())  != Constants.kLimelightMountingAngle){
         return (Constants.kHighTargetHeight - Constants.kLimelightFocalHeight) / Math.tan(Constants.kLimelightMountingAngle + getVerticalAngle());
       }else{
         return Constants.kLimelightErrorValue;

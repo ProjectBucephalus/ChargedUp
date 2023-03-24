@@ -56,6 +56,8 @@ import frc.robot.Commands.Arm.ArmZeroPosCommand;
 import frc.robot.Commands.Arm.intakeArm;
 import frc.robot.Commands.Claw.CloseClaw;
 import frc.robot.Commands.Claw.OpenClaw;
+import frc.robot.Commands.Claw.PushCone;
+import frc.robot.Commands.Claw.ShootCube;
 import frc.robot.Commands.Intake.RunFeed;
 import frc.robot.Commands.Intake.RunIntake;
 import frc.robot.Commands.Intake.StopFeed;
@@ -69,6 +71,7 @@ import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
+import frc.robot.Subsystems.Claw.ClawPosition;
 import frc.robot.Utilities.Limelight;
 import frc.robot.Utilities.PbSlewRateLimiter;
 import frc.robot.Utilities.PbSlewRateLimiter.Constraints;
@@ -184,24 +187,24 @@ public class CommandController {
             () -> -m_driverJoystick.getY() * m_drive.getDriveDirMultiplier() * m_drive.getThrottleInput(m_driverJoystick),
             () -> -m_driverJoystick.getX() * m_drive.getDriveDirMultiplier() * m_drive.getThrottleInput(m_driverJoystick)));
     
-    
+    m_driverJoystick.button(1).onTrue(new PushCone(m_claw));    
     m_driverHID.y()
       .onTrue(
-        new ArmHighPosCommand(m_wrist, m_vertical, m_horizontal)
+        new ArmHighPosCommand(m_wrist, m_vertical, m_horizontal,m_claw)
       );
     m_driverHID.a()
       .onTrue(
         new ArmHomePosCommand(m_wrist, m_vertical, m_horizontal, m_claw)
       );
     
-    m_driverHID.x()
-      .onTrue(
-        new ArmLowPosCommand(m_wrist, m_vertical, m_horizontal)
-      );
+   // m_driverHID.x()
+   //   .onTrue(
+   //     new ArmLowPosCommand(m_wrist, m_vertical, m_horizontal)
+   //   );
 
     m_driverHID.b()
       .onTrue(
-        new ArmMediumPosCommand(m_wrist, m_vertical, m_horizontal)
+        new ArmMediumPosCommand(m_wrist, m_vertical, m_horizontal,m_claw)
       );
 
       m_driverHID.leftBumper()
@@ -241,11 +244,17 @@ public class CommandController {
         new ArmMidHigh(m_wrist, m_vertical, m_horizontal)
       );
       //m_driverJoystick.button(1).onTrue();
-      m_driverJoystick.button(5).onTrue(
+      m_driverJoystick.button(7).onTrue(
         new TurnToTarget(m_drive, m_driverJoystick, m_lime, m_vertical)
       );
-      m_driverJoystick.button(6).onTrue(
-        new MoveHorizontalExtension(m_drive, m_driverJoystick, m_lime, m_horizontal, m_vertical)
+      //m_driverJoystick.button(7).onTrue(
+      //  new MoveHorizontalExtension(m_drive, m_driverJoystick, m_lime, m_horizontal, m_vertical)
+      //);
+      m_driverJoystick.button(8).onTrue(
+        new ShootCube(m_claw)
+      );
+      m_driverJoystick.button(8).onFalse(
+        new OpenClaw(m_claw)    
       );
 // 
      //  m_driverJoystick.pov(0).onTrue(

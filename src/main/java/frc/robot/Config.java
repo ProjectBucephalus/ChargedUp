@@ -81,7 +81,7 @@ public class Config {
      public static final WristPosition kArmLowPosWrist = WristPosition.LOWERED;
 
     
-     public static final double kArmMedPosX = 0.03;
+     public static final double kArmMedPosX = 0.85;
      public static final double kArmMedPosY = 0.295;
      public static final WristPosition kArmMedPosWrist = WristPosition.RAISED;
      
@@ -139,12 +139,12 @@ public class Config {
     public static final double kVerticalExtensionKA = 0.91854;
     public static final double kVerticalExtensionKP = 0.39027;
     public static final double kVerticalExtensionKD = 0;
-    public static final double kVerticalExtensionMaxVelocity = 2;
-    public static final double kVerticalExtensionMaxAcceleration = 1.3;
+    public static final double kVerticalExtensionMaxVelocity = 3.3;
+    public static final double kVerticalExtensionMaxAcceleration = 2.4;
     public static final double kVerticalExtensionEncoderPPR = 2048; //CANCoder, falcon is 2048 EPR
-    public static final double kVertialExtensionGearRatio = 15/1;
+    public static final double kVertialExtensionGearRatio = 21/1;
     public static final double kVerticalExtensionMetresPerRotation = 1.5 * 0.0254 * Math.PI; //0.00118872;
-    public static final double kVerticalExtensionPulsesPerMetre = 464964.102777777;//(kVertialExtensionGearRatio * kVerticalExtensionEncoderPPR * kVerticalExtensionMetresPerRotation);
+    public static final double kVerticalExtensionPulsesPerMetre = 650949.743888888878;//(kVertialExtensionGearRatio * kVerticalExtensionEncoderPPR * kVerticalExtensionMetresPerRotation);
     public static final double kVerticalExtensionPositionTolerenceMetres = 0.01;
     public static final double kVerticalExtensionMaxHeight = 0.65;
 

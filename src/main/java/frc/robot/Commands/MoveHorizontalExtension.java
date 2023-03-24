@@ -40,9 +40,8 @@ public class MoveHorizontalExtension extends CommandBase{
  public void execute() { 
     distToTarget = m_lime.getHorizontalDistance();
     if(distToTarget != Constants.kLimelightErrorValue){
-        if(distToTarget * Constants.kHorizontalMetresToPosition < Config.kArmHighPosX){
+        if(distToTarget * Constants.kHorizontalMetresToPosition < Config.kArmHighPosX + .02 && distToTarget * Constants.kHorizontalMetresToPosition > Config.kArmLowPosX + .02){
         m_horiz.setPosition(distToTarget);
-
         }
     }
 }

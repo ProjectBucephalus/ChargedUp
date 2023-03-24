@@ -15,7 +15,9 @@ public class Claw extends SubsystemBase {
 
     public enum ClawPosition {
         OPEN,
-        CLOSED
+        CLOSED,
+        CONEPUSH,
+        ZOOOOOOOM
     };
     
     /**
@@ -25,14 +27,19 @@ public class Claw extends SubsystemBase {
     public void setClaw(ClawPosition position) {
         if (position == ClawPosition.OPEN) {
             clawSolenoid.set(false);
-            clawMotor1.setVoltage(-2.2);
-            clawMotor2.setVoltage(2.2);
+            clawMotor1.setVoltage(-1.7);
+            clawMotor2.setVoltage(1.7);
 
-        }else if(position == ClawPosition.CLOSED) {
+        }else if(position == ClawPosition.CLOSED) {  //THIS IS ACTUALLY HOPEMN OR SOMETHING...
             clawSolenoid.set(true); //claw should be opened on default
-            clawMotor1.setVoltage(-0);
+            clawMotor1.setVoltage(0);
             clawMotor2.setVoltage(0);
-
+        }else if(position == ClawPosition.CONEPUSH){
+            clawMotor1.setVoltage(3.25);
+            clawMotor2.setVoltage(-3.25);
+        }else if(position == ClawPosition.ZOOOOOOOM){
+            clawMotor1.setVoltage(10.25);
+            clawMotor2.setVoltage(-10.25);
         }
     }
 
