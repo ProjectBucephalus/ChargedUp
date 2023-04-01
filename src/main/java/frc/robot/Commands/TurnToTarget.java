@@ -3,7 +3,7 @@ package frc.robot.Commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Subsystems.Drive;
-import frc.robot.Subsystems.HorizontalExtension;
+
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.VerticalExtension.verticalState;
 import frc.robot.Utilities.Limelight;

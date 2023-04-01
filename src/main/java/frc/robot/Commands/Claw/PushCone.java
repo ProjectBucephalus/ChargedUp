@@ -6,7 +6,6 @@ package frc.robot.Commands.Claw;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Subsystems.Claw;
-import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Claw.ClawPosition;
 
 public class PushCone extends CommandBase {

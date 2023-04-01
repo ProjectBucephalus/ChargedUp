@@ -4,15 +4,9 @@
 
 package frc.robot.Commands;
 
-
-import java.io.IOException;
-import java.nio.file.Path;
-
 import java.util.HashMap;
-import java.util.function.BiConsumer;
 
 import frc.robot.Autonomous.autoClimb;
-import frc.robot.Autonomous.autoIntake;
 import frc.robot.Autonomous.autoScore;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -21,32 +15,23 @@ import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.RamseteAutoBuilder;
 
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-
-import edu.wpi.first.networktables.NetworkTableInstance; // we live in a society....
 
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.Autonomous.autoScore;
 import frc.robot.Commands.Arm.ArmHighPosCommand;
 import frc.robot.Commands.Arm.ArmHomePosCommand;
 import frc.robot.Commands.Arm.ArmLowPosCommand;
@@ -71,11 +56,7 @@ import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
-import frc.robot.Subsystems.Claw.ClawPosition;
 import frc.robot.Utilities.Limelight;
-import frc.robot.Utilities.PbSlewRateLimiter;
-import frc.robot.Utilities.PbSlewRateLimiter.Constraints;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /** Add your docs here. */
@@ -89,9 +70,7 @@ public class CommandController {
     private final VerticalExtension m_vertical = VerticalExtension.getInstance();
     CommandJoystick m_driverJoystick = new CommandJoystick(0); //declare joystick on ds port 0 
     CommandXboxController m_driverHID = new CommandXboxController(1); //declare xbox on ds port 1
-    private static PbSlewRateLimiter limiter = new PbSlewRateLimiter(new PbSlewRateLimiter.Constraints(2,.5),new PbSlewRateLimiter.State(5, 0), new PbSlewRateLimiter.State(0, 0) );
     private final Intake m_intake = new Intake();
-    private boolean revState = false;
 
     private Limelight m_lime = new Limelight("limelight");
 
@@ -190,7 +169,7 @@ public class CommandController {
     m_driverJoystick.button(1).onTrue(new PushCone(m_claw));    
     m_driverHID.y()
       .onTrue(
-        new ArmHighPosCommand(m_wrist, m_vertical, m_horizontal,m_claw)
+        new ArmHighPosCommand(m_wrist, m_vertical, m_horizontal)
       );
     m_driverHID.a()
       .onTrue(
@@ -204,7 +183,7 @@ public class CommandController {
 
     m_driverHID.b()
       .onTrue(
-        new ArmMediumPosCommand(m_wrist, m_vertical, m_horizontal,m_claw)
+        new ArmMediumPosCommand(m_wrist, m_vertical, m_horizontal)
       );
 
       m_driverHID.leftBumper()

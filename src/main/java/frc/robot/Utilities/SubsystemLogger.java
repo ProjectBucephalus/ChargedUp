@@ -7,8 +7,8 @@ package frc.robot.Utilities;
 /** Add your docs here. */
 public class SubsystemLogger {
 
-    private static String m_subsystem = "";
+    //private static String m_subsystem = "";
     public SubsystemLogger(String subsystem) {
-        m_subsystem = subsystem;
+      //  m_subsystem = subsystem;
     }
 }

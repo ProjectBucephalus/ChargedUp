@@ -6,24 +6,20 @@ package frc.robot.Commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Config;
-import frc.robot.Subsystems.Claw;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
-import frc.robot.Subsystems.Claw.ClawPosition;
 import frc.robot.Subsystems.VerticalExtension.verticalState;
 
 public class ArmMediumPosCommand extends CommandBase {
   private final Wrist m_wrist;
   private final HorizontalExtension m_horizontalExtension;
   private final VerticalExtension m_verticalExtension;
-  private final Claw m_claw;
   /** Creates a new ArmsumPosCommand. */
-  public ArmMediumPosCommand(Wrist wristSubsystem, VerticalExtension verticalExtensionSubsystem, HorizontalExtension horizontalExtensionSubsystem, Claw claw) {
+  public ArmMediumPosCommand(Wrist wristSubsystem, VerticalExtension verticalExtensionSubsystem, HorizontalExtension horizontalExtensionSubsystem) {
     m_wrist = wristSubsystem;
     m_verticalExtension = verticalExtensionSubsystem;
     m_horizontalExtension = horizontalExtensionSubsystem;
-    m_claw = claw;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

@@ -1,12 +1,5 @@
 package frc.robot;
 
-import javax.swing.plaf.InputMapUIResource;
-
-import edu.wpi.first.wpilibj.ADIS16448_IMU.IMUAxis;
-
-import java.util.HashMap;
-
-import edu.wpi.first.wpilibj2.command.Command;
 
 public class Constants {
 

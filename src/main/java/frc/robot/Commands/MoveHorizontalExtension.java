@@ -4,24 +4,19 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Config;
 import frc.robot.Constants;
-import frc.robot.Subsystems.Drive;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.VerticalExtension.verticalState;
 import frc.robot.Utilities.Limelight;
 
 public class MoveHorizontalExtension extends CommandBase{
-    private final Drive m_drive;
     private CommandJoystick m_joy;
     private Limelight m_lime;
     private HorizontalExtension m_horiz;
     private VerticalExtension m_vert;
-    private double tx;  
-    private final double tuningVal = .3;
     private double distToTarget;  
 
-    public MoveHorizontalExtension(Drive driveSubsystem, CommandJoystick JOY, Limelight limeu, HorizontalExtension horiz, VerticalExtension vert){
-        m_drive = driveSubsystem;
+    public MoveHorizontalExtension(CommandJoystick JOY, Limelight limeu, HorizontalExtension horiz, VerticalExtension vert){
         m_joy = JOY;
         m_lime = limeu;
         m_horiz = horiz;

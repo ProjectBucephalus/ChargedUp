@@ -6,8 +6,6 @@ package frc.robot.Commands.Intake;
 
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Commands.Claw.CloseClaw;
-import frc.robot.Commands.Claw.OpenClaw;
 import frc.robot.Subsystems.Claw;
 import frc.robot.Subsystems.Intake;
 
