@@ -9,6 +9,7 @@ import frc.robot.Config;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
+import frc.robot.Subsystems.VerticalExtension.verticalState;
 
 public class ArmLowPosCommand extends CommandBase {
   private final Wrist m_wrist;
@@ -32,6 +33,8 @@ public class ArmLowPosCommand extends CommandBase {
   @Override
   public void execute() {
     m_verticalExtension.setPosition(Config.kArmLowPosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmLowPosX, Config.kArmLowPosY));
+    m_verticalExtension.setDesiredState(verticalState.LOW);
+
     if(m_verticalExtension.getArmAtPosition()){ 
       m_horizontalExtension.setPosition(Config.kArmLowPosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmLowPosX, Config.kArmLowPosY));
     }

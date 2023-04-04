@@ -9,6 +9,7 @@ import frc.robot.Config;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
+import frc.robot.Subsystems.VerticalExtension.verticalState;
 
 public class ArmMediumPosCommand extends CommandBase {
   private final Wrist m_wrist;
@@ -31,6 +32,8 @@ public class ArmMediumPosCommand extends CommandBase {
   @Override
   public void execute() {
     m_verticalExtension.setPosition(Config.kArmMedPosY);//m_verticalExtension.calculateVerticalExtensionGoal(Config.kArmMedPosX, Config.kArmMedPosY));
+    m_verticalExtension.setDesiredState(verticalState.MEDIUM);
+
     if(m_verticalExtension.getArmAtPosition()){
       m_horizontalExtension.setPosition(Config.kArmMedPosX);//m_horizontalExtension.calculateHorizontalExtensionGoal(Config.kArmMedPosX, Config.kArmMedPosY));
       m_wrist.setWristPosition(Config.kArmMedPosWrist);

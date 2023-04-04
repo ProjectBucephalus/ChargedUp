@@ -1,6 +1,5 @@
 package frc.robot.Autonomous;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Subsystems.Drive;

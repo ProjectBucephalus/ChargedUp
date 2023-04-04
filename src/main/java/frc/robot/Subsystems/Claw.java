@@ -1,16 +1,23 @@
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Config;
+import frc.robot.Constants;
 
 public class Claw extends SubsystemBase {
     private Solenoid clawSolenoid = new Solenoid(Config.kPneumaticsModuleCanId, PneumaticsModuleType.REVPH, Config.kClawSolenoidPort);
-    
+    private WPI_VictorSPX clawMotor1 = new WPI_VictorSPX(Constants.kLeftClawCanId);
+    private WPI_VictorSPX clawMotor2 = new WPI_VictorSPX(Constants.kRightClawCanId);
+
     public enum ClawPosition {
         OPEN,
-        CLOSED
+        CLOSED,
+        CONEPUSH,
+        ZOOOOOOOM
     };
     
     /**
@@ -20,8 +27,19 @@ public class Claw extends SubsystemBase {
     public void setClaw(ClawPosition position) {
         if (position == ClawPosition.OPEN) {
             clawSolenoid.set(false);
-        }else if(position == ClawPosition.CLOSED) {
+            clawMotor1.setVoltage(-1.7);
+            clawMotor2.setVoltage(1.7);
+
+        }else if(position == ClawPosition.CLOSED) {  //THIS IS ACTUALLY HOPEMN OR SOMETHING...
             clawSolenoid.set(true); //claw should be opened on default
+            clawMotor1.setVoltage(0);
+            clawMotor2.setVoltage(0);
+        }else if(position == ClawPosition.CONEPUSH){
+            clawMotor1.setVoltage(3.25);
+            clawMotor2.setVoltage(-3.25);
+        }else if(position == ClawPosition.ZOOOOOOOM){
+            clawMotor1.setVoltage(10.25);
+            clawMotor2.setVoltage(-10.25);
         }
     }
 

@@ -1,28 +1,22 @@
 package frc.robot.Subsystems;
 
-import java.io.ObjectInputFilter.Status;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
 import frc.robot.Config;
 import frc.robot.Constants;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -98,8 +92,11 @@ public class Drive extends SubsystemBase{
     }
     public void resetOdometry(Pose2d pose){
       resetDriveEncoders();
-      gyro.setYaw(pose.getRotation().getDegrees());
-      driveOdometry.resetPosition(new Rotation2d(((gyro.getYaw()))), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres(), pose);;
+      driveOdometry.resetPosition(Rotation2d.fromDegrees(((gyro.getYaw()))), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres(), pose);;
+    }
+    public Pose2d proseToPose(PathPlannerState prose){
+      Pose2d pose = new Pose2d(prose.poseMeters.getTranslation(), prose.holonomicRotation);
+      return pose;
     }
     /**
      * Configure all motor controllers, sensors, etc. of this subsystem
@@ -176,7 +173,7 @@ public class Drive extends SubsystemBase{
   double currentpitch = gyro.getPitch();
   double deltaPitch = currentpitch-lastpitch;
   driveMotors.arcadeDrive(
-    (deltaPitch * Constants.AutoTiltPozisionKD + (Math.copySign(Math.pow(Math.abs(currentpitch),.36), currentpitch) *(4.8) * Constants.AutoTiltPozisionKP)),
+    (deltaPitch * Constants.AutoTiltPozisionKD + (Math.copySign(Math.pow(Math.abs(currentpitch),.45), currentpitch) *(3.5) * Constants.AutoTiltPozisionKP)),
   0, false);
     // driveMotors.arcadeDrive(0.3, 0);
   lastpitch = currentpitch;
@@ -192,7 +189,7 @@ public class Drive extends SubsystemBase{
    * Resets the drive encoders to a position of zero
    */
   public void resetDriveEncoders() {
-
+    
     leftDriveA.setSelectedSensorPosition(0);
     leftDriveB.setSelectedSensorPosition(0);
     leftDriveC.setSelectedSensorPosition(0);
@@ -381,8 +378,8 @@ public class Drive extends SubsystemBase{
     
     driveOdometry.update(
       Rotation2d.fromDegrees(gyro.getYaw()), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres());
-
-
+    
+    
     }
 
 

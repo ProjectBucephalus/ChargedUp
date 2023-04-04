@@ -4,7 +4,7 @@
 
 package frc.robot.Subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,21 +13,26 @@ import frc.robot.Constants;
 
 /** Add your docs here. */
 public class Feed extends SubsystemBase{
-    private WPI_VictorSPX FeedMotorsBottom = new WPI_VictorSPX(Constants.kFeedMotorsACanId);
-    private WPI_VictorSPX FeedMotorsTop = new WPI_VictorSPX(Constants.kFeedMotorsBCanId);
+    //private WPI_VictorSPX FeedMotorsBottom = new WPI_VictorSPX(Constants.kFeedMotorsACanId);
+    private WPI_TalonSRX FeedMotorsTop = new WPI_TalonSRX(Constants.kFeedMotorsBCanId);
     
     public enum FeedMotorsStatus {
         ON,
-        OFF
+        OFF,
+        REVERSE
     };
 
     public void setFeed(FeedMotorsStatus status) {
         if (status == FeedMotorsStatus.ON) {
-            FeedMotorsBottom.set(-Config.kFeedMotorPower);
-            FeedMotorsTop.set(Config.kFeedMotorPower);
+        //    FeedMotorsBottom.set(-Config.kFeedMotorPower);
+            FeedMotorsTop.set(-Config.kFeedMotorPower);
         } else if (status == FeedMotorsStatus.OFF) {
-            FeedMotorsBottom.set(0);
+   //         FeedMotorsBottom.set(0);
             FeedMotorsTop.set(0);
+        } else if (status == FeedMotorsStatus.REVERSE){
+            FeedMotorsTop.set(Config.kFeedMotorPower);
+           // FeedMotorsBottom.set(Config.kFeedMotorPower);
+
         }
     }
 }

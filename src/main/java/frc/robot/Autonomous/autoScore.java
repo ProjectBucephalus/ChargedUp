@@ -2,7 +2,6 @@ package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Subsystems.Claw;
-import frc.robot.Subsystems.Drive;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
@@ -46,7 +45,7 @@ public class autoScore extends CommandBase{
     System.out.println(currentState);
     switch(currentState){
         case INITIAL:
-            m_claw.setClaw(ClawPosition.CLOSED); // CUD BE AN ERROR ?? ? DOUBLE CHECK
+            m_claw.setClaw(ClawPosition.OPEN); // CUD BE AN ERROR ?? ? DOUBLE CHECK
             if(newState){
                 loops = 0;
                 newState = false;
@@ -60,6 +59,8 @@ public class autoScore extends CommandBase{
             break;
         case VERTICAL:
             m_vert.setPosition(Config.kArmHighPosY);
+            m_wrist.setWristPosition(Config.kArmHighPosWrist);
+
             if(newState){
                 loops = 0;
                 newState = false;
@@ -75,8 +76,7 @@ public class autoScore extends CommandBase{
             }
             loops++;
             m_horiz.setPosition(Config.kArmHighPosX);
-            m_wrist.setWristPosition(Config.kArmHighPosWrist);
-            if(m_horiz.getArmAtPosition() && loops>20){desiredState = autoScoreState.SCORE; newState = true;}
+            if(loops>80){desiredState = autoScoreState.SCORE; newState = true;}
             currentState = desiredState;
             break;
         case SCORE:
@@ -86,8 +86,8 @@ public class autoScore extends CommandBase{
                 newState = false;
             }
             loops++;
-            m_claw.setClaw(ClawPosition.OPEN);
-            if(m_horiz.getArmAtPosition() && loops >10){desiredState = autoScoreState.RETRACT; newState = true;}
+            m_claw.setClaw(ClawPosition.CLOSED);
+            if(loops >20){desiredState = autoScoreState.RETRACT; newState = true;}
             currentState = desiredState;
             break;
         case RETRACT:
@@ -100,7 +100,7 @@ public class autoScore extends CommandBase{
                 newState = false;
             }
             loops++;
-            if(m_horiz.getArmAtPosition() && loops >15){desiredState = autoScoreState.INTAKEREADY; newState = true;}
+            if(loops >15){desiredState = autoScoreState.INTAKEREADY; newState = true;}
             currentState = desiredState;
             break;
         case INTAKEREADY:
