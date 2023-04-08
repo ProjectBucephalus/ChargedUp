@@ -90,6 +90,9 @@ public class Drive extends SubsystemBase{
       rightDrive.setVoltage(rightVolts);
       driveMotors.feed();
     }
+    public double getPitch(){
+      return gyro.getPitch();
+    }
     public void resetOdometry(Pose2d pose){
       resetDriveEncoders();
       driveOdometry.resetPosition(Rotation2d.fromDegrees(((gyro.getYaw()))), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres(), pose);;
@@ -161,7 +164,16 @@ public class Drive extends SubsystemBase{
           
       }
 
+      public CommandBase arcadeDriveCommand(double fwd, double rot) {
+        // A split-stick arcade command, with forward/backward controlled by the left
+        // hand, and turning controlled by the right.
+          return run(() -> driveMotors.arcadeDrive(
+            Math.copySign(Math.pow(fwd, Constants.kDriveSpeedExpo),-fwd),
+            Math.copySign(Math.pow(rot, Constants.kDriveTurnExpo), -rot),
+            false)) //run the WPILIB arcadeDrive method with supplied values
+              .withName("arcadeDrive");
 
+          }
   public CommandBase autoDriveCommand() {
     // A split-stick arcade command, with forward/backward controlled by the left
     // hand, and turning controlled by the right.
@@ -173,7 +185,18 @@ public class Drive extends SubsystemBase{
   double currentpitch = gyro.getPitch();
   double deltaPitch = currentpitch-lastpitch;
   driveMotors.arcadeDrive(
-    (deltaPitch * Constants.AutoTiltPozisionKD + (Math.copySign(Math.pow(Math.abs(currentpitch),.45), currentpitch) *(3.5) * Constants.AutoTiltPozisionKP)),
+    ((deltaPitch * Constants.AutoTiltPozisionKD + (Math.copySign(Math.pow(Math.abs(currentpitch),.45), currentpitch) *(3.5) * Constants.AutoTiltPozisionKP)) * 1),
+  0, false);
+    // driveMotors.arcadeDrive(0.3, 0);
+  lastpitch = currentpitch;
+  }
+
+  public void teleopPosition()
+  {
+  double currentpitch = gyro.getPitch();
+  double deltaPitch = currentpitch-lastpitch;
+  driveMotors.arcadeDrive(
+    (deltaPitch * Constants.AutoTiltPozisionKD + (Math.copySign(Math.pow(Math.abs(currentpitch),.42), currentpitch) *(5.0) * Constants.AutoTiltPozisionKP)),
   0, false);
     // driveMotors.arcadeDrive(0.3, 0);
   lastpitch = currentpitch;
@@ -316,7 +339,9 @@ public class Drive extends SubsystemBase{
     }
       return canOk;
   }
-
+  public DifferentialDrive getDriveMotors(){
+    return driveMotors;
+  }
   /**
    * 
    * @param brakes true for brakes enabled

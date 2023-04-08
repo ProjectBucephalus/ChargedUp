@@ -47,7 +47,7 @@ public class TurnToTarget extends CommandBase{
  // Returns true when the command should end.
  @Override
  public boolean isFinished() {
-    if(Math.abs(m_joy.getX()) > 0.1 || Math.abs(m_joy.getY()) > 0.1){
+    if(Math.abs(m_joy.getX()) > 0.3 || Math.abs(m_joy.getY()) > 0.3){
         return true;
     }
     return false;

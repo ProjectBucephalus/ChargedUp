@@ -30,7 +30,7 @@ public class ArmZeroPosCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_claw.setClaw(ClawPosition.OPEN);
+    m_claw.setClaw(ClawPosition.OPENSTALL);
 
     System.out.println("Start");
     

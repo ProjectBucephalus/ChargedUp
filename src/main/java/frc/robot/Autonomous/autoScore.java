@@ -45,7 +45,7 @@ public class autoScore extends CommandBase{
     System.out.println(currentState);
     switch(currentState){
         case INITIAL:
-            m_claw.setClaw(ClawPosition.OPEN); // CUD BE AN ERROR ?? ? DOUBLE CHECK
+            m_claw.setClaw(ClawPosition.OPENSTALL); // CUD BE AN ERROR ?? ? DOUBLE CHECK
             if(newState){
                 loops = 0;
                 newState = false;

@@ -36,7 +36,6 @@ import frc.robot.Commands.Arm.ArmHighPosCommand;
 import frc.robot.Commands.Arm.ArmHomePosCommand;
 import frc.robot.Commands.Arm.ArmLowPosCommand;
 import frc.robot.Commands.Arm.ArmMediumPosCommand;
-import frc.robot.Commands.Arm.ArmMidHigh;
 import frc.robot.Commands.Arm.ArmZeroPosCommand;
 import frc.robot.Commands.Arm.intakeArm;
 import frc.robot.Commands.Claw.CloseClaw;
@@ -81,22 +80,39 @@ public class CommandController {
     configureBindings();
     //chooser.addOption("2,Bottom,Climb", loadPathPlannerTrajectoryToRamseteCommand("2BOTTOMClimb", true));
     //chooser.addOption("2,Bottom", loadPathPlannerTrajectoryToRamseteCommand("2BOTTOM", true));
-    chooser.addOption("8,Climb", loadPathPlannerTrajectoryToRamseteCommand("2Climb", true,2.6,.9));
     //chooser.addOption("8,TOP,Climb", loadPathPlannerTrajectoryToRamseteCommand("8TOPClimb", true));
     //chooser.addOption("8,TOP", loadPathPlannerTrajectoryToRamseteCommand("8TOP", true));
-    chooser.addOption("2,Climb", loadPathPlannerTrajectoryToRamseteCommand("8Climb", true,2.6,.9));
+  
     //chooser.addOption("5,Bottom,Climb", loadPathPlannerTrajectoryToRamseteCommand("5BOTTOMClimb", true));
     //chooser.addOption("5,Bottom", loadPathPlannerTrajectoryToRamseteCommand("5BOTTOM", true));
-    chooser.addOption("5,Climb", loadPathPlannerTrajectoryToRamseteCommand("5Climb", true,1.4,1.1));
     //chooser.addOption("5,Top,Climb", loadPathPlannerTrajectoryToRamseteCommand("5TOPClimb", true));
     //chooser.addOption("5,Top", loadPathPlannerTrajectoryToRamseteCommand("5TOP", true));
-    chooser.addOption("Start at 3, cone, climb", loadPathPlannerTrajectoryToRamseteCommand("3ConeClimb", true, 2.5, .85));
-    chooser.addOption("Start at 7, cone, climb", loadPathPlannerTrajectoryToRamseteCommand("7ConeClimb", true, 2.5, .85));
+  //AMBIG 
+  chooser.addOption("5,Climb", loadPathPlannerTrajectoryToRamseteCommand("5Climb", true,1.4,1.1));
+  chooser.addOption("Do nothing score", loadPathPlannerTrajectoryToRamseteCommand("nothingScore", true, 0, 0));
+  
+    //BLUE?
+    // chooser.addOption("8,Climb", loadPathPlannerTrajectoryToRamseteCommand("2Climb", true,2.6,.9));
+    // chooser.addOption("2,Climb", loadPathPlannerTrajectoryToRamseteCommand("8Climb", true,2.6,.9));
+    // chooser.addOption("Start at 3, cone, climb", loadPathPlannerTrajectoryToRamseteCommand("7ConeClimb", true, 1.76, .25));
+    // chooser.addOption("Start at 7, cone, climb", loadPathPlannerTrajectoryToRamseteCommand("3ConeClimb", true, 1.76, .25));
+    // chooser.addOption("Start at 7, cone, cross line", loadPathPlannerTrajectoryToRamseteCommand("3Cone", true, 2.5, .85));
+    // chooser.addOption("Start at 3, cone, cross line", loadPathPlannerTrajectoryToRamseteCommand("7Cone", true, 2.5, .85));
+    // chooser.addOption("Start at 2, cube, cross line", loadPathPlannerTrajectoryToRamseteCommand("8Cube", true, 2.5, .85));
+    // chooser.addOption("Start at 8, cube, cross line", loadPathPlannerTrajectoryToRamseteCommand("2Cube", true, 2.5, .85));
+    // chooser.addOption("Move back in a line", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true,1.2,.5));
+
+
+
+    //RED
+    chooser.addOption("8,Climb", loadPathPlannerTrajectoryToRamseteCommand("8Climb", true,2.6,.9));
+    chooser.addOption("2,Climb", loadPathPlannerTrajectoryToRamseteCommand("2Climb", true,2.6,.9));
+    chooser.addOption("Start at 3, cone, climb", loadPathPlannerTrajectoryToRamseteCommand("7ConeClimb", true, 1.76, .25));
+    chooser.addOption("Start at 7, cone, climb", loadPathPlannerTrajectoryToRamseteCommand("3ConeClimb", true, 1.76, .25));
     chooser.addOption("Start at 7, cone, cross line", loadPathPlannerTrajectoryToRamseteCommand("7Cone", true, 2.5, .85));
     chooser.addOption("Start at 3, cone, cross line", loadPathPlannerTrajectoryToRamseteCommand("3Cone", true, 2.5, .85));
     chooser.addOption("Start at 2, cube, cross line", loadPathPlannerTrajectoryToRamseteCommand("2Cube", true, 2.5, .85));
     chooser.addOption("Start at 8, cube, cross line", loadPathPlannerTrajectoryToRamseteCommand("8Cube", true, 2.5, .85));
-
     chooser.addOption("Move back in a line", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true,1.2,.5));
     
     chooser.setDefaultOption("nuth n", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true,0,0));
@@ -133,7 +149,7 @@ public class CommandController {
       (leftVolts, rightVolts) -> {
       m_drive.tankDriveVolts(leftVolts, rightVolts);},
       eventMap, 
-      true,
+      false,
       m_drive);
   
 
@@ -220,15 +236,15 @@ public class CommandController {
         new StopFeed(m_feed)
       );
       m_driverHID.leftStick().onTrue(
-        new ArmMidHigh(m_wrist, m_vertical, m_horizontal)
-      );
+        new teleopClimb(m_drive, m_driverJoystick)
+     );
       //m_driverJoystick.button(1).onTrue();
       m_driverJoystick.button(7).onTrue(
         new TurnToTarget(m_drive, m_driverJoystick, m_lime, m_vertical)
       );
-      //m_driverJoystick.button(7).onTrue(
-      //  new MoveHorizontalExtension(m_drive, m_driverJoystick, m_lime, m_horizontal, m_vertical)
-      //);
+   //   m_driverJoystick.button(11).onTrue(
+   //     new MoveHorizontalExtension(m_driverJoystick, m_lime, m_horizontal, m_vertical)
+   //   )=
       m_driverJoystick.button(8).onTrue(
         new ShootCube(m_claw)
       );

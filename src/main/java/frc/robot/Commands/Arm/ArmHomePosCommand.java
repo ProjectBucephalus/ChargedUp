@@ -30,7 +30,7 @@ public class ArmHomePosCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_claw.setClaw(ClawPosition.OPEN);
+    m_claw.setClaw(ClawPosition.OPENSTALL);
     m_wrist.setWristPosition(Config.kArmHomePosWrist);
   }
 

@@ -82,7 +82,6 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     Drive.getInstance().setBrakes(true); //run brakes
     m_pneumatics.setPneumatics(true);
-    m_robot.getAutonomousCommand();
     m_autonomousCommand = m_robot.getAutonomousCommand();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

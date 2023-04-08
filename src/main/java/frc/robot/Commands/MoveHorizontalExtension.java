@@ -34,9 +34,14 @@ public class MoveHorizontalExtension extends CommandBase{
  @Override
  public void execute() { 
     distToTarget = m_lime.getHorizontalDistance();
+    System.out.println(distToTarget);
     if(distToTarget != Constants.kLimelightErrorValue){
-        if(distToTarget * Constants.kHorizontalMetresToPosition < Config.kArmHighPosX + .02 && distToTarget * Constants.kHorizontalMetresToPosition > Config.kArmLowPosX + .02){
-        m_horiz.setPosition(distToTarget);
+        var setPos = distToTarget - 0.7;
+        setPos *= Constants.kHorizontalMetresToPosition;
+        System.out.println(setPos);
+
+        if(setPos < Config.kArmHighPosX + .03 && setPos > Config.kArmLowPosX - .02){
+        m_horiz.setPosition(setPos);
         }
     }
 }
@@ -49,7 +54,7 @@ public class MoveHorizontalExtension extends CommandBase{
  // Returns true when the command should end.
  @Override
  public boolean isFinished() {
-    if(Math.abs(m_joy.getX()) > 0.1 || Math.abs(m_joy.getY()) > 0.1){
+    if(Math.abs(m_joy.getX()) > 0.3 || Math.abs(m_joy.getY()) > 0.3){
         return true;
     }
     return false;
