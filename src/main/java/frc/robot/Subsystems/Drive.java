@@ -190,7 +190,9 @@ public class Drive extends SubsystemBase{
     // driveMotors.arcadeDrive(0.3, 0);
   lastpitch = currentpitch;
   }
-
+  public void zeroGyro(){
+    gyro.reset();
+  }
   public void teleopPosition()
   {
   double currentpitch = gyro.getPitch();
@@ -415,6 +417,10 @@ public class Drive extends SubsystemBase{
 
   public boolean getDriveInvert() {
     return directionInvert;
+  }
+
+  public double getYaw(){
+    return gyro.getYaw();
   }
 
   public double getDriveDirMultiplier() {
