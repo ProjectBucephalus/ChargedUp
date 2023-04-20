@@ -12,10 +12,8 @@ public class Claw extends SubsystemBase {
     private Solenoid clawSolenoid = new Solenoid(Config.kPneumaticsModuleCanId, PneumaticsModuleType.REVPH, Config.kClawSolenoidPort);
     private WPI_VictorSPX clawMotor1 = new WPI_VictorSPX(Constants.kLeftClawCanId);
     private WPI_VictorSPX clawMotor2 = new WPI_VictorSPX(Constants.kRightClawCanId);
-    private ClawPosition currentPos = ClawPosition.OPENSTALL;
     public enum ClawPosition {
-        OPENUNSTALL,
-        OPENSTALL,
+        OPEN,
         CLOSED,
         CONEPUSH,
         ZOOOOOOOM
@@ -26,43 +24,34 @@ public class Claw extends SubsystemBase {
      * @param position
      */
     public void setClaw(ClawPosition position) {
-        if (position == ClawPosition.OPENSTALL) {
+        switch(position){
+            case CLOSED:
             clawSolenoid.set(false);
             clawMotor1.setVoltage(-2.9); //1.7
             clawMotor2.setVoltage(2.9);
-            currentPos = ClawPosition.OPENSTALL;
-        } else if (position == ClawPosition.OPENUNSTALL) {
-            clawSolenoid.set(false);
-            clawMotor1.setVoltage(-9.5);
-            clawMotor2.setVoltage(9.5);
-            currentPos = ClawPosition.OPENUNSTALL;
-        }else if(position == ClawPosition.CLOSED) {  //THIS IS ACTUALLY HOPEMN OR SOMETHING...
+            break;
+            case OPEN:
             clawSolenoid.set(true); //claw should be opened on default
             clawMotor1.setVoltage(0);
             clawMotor2.setVoltage(0);
-            currentPos = ClawPosition.CLOSED;
-        }else if(position == ClawPosition.CONEPUSH){
+            break;
+            case CONEPUSH:
             clawMotor1.setVoltage(3.25);
             clawMotor2.setVoltage(-3.25);
-            currentPos = ClawPosition.CONEPUSH;
-        }else if(position == ClawPosition.ZOOOOOOOM){
+
+            break;
+            case ZOOOOOOOM:
             clawMotor1.setVoltage(10.25);
             clawMotor2.setVoltage(-10.25);
-            currentPos = ClawPosition.ZOOOOOOOM;
+            break;
         }
     }
     @Override
     public void periodic(){
-        if((checkMotorStall(clawMotor1) && currentPos == ClawPosition.OPENUNSTALL)|| (checkMotorStall(clawMotor2) && currentPos == ClawPosition.OPENUNSTALL)){
-            setClaw(ClawPosition.OPENSTALL);
-        };
+            //ngl not bothered to reinstate insta stall we just gonna go constant and risk a little bujrninf, graded for 2 mins anyw.
 
     }
 
-    private boolean checkMotorStall(WPI_VictorSPX motoror){
-       // if(motoror.get)
-       return false;
-    }
 }
 
 

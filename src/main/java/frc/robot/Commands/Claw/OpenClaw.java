@@ -19,7 +19,7 @@ public class OpenClaw extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_claw.setClaw(ClawPosition.OPENSTALL);
+    m_claw.setClaw(ClawPosition.OPEN);
 
   }
 

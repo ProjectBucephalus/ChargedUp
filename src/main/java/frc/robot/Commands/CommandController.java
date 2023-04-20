@@ -189,7 +189,7 @@ public class CommandController {
       );
     m_driverHID.a()
       .onTrue(
-        new ArmHomePosCommand(m_wrist, m_vertical, m_horizontal, m_claw)
+        new ArmHomePosCommand(m_wrist, m_vertical, m_horizontal)
       );
     
    m_driverHID.x()
@@ -218,10 +218,10 @@ public class CommandController {
       m_driverHID.rightStick().onFalse(new StopFeed(m_feed));
 
       m_driverJoystick.button(2).onTrue(
-        new CloseClaw(m_claw, m_vertical) 
+        new OpenClaw(m_claw) 
       );
       m_driverJoystick.button(2).onFalse(
-        new OpenClaw(m_claw)    
+        new CloseClaw(m_claw)    
         );
       m_driverHID.leftTrigger().onTrue(
         new RunIntake(m_intake, m_claw)
@@ -242,9 +242,9 @@ public class CommandController {
       m_driverJoystick.button(7).onTrue(
         new TurnToTarget(m_drive, m_driverJoystick, m_lime, m_vertical)
       );
-   //   m_driverJoystick.button(11).onTrue(
-   //     new MoveHorizontalExtension(m_driverJoystick, m_lime, m_horizontal, m_vertical)
-   //   )=
+     m_driverJoystick.button(4).onTrue(
+       new MoveHorizontalExtension(m_driverJoystick, m_lime, m_horizontal, m_vertical)
+      );
       m_driverJoystick.button(8).onTrue(
         new ShootCube(m_claw)
       );

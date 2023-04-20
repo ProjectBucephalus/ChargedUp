@@ -37,8 +37,8 @@ public class Config {
     public static final double kHorizontalExtensionKA = 0.91854;
     public static final double kHorizontalExtensionKP = 0.39027;
     public static final double kHorizontalExtensionKD = 0;
-    public static final double kHorizontalExtensionMaxVelocity = 1.2;
-    public static final double kHorizontalExtensionMaxAcceleration = .7;
+    public static final double kHorizontalExtensionMaxVelocity = 2.3;
+    public static final double kHorizontalExtensionMaxAcceleration = 1.2;
     public static final double kHorizontalExtensionEncoderPPR = 2048; //CANCoder, falcon is 2048 EPR
     public static final double kHorizontalxtensionGearRatio = 27/1;
     public static final double kHorizontalExtensionMetresPerRotation = 1.5 * 0.0254 * Math.PI; //0.00118872;
@@ -86,7 +86,7 @@ public class Config {
      public static final WristPosition kArmMedPosWrist = WristPosition.RAISED;
      
      public static final double kArmHighPosX = 2.4;
-     public static final double kArmHighPosY = 0.495;
+     public static final double kArmHighPosY = 0.497;
      public static final WristPosition kArmHighPosWrist = WristPosition.RAISED;
      
      public static final double kArmShelfPosX = .5;
@@ -94,8 +94,9 @@ public class Config {
      public static final WristPosition kArmShelfPosWrist = WristPosition.RAISED;
 
      //Position to calibrate the arm to when the bottom limit switch is selected.
-     public static final double kArmBasePosY = -0.158;
-     public static final double kArmPeakPosY = 0.500;
+     public static final double kArmBasePosY = -0.163;
+     public static final double kArmPeakPosY = 0.5
+     ;
 
      /**
      * Elevator constants
@@ -143,8 +144,8 @@ public class Config {
     public static final double kVerticalExtensionKA = 0.91854;
     public static final double kVerticalExtensionKP = 0.39027;
     public static final double kVerticalExtensionKD = 0;
-    public static final double kVerticalExtensionMaxVelocity = 3.3;
-    public static final double kVerticalExtensionMaxAcceleration = 2.4;
+    public static final double kVerticalExtensionMaxVelocity = 12;
+    public static final double kVerticalExtensionMaxAcceleration = 6.4;
     public static final double kVerticalExtensionEncoderPPR = 2048; //CANCoder, falcon is 2048 EPR
     public static final double kVertialExtensionGearRatio = 21/1;
     public static final double kVerticalExtensionMetresPerRotation = 1.5 * 0.0254 * Math.PI; //0.00118872;

@@ -52,10 +52,14 @@ public class Limelight {
     public void enableBotVision() {
       setPipeline(2);
     }
-    public double getHorizontalDistance(){
-      if((Constants.kLimelightMountingAngle + getVerticalAngle())  != Constants.kLimelightMountingAngle){
-        return (Constants.kHighTargetHeight - Constants.kLimelightFocalHeight) / Math.tan(Constants.kLimelightMountingAngle + getVerticalAngle());
-      }else{
+    public double getHorizontalDistance(String strn){
+      if((Constants.kLimelightMountingAngle + getVerticalAngle())  != Constants.kLimelightMountingAngle && strn == "TOP"){
+        return (Constants.kHighTargetHeight - Constants.kLimelightFocalHeight) / Math.tan(Constants.kLimelightMountingAngle + Math.abs(getVerticalAngle()));
+      }else if((Constants.kLimelightMountingAngle + getVerticalAngle())  != Constants.kLimelightMountingAngle && strn == "MID" ){
+        return (Constants.kMidTargetHeight - Constants.kLimelightFocalHeight) / Math.tan(Constants.kLimelightMountingAngle + Math.abs(getVerticalAngle()));
+
+      }
+      else{
         return Constants.kLimelightErrorValue;
       }
     }
