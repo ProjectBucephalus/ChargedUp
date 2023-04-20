@@ -212,6 +212,11 @@ public class CommandController {
 
       m_driverHID.rightStick().onTrue(new outTake(m_intake, m_claw));
 
+      m_driverHID.pov(0).onTrue(new brakeMotors(m_drive));
+
+      m_driverHID.pov(180).onTrue(new coastMotors(m_drive));
+
+
       m_driverHID.rightStick().onFalse(new StopIntake(m_intake));
       m_driverHID.rightStick().onTrue(new reverseFeed(m_feed));
 

@@ -180,6 +180,28 @@ public class Drive extends SubsystemBase{
       return run(() -> autoPosition());
           }
 
+
+  public void brakeMotors(){
+    leftDriveA.setNeutralMode(NeutralMode.Brake);
+    leftDriveB.setNeutralMode(NeutralMode.Brake);
+    leftDriveC.setNeutralMode(NeutralMode.Brake);
+    rightDriveA.setNeutralMode(NeutralMode.Brake);
+    rightDriveB.setNeutralMode(NeutralMode.Brake);
+    rightDriveC.setNeutralMode(NeutralMode.Brake);
+  }
+
+
+
+  public void coastMotors(){
+    leftDriveA.setNeutralMode(NeutralMode.Coast);
+    leftDriveB.setNeutralMode(NeutralMode.Coast);
+    leftDriveC.setNeutralMode(NeutralMode.Coast);
+    rightDriveA.setNeutralMode(NeutralMode.Coast);
+    rightDriveB.setNeutralMode(NeutralMode.Coast);
+    rightDriveC.setNeutralMode(NeutralMode.Coast);
+  }
+
+
   public void autoPosition()
   {
   double currentpitch = gyro.getPitch();
