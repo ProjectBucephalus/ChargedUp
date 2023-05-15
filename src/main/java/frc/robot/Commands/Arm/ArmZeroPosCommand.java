@@ -9,7 +9,6 @@ import frc.robot.Subsystems.Claw;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
-import frc.robot.Subsystems.Claw.ClawPosition;
 import frc.robot.Subsystems.VerticalExtension.verticalState;
 import frc.robot.Subsystems.Wrist.WristPosition;
 
@@ -17,20 +16,17 @@ public class ArmZeroPosCommand extends CommandBase {
   private final Wrist m_wrist;
   private final HorizontalExtension m_horizontalExtension;
   private final VerticalExtension m_verticalExtension;
-  private final Claw m_claw;
   /** Creates a new ArmHomePosCommand. */
   public ArmZeroPosCommand(Wrist wristSubsystem, VerticalExtension verticalExtensionSubsystem, HorizontalExtension horizontalExtensionSubsystem, Claw claw) {
     m_wrist = wristSubsystem;
     m_verticalExtension = verticalExtensionSubsystem;
     m_horizontalExtension = horizontalExtensionSubsystem;
-    m_claw = claw;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_claw.setClaw(ClawPosition.OPEN);
 
     System.out.println("Start");
     

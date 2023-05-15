@@ -61,6 +61,7 @@ public class Constants {
     public static final double kHighTargetHeight = (41.96875 * 2.54)/100;
     public static final double kLimelightMountingAngle = 0;
     public static final double kLimelightErrorValue = 32387943713712937127893.32324;
+    public static final double kMidTargetHeight = .864;
 
-    public static final double kHorizontalMetresToPosition = 1;
+    public static final double kHorizontalMetresToPosition = 3.75;
 }

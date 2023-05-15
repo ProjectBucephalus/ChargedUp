@@ -26,7 +26,7 @@ public class ExtendIntake extends CommandBase {
   public void initialize() {
     if(VerticalExtension.getInstance().getIntakeLegal()){
       m_intake.setIntake(IntakePosition.EXTENDED);
-      m_claw.setClaw(ClawPosition.CLOSED);
+      m_claw.setClaw(ClawPosition.OPEN);
     }
   }
 

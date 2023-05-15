@@ -2,7 +2,6 @@ package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import frc.robot.Config;
 import frc.robot.Constants;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
@@ -33,10 +32,18 @@ public class MoveHorizontalExtension extends CommandBase{
  // Called every time the scheduler runs while the command is scheduled.
  @Override
  public void execute() { 
-    distToTarget = m_lime.getHorizontalDistance();
+    if(m_vert.getState() == verticalState.MEDIUM){
+        distToTarget = m_lime.getHorizontalDistance("MID");
+    }else{
+        distToTarget = m_lime.getHorizontalDistance("TOP");
+    }
     if(distToTarget != Constants.kLimelightErrorValue){
-        if(distToTarget * Constants.kHorizontalMetresToPosition < Config.kArmHighPosX + .02 && distToTarget * Constants.kHorizontalMetresToPosition > Config.kArmLowPosX + .02){
-        m_horiz.setPosition(distToTarget);
+        var setPos = distToTarget - 0.6;
+        setPos *= Constants.kHorizontalMetresToPosition;
+        System.out.println(setPos);
+
+        if(0.01 < setPos && setPos < 2.42){
+        m_horiz.setPosition(setPos);
         }
     }
 }
@@ -49,7 +56,7 @@ public class MoveHorizontalExtension extends CommandBase{
  // Returns true when the command should end.
  @Override
  public boolean isFinished() {
-    if(Math.abs(m_joy.getX()) > 0.1 || Math.abs(m_joy.getY()) > 0.1){
+    if(Math.abs(m_joy.getX()) > 0.3 || Math.abs(m_joy.getY()) > 0.3){
         return true;
     }
     return false;

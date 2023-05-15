@@ -42,10 +42,9 @@ public class autoScore extends CommandBase{
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println(currentState);
     switch(currentState){
         case INITIAL:
-            m_claw.setClaw(ClawPosition.OPEN); // CUD BE AN ERROR ?? ? DOUBLE CHECK
+            m_claw.setClaw(ClawPosition.CLOSED); // CUD BE AN ERROR ?? ? DOUBLE CHECK
             if(newState){
                 loops = 0;
                 newState = false;
@@ -86,7 +85,7 @@ public class autoScore extends CommandBase{
                 newState = false;
             }
             loops++;
-            m_claw.setClaw(ClawPosition.CLOSED);
+            m_claw.setClaw(ClawPosition.OPEN);
             if(loops >20){desiredState = autoScoreState.RETRACT; newState = true;}
             currentState = desiredState;
             break;

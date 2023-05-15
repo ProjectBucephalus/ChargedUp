@@ -82,7 +82,6 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     Drive.getInstance().setBrakes(true); //run brakes
     m_pneumatics.setPneumatics(true);
-    m_robot.getAutonomousCommand();
     m_autonomousCommand = m_robot.getAutonomousCommand();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -115,7 +114,8 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    Drive.getInstance().setBrakes(false); //disable brakes so robot is pushable
+   /**
+    *  bfr girl . */  // Drive.getInstance().setBrakes(false); //disable brakes so robot is pushable
     m_pneumatics.setPneumatics(false);
 
   }
