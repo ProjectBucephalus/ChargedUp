@@ -4,10 +4,10 @@
 
 package frc.robot.Commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Drive;
 
-public class InvertDirectionCommand extends CommandBase {
+public class InvertDirectionCommand extends Command {
   Drive m_drive;
   boolean invertStatus;
   /** Creates a new InvertPositionCommand. */

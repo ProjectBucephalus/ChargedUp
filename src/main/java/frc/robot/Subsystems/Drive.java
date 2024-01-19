@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
-import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+// import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
 import frc.robot.Config;
 import frc.robot.Constants;
@@ -18,7 +18,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 
@@ -97,10 +97,10 @@ public class Drive extends SubsystemBase{
       resetDriveEncoders();
       driveOdometry.resetPosition(Rotation2d.fromDegrees(((gyro.getYaw()))), getLeftDriveEncodersDistanceMetres(), getRightDriveEncodersDistanceMetres(), pose);;
     }
-    public Pose2d proseToPose(PathPlannerState prose){
-      Pose2d pose = new Pose2d(prose.poseMeters.getTranslation(), prose.holonomicRotation);
-      return pose;
-    }
+    // public Pose2d proseToPose(PathPlannerState prose){
+    //   Pose2d pose = new Pose2d(prose.poseMeters.getTranslation(), prose.holonomicRotation);
+    //   return pose;
+    // }
     /**
      * Configure all motor controllers, sensors, etc. of this subsystem
      * This means that in theory, on a controller fail, all that is needed to reconfigure
@@ -153,7 +153,7 @@ public class Drive extends SubsystemBase{
    * @param fwd the commanded forward movement
    * @param rot the commanded rotation
    */
-  public CommandBase arcadeDriveCommand(DoubleSupplier fwd, DoubleSupplier rot) {
+  public Command arcadeDriveCommand(DoubleSupplier fwd, DoubleSupplier rot) {
     // A split-stick arcade command, with forward/backward controlled by the left
     // hand, and turning controlled by the right.
       return run(() -> driveMotors.arcadeDrive(
@@ -164,7 +164,7 @@ public class Drive extends SubsystemBase{
           
       }
 
-      public CommandBase arcadeDriveCommand(double fwd, double rot) {
+      public Command arcadeDriveCommand(double fwd, double rot) {
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
           return run(() -> driveMotors.arcadeDrive(
@@ -174,7 +174,7 @@ public class Drive extends SubsystemBase{
               .withName("arcadeDrive");
 
           }
-  public CommandBase autoDriveCommand() {
+  public Command autoDriveCommand() {
     // A split-stick arcade command, with forward/backward controlled by the left
     // hand, and turning controlled by the right.
       return run(() -> autoPosition());
@@ -277,7 +277,7 @@ public class Drive extends SubsystemBase{
    * @param distanceMeters The distance to drive forward in meters
    * @param speed The fraction of max speed at which to drive
    */
-  public CommandBase driveDistanceCommand(double distanceMeters, double speed) {
+  public Command driveDistanceCommand(double distanceMeters, double speed) {
     return runOnce(
             () -> {
               resetDriveEncoders(); //check encoders are zeroed

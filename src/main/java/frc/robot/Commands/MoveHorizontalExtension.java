@@ -1,6 +1,6 @@
 package frc.robot.Commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Constants;
 import frc.robot.Subsystems.HorizontalExtension;
@@ -8,7 +8,7 @@ import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.VerticalExtension.verticalState;
 import frc.robot.Utilities.Limelight;
 
-public class MoveHorizontalExtension extends CommandBase{
+public class MoveHorizontalExtension extends Command{
     private CommandJoystick m_joy;
     private Limelight m_lime;
     private HorizontalExtension m_horiz;

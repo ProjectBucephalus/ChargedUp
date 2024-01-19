@@ -1,6 +1,6 @@
 package frc.robot.Autonomous;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Claw;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
@@ -8,7 +8,7 @@ import frc.robot.Subsystems.Wrist;
 import frc.robot.Subsystems.Claw.ClawPosition;
 import frc.robot.Config;
 
-public class autoScore extends CommandBase{
+public class autoScore extends Command{
     private final Wrist m_wrist;
     private final VerticalExtension m_vert;
     private final HorizontalExtension m_horiz;

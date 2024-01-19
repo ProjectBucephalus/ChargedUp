@@ -4,14 +4,14 @@
 
 package frc.robot.Commands.Arm;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Config;
 import frc.robot.Subsystems.HorizontalExtension;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Wrist;
 import frc.robot.Subsystems.VerticalExtension.verticalState;
 
-public class ArmMidHigh extends CommandBase {
+public class ArmMidHigh extends Command {
   private final Wrist m_wrist;
   private final HorizontalExtension m_horizontalExtension;
   private final VerticalExtension m_verticalExtension;

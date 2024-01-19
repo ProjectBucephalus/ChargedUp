@@ -4,11 +4,11 @@ package frc.robot.Commands.Intake;
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Feed;
 import frc.robot.Subsystems.Feed.FeedMotorsStatus;
 
-public class reverseFeed extends CommandBase {
+public class reverseFeed extends Command {
   private Feed m_feed;
   /** Creates a new Feed. */
   public reverseFeed(Feed feedSubsystem) {

@@ -4,14 +4,14 @@
 
 package frc.robot.Commands.Intake;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Claw;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.Claw.ClawPosition;
 import frc.robot.Subsystems.Intake.IntakePosition;
 
-public class ExtendIntake extends CommandBase {
+public class ExtendIntake extends Command {
   private Intake m_intake;
   private Claw m_claw;
   /** Creates a new ExtendIntake. */

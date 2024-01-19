@@ -1,6 +1,6 @@
 package frc.robot.Commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Subsystems.Drive;
 
@@ -8,7 +8,7 @@ import frc.robot.Subsystems.VerticalExtension;
 import frc.robot.Subsystems.VerticalExtension.verticalState;
 import frc.robot.Utilities.Limelight;
 
-public class TurnToTarget extends CommandBase{
+public class TurnToTarget extends Command{
     private final Drive m_drive;
     private CommandJoystick m_joy;
     private VerticalExtension m_vert;

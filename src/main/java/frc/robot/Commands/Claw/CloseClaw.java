@@ -4,11 +4,11 @@
 
 package frc.robot.Commands.Claw;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Claw;
 import frc.robot.Subsystems.Claw.ClawPosition;
 
-public class CloseClaw extends CommandBase {
+public class CloseClaw extends Command {
   private Claw m_claw;
   public CloseClaw(Claw clawSubsystem) {
     m_claw = clawSubsystem;

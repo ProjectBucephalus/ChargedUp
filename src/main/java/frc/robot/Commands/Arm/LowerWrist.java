@@ -4,11 +4,11 @@
 
 package frc.robot.Commands.Arm;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Wrist;
 import frc.robot.Subsystems.Wrist.WristPosition;
 
-public class LowerWrist extends CommandBase {
+public class LowerWrist extends Command {
   private final Wrist m_wrist;
   /** Creates a new RaiseWrist. */
   public LowerWrist(Wrist subsystem) {

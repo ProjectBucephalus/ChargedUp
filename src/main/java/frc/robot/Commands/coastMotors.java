@@ -1,9 +1,9 @@
 package frc.robot.Commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Drive;
 
-public class coastMotors extends CommandBase{
+public class coastMotors extends Command{
     private final Drive m_drive;
     public coastMotors(Drive driveSubsystem){
         m_drive = driveSubsystem;

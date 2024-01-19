@@ -4,11 +4,11 @@
 
 package frc.robot.Commands.Claw;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Claw;
 import frc.robot.Subsystems.Claw.ClawPosition;
 
-public class ShootCube extends CommandBase {
+public class ShootCube extends Command {
   private Claw m_claw;
   /** Creates a new OpenClaw. */
   public ShootCube(Claw clawSubsystem) {

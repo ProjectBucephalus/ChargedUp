@@ -4,11 +4,11 @@
 
 package frc.robot.Commands.Intake;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Intake.IntakeMotorStatus;
 
-public class ReverseIntakeMotors extends CommandBase {
+public class ReverseIntakeMotors extends Command {
   private Intake m_intake;
   /** Creates a new RunIntakeMotors. */
   public ReverseIntakeMotors(Intake intakeSubsystem) {

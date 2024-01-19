@@ -4,11 +4,11 @@
 
 package frc.robot.Commands.Intake;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Feed;
 import frc.robot.Subsystems.Feed.FeedMotorsStatus;
 
-public class StopFeed extends CommandBase {
+public class StopFeed extends Command {
   private Feed m_feed;
   /** Creates a new Feed. */
   public StopFeed(Feed feedSubsystem) {

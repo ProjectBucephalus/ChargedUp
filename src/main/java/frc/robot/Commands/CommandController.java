@@ -8,11 +8,11 @@ import java.util.HashMap;
 
 import frc.robot.Autonomous.autoClimb;
 import frc.robot.Autonomous.autoScore;
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.auto.PIDConstants;
-import com.pathplanner.lib.auto.RamseteAutoBuilder;
+// import com.pathplanner.lib.PathConstraints;
+// import com.pathplanner.lib.PathPlanner;
+// import com.pathplanner.lib.PathPlannerTrajectory;
+// import com.pathplanner.lib.auto.PIDConstants;
+// import com.pathplanner.lib.auto.RamseteAutoBuilder;
 
 
 import edu.wpi.first.math.controller.RamseteController;
@@ -88,8 +88,8 @@ public class CommandController {
     //chooser.addOption("5,Top,Climb", loadPathPlannerTrajectoryToRamseteCommand("5TOPClimb", true));
     //chooser.addOption("5,Top", loadPathPlannerTrajectoryToRamseteCommand("5TOP", true));
   //AMBIG 
-  chooser.addOption("5,Climb", loadPathPlannerTrajectoryToRamseteCommand("5Climb", true,1.4,1.1));
-  chooser.addOption("Do nothing score", loadPathPlannerTrajectoryToRamseteCommand("nothingScore", true, 0, 0));
+  // chooser.addOption("5,Climb", loadPathPlannerTrajectoryToRamseteCommand("5Climb", true,1.4,1.1));
+  // chooser.addOption("Do nothing score", loadPathPlannerTrajectoryToRamseteCommand("nothingScore", true, 0, 0));
   
     //BLUE?
     // chooser.addOption("8,Climb", loadPathPlannerTrajectoryToRamseteCommand("2Climb", true,2.6,.9));
@@ -105,63 +105,63 @@ public class CommandController {
 
 
     //RED
-    chooser.addOption("8,Climb", loadPathPlannerTrajectoryToRamseteCommand("8Climb", true,2.6,.9));
-    chooser.addOption("2,Climb", loadPathPlannerTrajectoryToRamseteCommand("2Climb", true,2.6,.9));
-    chooser.addOption("Start at 3, cone, climb", loadPathPlannerTrajectoryToRamseteCommand("7ConeClimb", true, 1.76, .25));
-    chooser.addOption("Start at 7, cone, climb", loadPathPlannerTrajectoryToRamseteCommand("3ConeClimb", true, 1.76, .25));
-    chooser.addOption("Start at 7, cone, cross line", loadPathPlannerTrajectoryToRamseteCommand("7Cone", true, 2.5, .85));
-    chooser.addOption("Start at 3, cone, cross line", loadPathPlannerTrajectoryToRamseteCommand("3Cone", true, 2.5, .85));
-    chooser.addOption("Start at 2, cube, cross line", loadPathPlannerTrajectoryToRamseteCommand("2Cube", true, 2.5, .85));
-    chooser.addOption("Start at 8, cube, cross line", loadPathPlannerTrajectoryToRamseteCommand("8Cube", true, 2.5, .85));
-    chooser.addOption("Move back in a line", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true,1.2,.5));
+    // chooser.addOption("8,Climb", loadPathPlannerTrajectoryToRamseteCommand("8Climb", true,2.6,.9));
+    // chooser.addOption("2,Climb", loadPathPlannerTrajectoryToRamseteCommand("2Climb", true,2.6,.9));
+    // chooser.addOption("Start at 3, cone, climb", loadPathPlannerTrajectoryToRamseteCommand("7ConeClimb", true, 1.76, .25));
+    // chooser.addOption("Start at 7, cone, climb", loadPathPlannerTrajectoryToRamseteCommand("3ConeClimb", true, 1.76, .25));
+    // chooser.addOption("Start at 7, cone, cross line", loadPathPlannerTrajectoryToRamseteCommand("7Cone", true, 2.5, .85));
+    // chooser.addOption("Start at 3, cone, cross line", loadPathPlannerTrajectoryToRamseteCommand("3Cone", true, 2.5, .85));
+    // chooser.addOption("Start at 2, cube, cross line", loadPathPlannerTrajectoryToRamseteCommand("2Cube", true, 2.5, .85));
+    // chooser.addOption("Start at 8, cube, cross line", loadPathPlannerTrajectoryToRamseteCommand("8Cube", true, 2.5, .85));
+    // chooser.addOption("Move back in a line", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true,1.2,.5));
     
-    chooser.setDefaultOption("nuth n", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true,0,0));
+    // chooser.setDefaultOption("nuth n", loadPathPlannerTrajectoryToRamseteCommand("LuinStinks", true,0,0));
 
     Shuffleboard.getTab("Autonomous").add(chooser);
   }
-  public Command loadPathPlannerTrajectoryToRamseteCommand(String fileName, Boolean resetOdometry,double maxvel, double maxacel){
-    PathPlannerTrajectory traj;
-    try{
-      traj = PathPlanner.loadPath(fileName, new PathConstraints(maxvel, maxacel));
-    }finally{
-      System.out.println("haii :P");
-    }
+  // public Command loadPathPlannerTrajectoryToRamseteCommand(String fileName, Boolean resetOdometry,double maxvel, double maxacel){
+  //   PathPlannerTrajectory traj;
+  //   try{
+  //     traj = PathPlanner.loadPath(fileName, new PathConstraints(maxvel, maxacel));
+  //   }finally{
+  //     System.out.println("haii :P");
+  //   }
 
-    RamseteController ramseteController = new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta);
+  //   RamseteController ramseteController = new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta);
 
 
 
-    PIDConstants pidConstants = new PIDConstants(Constants.kPDriveVel, 0, 0);
-    SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter, Constants.kaVoltSecondsSquaredPerMeter);
+  //   PIDConstants pidConstants = new PIDConstants(Constants.kPDriveVel, 0, 0);
+  //   SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter, Constants.kaVoltSecondsSquaredPerMeter);
     
-    HashMap<String, Command> eventMap = new HashMap<>();
-    eventMap.put("scoreGamepiece", new autoScore(m_wrist, m_vertical, m_horizontal, m_claw)); //STUB FUNCTION !
-    //eventMap.put("intake", new autoIntake(m_drive)); //STUB FUNCTION!!
-    eventMap.put("climb", new autoClimb(m_drive, m_driverJoystick)); //STUB FUCINGIOTON
-    RamseteAutoBuilder ramseteAuto = new RamseteAutoBuilder(
-      m_drive::getPose, 
-      m_drive::resetOdometry,
-      ramseteController, 
-      m_drive.driveKinematics,
-      feedForward,
-      m_drive::getWheelSpeeds,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
-      pidConstants,
-      (leftVolts, rightVolts) -> {
-      m_drive.tankDriveVolts(leftVolts, rightVolts);},
-      eventMap, 
-      false,
-      m_drive);
+  //   HashMap<String, Command> eventMap = new HashMap<>();
+  //   eventMap.put("scoreGamepiece", new autoScore(m_wrist, m_vertical, m_horizontal, m_claw)); //STUB FUNCTION !
+  //   //eventMap.put("intake", new autoIntake(m_drive)); //STUB FUNCTION!!
+  //   eventMap.put("climb", new autoClimb(m_drive, m_driverJoystick)); //STUB FUCINGIOTON
+  //   RamseteAutoBuilder ramseteAuto = new RamseteAutoBuilder(
+  //     m_drive::getPose, 
+  //     m_drive::resetOdometry,
+  //     ramseteController, 
+  //     m_drive.driveKinematics,
+  //     feedForward,
+  //     m_drive::getWheelSpeeds,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+  //     pidConstants,
+  //     (leftVolts, rightVolts) -> {
+  //     m_drive.tankDriveVolts(leftVolts, rightVolts);},
+  //     eventMap, 
+  //     false,
+  //     m_drive);
   
 
   
-    if (resetOdometry){
-      return new SequentialCommandGroup( new InstantCommand(() -> Drive.getInstance().resetOdometry(m_drive.proseToPose(traj.getInitialState())                           )), ramseteAuto.fullAuto(traj));
+  //   if (resetOdometry){
+  //     return new SequentialCommandGroup( new InstantCommand(() -> Drive.getInstance().resetOdometry(m_drive.proseToPose(traj.getInitialState())                           )), ramseteAuto.fullAuto(traj));
         
-    }else{
-      return ramseteAuto.fullAuto(traj);
-    }
+  //   }else{
+  //     return ramseteAuto.fullAuto(traj);
+  //   }
   
-  }
+  // }
 
 
     /**
